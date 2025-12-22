@@ -20,10 +20,12 @@ class Team extends Model
         'second_color',
         'year_of_foundation',
         'stadium',
+        'rating',
     ];
 
     protected $casts = [
         'year_of_foundation' => 'integer',
+        'rating' => 'integer',
     ];
 
     public function competitions(): BelongsToMany

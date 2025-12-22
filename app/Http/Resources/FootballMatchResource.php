@@ -39,6 +39,7 @@ class FootballMatchResource extends JsonResource
             'date' => $this->date,
             'goal_home' => $this->goal_home,
             'goal_away' => $this->goal_away,
+            'played' => $this->played,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'competition' => new CompetitionResource($this->whenLoaded('competition')),

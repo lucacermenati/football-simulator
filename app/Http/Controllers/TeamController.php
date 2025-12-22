@@ -26,6 +26,7 @@ class TeamController extends Controller
             'second_color' => 'required|string|max:7',
             'year_of_foundation' => 'required|integer|min:1800|max:' . date('Y'),
             'stadium' => 'required|string|max:255',
+            'rating' => 'sometimes|integer|min:30|max:100',
             'competition_id' => 'sometimes|exists:competitions,id',
         ]);
 
@@ -48,6 +49,7 @@ class TeamController extends Controller
             'teams.*.second_color' => 'required|string|max:7',
             'teams.*.year_of_foundation' => 'required|integer|min:1800|max:' . date('Y'),
             'teams.*.stadium' => 'required|string|max:255',
+            'teams.*.rating' => 'sometimes|integer|min:30|max:100',
             'teams.*.competition_id' => 'sometimes|exists:competitions,id',
         ]);
 
@@ -80,6 +82,7 @@ class TeamController extends Controller
             'second_color' => 'nullable|string|max:7',
             'year_of_foundation' => 'nullable|integer|min:1900|max:' . date('Y'),
             'stadium' => 'nullable|string|max:255',
+            'rating' => 'sometimes|integer|min:30|max:100',
         ]);
 
         $team->update($validated);

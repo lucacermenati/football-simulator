@@ -25,13 +25,15 @@ class FootballMatch extends Model
         'away_team_id',
         'goal_home',
         'goal_away',
-        'date'
+        'date',
+        'played'
     ];
     
     protected $casts = [
         'date' => 'datetime',
         'goal_home' => 'integer',
         'goal_away' => 'integer',
+        'played' => 'boolean',
     ];
     
     public function competition(): BelongsTo

@@ -25,6 +25,7 @@ class FootballMatchFactory extends Factory
             'goal_home' => $this->faker->numberBetween(0, 5),
             'goal_away' => $this->faker->numberBetween(0, 5),
             'date' => $this->faker->dateTimeBetween('-6 months', '+1 month'),
+            'played' => $this->faker->boolean(),
         ];
     }
 }

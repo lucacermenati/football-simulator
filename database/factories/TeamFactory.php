@@ -20,6 +20,7 @@ class TeamFactory extends Factory
             'second_color' => $this->faker->hexColor(),
             'year_of_foundation' => $this->faker->numberBetween(1900, 2023),
             'stadium' => $city . ' Stadium',
+            'rating' => $this->faker->numberBetween(30, 100),
         ];
     }
 
@@ -36,6 +37,7 @@ class TeamFactory extends Factory
                 'second_color' => $faker->hexColor(),
                 'year_of_foundation' => $faker->numberBetween(1900, 2023),
                 'stadium' => $city . ' Stadium',
+                'rating' => $faker->numberBetween(30, 100),
             ];
         });
     }

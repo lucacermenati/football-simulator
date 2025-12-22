@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FootballMatchResource;
-use App\Http\Resources\CompetitionResource;
-use App\Http\Resources\TeamResource;
-use App\Http\Resources\PlayerResource;
 use App\Models\Competition;
 use App\Models\FootballMatch;
 use App\Models\Player;
@@ -60,6 +57,7 @@ class FootballMatchController extends Controller
             'goal_home' => 'required|integer|min:0',
             'goal_away' => 'required|integer|min:0',
             'date' => 'required|date',
+            'played' => 'sometimes|boolean',
             'scorers' => 'nullable|array',
             'scorers.*.player_id' => 'required_with:scorers|uuid|exists:players,id',
             'scorers.*.minute' => 'required_with:scorers.*.player_id|integer|min:1|max:120',
@@ -140,6 +138,7 @@ class FootballMatchController extends Controller
             'goal_home' => 'sometimes|required|integer|min:0',
             'goal_away' => 'sometimes|required|integer|min:0',
             'date' => 'sometimes|required|date',
+            'played' => 'sometimes|boolean',
         ]);
 
         // If competition or teams changed, validate that teams belong to the competition

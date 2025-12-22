@@ -17,6 +17,7 @@ class TeamResource extends JsonResource
             'second_color' => $this->second_color,
             'year_of_foundation' => $this->year_of_foundation,
             'stadium' => $this->stadium,
+            'rating' => $this->rating,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'players' => PlayerResource::collection($this->whenLoaded('players')),

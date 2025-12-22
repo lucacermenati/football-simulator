@@ -14,7 +14,7 @@ class TeamFactory extends Factory
     public function __construct()
     {
         parent::__construct();
-        $this->locale = config('app.faker_locale', 'en_US');
+        $this->locale = config('app.faker_locale');
     }
 
     public function setLocale(string $locale): static

@@ -13,7 +13,6 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * @group Football Match Management
@@ -54,7 +53,7 @@ class FootballMatchController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'competition_id' => 'required|uuid|exists:competitions,id',
             'home_team_id' => 'required|uuid|exists:teams,id',
             'away_team_id' => 'required|uuid|different:home_team_id|exists:teams,id',
@@ -66,14 +65,10 @@ class FootballMatchController extends Controller
             'scorers.*.minute' => 'required_with:scorers.*.player_id|integer|min:1|max:120',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         // Validate that teams belong to the competition
-        $competition = Competition::findOrFail($request->competition_id);
-        $homeTeam = Team::findOrFail($request->home_team_id);
-        $awayTeam = Team::findOrFail($request->away_team_id);
+        $competition = Competition::findOrFail($validated['competition_id']);
+        $homeTeam = Team::findOrFail($validated['home_team_id']);
+        $awayTeam = Team::findOrFail($validated['away_team_id']);
 
         $teamsInCompetition = $competition->teams->pluck('id')->toArray();
 
@@ -85,12 +80,12 @@ class FootballMatchController extends Controller
 
         // Create match
         $match = new FootballMatch();
-        $match->fill($validator->validated());
+        $match->fill($validated);
         $match->save();
 
         // Add goal scorers if provided
-        if ($request->has('scorers') && !empty($request->scorers)) {
-            collect($request->scorers)->each(function ($scorer) use ($match) {
+        if (isset($validated['scorers']) && !empty($validated['scorers'])) {
+            collect($validated['scorers'])->each(function ($scorer) use ($match) {
                 $match->scorers()->attach($scorer['player_id'], [
                     'minute' => $scorer['minute']
                 ]);
@@ -138,7 +133,7 @@ class FootballMatchController extends Controller
      */
     public function update(Request $request, FootballMatch $footballMatch): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'competition_id' => 'sometimes|required|uuid|exists:competitions,id',
             'home_team_id' => 'sometimes|required|uuid|exists:teams,id',
             'away_team_id' => 'sometimes|required|uuid|different:home_team_id|exists:teams,id',
@@ -147,15 +142,11 @@ class FootballMatchController extends Controller
             'date' => 'sometimes|required|date',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         // If competition or teams changed, validate that teams belong to the competition
-        if ($request->has('competition_id') || $request->has('home_team_id') || $request->has('away_team_id')) {
-            $competition_id = $request->competition_id ?? $footballMatch->competition_id;
-            $home_team_id = $request->home_team_id ?? $footballMatch->home_team_id;
-            $away_team_id = $request->away_team_id ?? $footballMatch->away_team_id;
+        if (isset($validated['competition_id']) || isset($validated['home_team_id']) || isset($validated['away_team_id'])) {
+            $competition_id = $validated['competition_id'] ?? $footballMatch->competition_id;
+            $home_team_id = $validated['home_team_id'] ?? $footballMatch->home_team_id;
+            $away_team_id = $validated['away_team_id'] ?? $footballMatch->away_team_id;
 
             $competition = Competition::findOrFail($competition_id);
             $teamsInCompetition = $competition->teams->pluck('id')->toArray();
@@ -168,7 +159,7 @@ class FootballMatchController extends Controller
         }
 
         // Update match
-        $footballMatch->update($validator->validated());
+        $footballMatch->update($validated);
 
         $footballMatch->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
 
@@ -259,16 +250,12 @@ class FootballMatchController extends Controller
      */
     public function addScorer(Request $request, FootballMatch $footballMatch): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'player_id' => 'required|uuid|exists:players,id',
             'minute' => 'required|integer|min:1|max:120',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $player = Player::findOrFail($request->player_id);
+        $player = Player::findOrFail($validated['player_id']);
 
         // Check if player is in one of the teams playing
         $teamIds = [$footballMatch->home_team_id, $footballMatch->away_team_id];
@@ -279,7 +266,7 @@ class FootballMatchController extends Controller
         }
 
         // Attach the player with the minute
-        $footballMatch->scorers()->attach($player->id, ['minute' => $request->minute]);
+        $footballMatch->scorers()->attach($player->id, ['minute' => $validated['minute']]);
 
         $footballMatch->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
 

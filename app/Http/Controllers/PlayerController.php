@@ -8,7 +8,6 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 class PlayerController extends Controller
 {
@@ -21,7 +20,7 @@ class PlayerController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
@@ -30,11 +29,7 @@ class PlayerController extends Controller
             'team_id' => 'required|uuid|exists:teams,id',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $player = Player::create($validator->validated());
+        $player = Player::create($validated);
 
         return response()->json(new PlayerResource($player), 201);
     }
@@ -48,7 +43,7 @@ class PlayerController extends Controller
 
     public function update(Request $request, Player $player): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
             'birth_date' => 'nullable|date',
@@ -57,11 +52,7 @@ class PlayerController extends Controller
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $player->update($validator->validated());
+        $player->update($validated);
 
         return response()->json(new PlayerResource($player));
     }

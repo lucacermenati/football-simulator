@@ -7,7 +7,6 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 class TeamController extends Controller
 {
@@ -20,7 +19,7 @@ class TeamController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'logo' => 'nullable|string|url',
             'first_color' => 'nullable|string|max:7',
@@ -29,11 +28,7 @@ class TeamController extends Controller
             'stadium' => 'nullable|string|max:255',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $team = Team::create($validator->validated());
+        $team = Team::create($validated);
 
         return response()->json(new TeamResource($team), 201);
     }
@@ -54,7 +49,7 @@ class TeamController extends Controller
 
     public function update(Request $request, Team $team): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'logo' => 'nullable|string|url',
             'first_color' => 'nullable|string|max:7',
@@ -63,11 +58,7 @@ class TeamController extends Controller
             'stadium' => 'nullable|string|max:255',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $team->update($validator->validated());
+        $team->update($validated);
 
         return response()->json(new TeamResource($team));
     }

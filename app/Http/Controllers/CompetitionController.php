@@ -7,52 +7,43 @@ use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 class CompetitionController extends Controller
 {
     public function index(): ResourceCollection
     {
-        return CompetitionResource::collection(
-            Competition::with(['teams'])->get()
-        );
+        $competitions = Competition::query()->get();
+
+        return CompetitionResource::collection($competitions);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $competition = Competition::create($validator->validated());
+        $competition = Competition::create($validated);
 
         return response()->json(new CompetitionResource($competition), 201);
     }
 
     public function show(Competition $competition): JsonResponse
     {
-        $competition->load(['teams', 'matches.homeTeam', 'matches.awayTeam']);
-        
+        $competition->load(['teams']);
+
         return response()->json(new CompetitionResource($competition));
     }
 
     public function update(Request $request, Competition $competition): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $competition->update($validator->validated());
+        $competition->update($validated);
 
         return response()->json(new CompetitionResource($competition));
     }

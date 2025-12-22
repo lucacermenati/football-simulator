@@ -175,22 +175,20 @@ class FootballMatchController extends Controller
     {
         $validated = $request->validate([
             'start_date' => 'sometimes|date',
-            'frequency' => 'required|in:daily,weekly,monthly',
         ]);
 
-        if ($competition->matches()->exists()) {
-            return response()->json([
-                'message' => 'Matches already exist for this competition',
-            ], 400);
-        }
-
         $startDate = $validated['start_date'] ?? now();
-        $frequency = $validated['frequency'];
 
-        $matches = CalendarGenerator::generateMatches($competition, $startDate, $frequency);
+        $matches = CalendarGenerator::generateMatches($competition, $startDate);
 
-        return $matches;
+        $matches = FootballMatch::insert($matches);
+        $matches = $competition->matches()->with([
+            'awayTeam',
+            'homeTeam',
+        ])
+        ->orderBy('date')
+        ->get();
 
-        // return response()->json(FootballMatchResource::collection($competition->matches));
+        return response()->json(FootballMatchResource::collection($matches));
     }
 }

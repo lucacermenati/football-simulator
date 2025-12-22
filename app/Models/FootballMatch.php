@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class FootballMatch extends Model
 {
     use HasFactory, HasUuids;
-    
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'matches';
-    
+
     protected $fillable = [
         'competition_id',
         'home_team_id',
@@ -28,29 +28,29 @@ class FootballMatch extends Model
         'date',
         'played'
     ];
-    
+
     protected $casts = [
         'date' => 'datetime',
         'goal_home' => 'integer',
         'goal_away' => 'integer',
         'played' => 'boolean',
     ];
-    
+
     public function competition(): BelongsTo
     {
         return $this->belongsTo(Competition::class);
     }
-    
+
     public function homeTeam(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'home_team_id');
     }
-    
+
     public function awayTeam(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'away_team_id');
     }
-    
+
     public function scorers(): BelongsToMany
     {
         return $this->belongsToMany(Player::class, 'matches_players', 'match_id', 'player_id')

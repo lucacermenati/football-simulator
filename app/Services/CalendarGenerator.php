@@ -4,36 +4,45 @@ namespace App\Services;
 
 use App\Models\Competition;
 use Carbon\Carbon;
+use InvalidArgumentException;
+use Str;
 
 class CalendarGenerator
 {
     public static function generateMatches(Competition $competition, string|Carbon $startDate)
     {
         $startDate = $startDate instanceof Carbon ? $startDate : Carbon::parse($startDate);
-        $teams = $competition->teams;
-        // Ensure even number of teams
-        if ($teams->count() % 2 !== 0) {
-            throw new \InvalidArgumentException('Number of teams must be even');
+        $competition->matches()->delete();
+        $teams = $competition->teams->shuffle()->values();
+        $n = $teams->count();
+
+        if ($n < 2 || $n % 2 !== 0) {
+            throw new InvalidArgumentException("Circle method requires an even number of teams (got {$n}).");
         }
 
-        $teams = $teams->shuffle();
-        $halfCount = $teams->count() / 2;
+        $rounds = $n - 1;
+        $matchesPerRound = $n / 2;
 
-        $firstHalf = $teams->slice(0, $halfCount);
-        $secondHalf = $teams->slice($halfCount);
         $matches = [];
 
-        foreach ($firstHalf as $roundIndex => $homeTeam) {
-            foreach ($secondHalf as $awayTeam) {
+        for ($round = 0; $round < $rounds; $round++) {
+            for ($match = 0; $match < $matchesPerRound; $match++) {
+                $home = $teams[$match];
+                $away = $teams[$n - $match - 1];
+
                 $matches[] = [
+                    'id' => Str::uuid(),
+                    'home_team_id' => $home->id,
+                    'away_team_id' => $away->id,
                     'competition_id' => $competition->id,
-                    'home_team_id' => $homeTeam->id,
-                    'away_team_id' => $awayTeam->id,
-                    'date' => $startDate->copy()->addWeeks($roundIndex),
+                    'date' => $startDate->copy()->addWeeks($round),
                 ];
             }
 
-            $secondHalf = $secondHalf->rotate();
+            // Rotate teams except the pivot
+            $last = $teams->pop();
+            $teams->splice(1, 0, [$last]);
+            $teams = $teams->values();
         }
 
         return $matches;

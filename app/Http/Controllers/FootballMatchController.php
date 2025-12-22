@@ -7,6 +7,7 @@ use App\Models\Competition;
 use App\Models\FootballMatch;
 use App\Models\Player;
 use App\Models\Team;
+use App\Services\CalendarGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
@@ -18,36 +19,7 @@ use Illuminate\Http\JsonResponse;
  */
 class FootballMatchController extends Controller
 {
-    /**
-     * Get all football matches
-     *
-     * Returns a list of all football matches with related competition and teams.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceCollection Illuminate\Http\Resources\Json\ResourceCollection
-     * @apiResourceModel App\Models\FootballMatch
-     *
-     * @return ResourceCollection
-     */
-    public function index(): ResourceCollection
-    {
-        return FootballMatchResource::collection(
-            FootballMatch::with(['competition', 'homeTeam', 'awayTeam'])->get()
-        );
-    }
 
-    /**
-     * Create a new football match
-     *
-     * Creates a new football match with the specified parameters. Teams must belong to the competition.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceModel App\Models\FootballMatch
-     * @response 422 scenario="Validation error" {"errors": {"competition_id": ["The competition id field is required."], "home_team_id": ["The home team id field is required."], "away_team_id": ["The away team id field is required."], "goal_home": ["The goal home field is required."], "goal_away": ["The goal away field is required."], "date": ["The date field is required."]}}}
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -95,19 +67,6 @@ class FootballMatchController extends Controller
         return response()->json(new FootballMatchResource($match), 201);
     }
 
-    /**
-     * Get a specific football match
-     *
-     * Returns the details of a specific football match including related competition, teams and scorers.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceModel App\Models\FootballMatch
-     *
-     * @response scenario="Success" {"data": {"id": "123e4567-e89b-12d3-a456-426614174000", "date": "2023-10-15", "goal_home": 2, "goal_away": 1, "created_at": "2023-10-16T10:00:00.000000Z", "updated_at": "2023-10-16T10:00:00.000000Z", "competition": {...}, "home_team": {...}, "away_team": {...}, "scorers": [{...}], "scorers_with_minutes": [{...}]}}
-     *
-     * @param FootballMatch $footballMatch
-     * @return JsonResponse
-     */
     public function show(FootballMatch $footballMatch): JsonResponse
     {
         $footballMatch->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
@@ -115,20 +74,6 @@ class FootballMatchController extends Controller
         return response()->json(new FootballMatchResource($footballMatch));
     }
 
-    /**
-     * Update a football match
-     *
-     * Updates an existing football match with the provided data.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceModel App\Models\FootballMatch
-     *
-     * @response 422 scenario="Validation error" {"errors": {...}}
-     *
-     * @param Request $request
-     * @param FootballMatch $footballMatch
-     * @return JsonResponse
-     */
     public function update(Request $request, FootballMatch $footballMatch): JsonResponse
     {
         $validated = $request->validate([
@@ -165,15 +110,6 @@ class FootballMatchController extends Controller
         return response()->json(new FootballMatchResource($footballMatch));
     }
 
-    /**
-     * Delete a football match
-     *
-     * Deletes a specific football match from the database.
-
-     *
-     * @param FootballMatch $footballMatch
-     * @return JsonResponse
-     */
     public function destroy(FootballMatch $footballMatch): JsonResponse
     {
         $footballMatch->delete();
@@ -181,45 +117,13 @@ class FootballMatchController extends Controller
         return response()->json(null, 204);
     }
 
-    /**
-     * Get matches by competition
-     *
-     * Returns all football matches for a specific competition.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceCollection Illuminate\Http\Resources\Json\ResourceCollection
-     * @apiResourceModel App\Models\FootballMatch
-     *
-
-     *
-     * @response scenario="Success" {"data": [{"id": "123e4567-e89b-12d3-a456-426614174000", "date": "2023-10-15", "goal_home": 2, "goal_away": 1, "created_at": "2023-10-16T10:00:00.000000Z", "updated_at": "2023-10-16T10:00:00.000000Z", "competition": {...}, "home_team": {...}, "away_team": {...}}]}
-     *
-     * @param Competition $competition
-     * @return ResourceCollection
-     */
     public function byCompetition(Competition $competition): ResourceCollection
     {
-        return FootballMatchResource::collection(
-            $competition->matches()->with(['homeTeam', 'awayTeam'])->get()
-        );
+        $matches = $competition->matches;
+
+        return FootballMatchResource::collection($matches);
     }
 
-    /**
-     * Get matches by team
-     *
-     * Returns all football matches where the specified team played (either as home or away team).
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceCollection Illuminate\Http\Resources\Json\ResourceCollection
-     * @apiResourceModel App\Models\FootballMatch
-     *
-
-     *
-     * @response scenario="Success" {"data": [{"id": "123e4567-e89b-12d3-a456-426614174000", "date": "2023-10-15", "goal_home": 2, "goal_away": 1, "created_at": "2023-10-16T10:00:00.000000Z", "updated_at": "2023-10-16T10:00:00.000000Z", "competition": {...}, "home_team": {...}, "away_team": {...}}]}
-     *
-     * @param Team $team
-     * @return ResourceCollection
-     */
     public function byTeam(Team $team): ResourceCollection
     {
         // Use a union of home and away matches
@@ -233,20 +137,6 @@ class FootballMatchController extends Controller
         return FootballMatchResource::collection($matches);
     }
 
-    /**
-     * Add a scorer to a match
-     *
-     * Adds a player as a goal scorer to a football match at a specific minute.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceModel App\Models\FootballMatch
-     *
-     * @response 422 scenario="Validation error" {"errors": {"player_id": ["The player id field is required."], "minute": ["The minute field is required."]}}
-     *
-     * @param Request $request
-     * @param FootballMatch $footballMatch
-     * @return JsonResponse
-     */
     public function addScorer(Request $request, FootballMatch $footballMatch): JsonResponse
     {
         $validated = $request->validate([
@@ -272,18 +162,6 @@ class FootballMatchController extends Controller
         return response()->json(new FootballMatchResource($footballMatch));
     }
 
-    /**
-     * Remove a scorer from a match
-     *
-     * Removes a player from the list of goal scorers for a football match.
-     *
-     * @apiResource App\Http\Resources\FootballMatchResource
-     * @apiResourceModel App\Models\FootballMatch
-     *
-     * @param FootballMatch $footballMatch
-     * @param Player $player
-     * @return JsonResponse
-     */
     public function removeScorer(FootballMatch $footballMatch, Player $player): JsonResponse
     {
         $footballMatch->scorers()->detach($player->id);
@@ -291,5 +169,28 @@ class FootballMatchController extends Controller
         $footballMatch->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
 
         return response()->json(new FootballMatchResource($footballMatch));
+    }
+
+    public function generateMatches(Request $request, Competition $competition)
+    {
+        $validated = $request->validate([
+            'start_date' => 'sometimes|date',
+            'frequency' => 'required|in:daily,weekly,monthly',
+        ]);
+
+        if ($competition->matches()->exists()) {
+            return response()->json([
+                'message' => 'Matches already exist for this competition',
+            ], 400);
+        }
+
+        $startDate = $validated['start_date'] ?? now();
+        $frequency = $validated['frequency'];
+
+        $matches = CalendarGenerator::generateMatches($competition, $startDate, $frequency);
+
+        return $matches;
+
+        // return response()->json(FootballMatchResource::collection($competition->matches));
     }
 }

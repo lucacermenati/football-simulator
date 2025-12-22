@@ -20,7 +20,7 @@ class CompetitionController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:competitions,name',
             'description' => 'nullable|string',
         ]);
 
@@ -53,5 +53,19 @@ class CompetitionController extends Controller
         $competition->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function addTeam(Request $request, Competition $competition): JsonResponse
+    {
+        $validated = $request->validate([
+            'team_id' => 'required|uuid|exists:teams,id',
+        ]);
+
+        // Attach the team only if not already present (prevents duplicates)
+        $competition->teams()->syncWithoutDetaching($validated['team_id']);
+
+        $competition->load(['teams']);
+
+        return response()->json(new CompetitionResource($competition));
     }
 }

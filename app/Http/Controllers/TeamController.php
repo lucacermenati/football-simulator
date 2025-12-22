@@ -38,13 +38,6 @@ class TeamController extends Controller
         return response()->json(new TeamResource($team), 201);
     }
 
-    public function storeViaFactory(Request $request): JsonResponse
-    {
-        $team = Team::factory()->setLocale($request->locale)->create();
-
-        return response()->json(new TeamResource($team), 201);
-    }
-
     public function show(Team $team): JsonResponse
     {
         $team->load(['players', 'competitions']);
@@ -73,5 +66,20 @@ class TeamController extends Controller
         $team->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function factory(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'locale' => 'sometimes|string',
+            'n' => 'sometimes|integer|min:1',
+        ]);
+
+        $locale = $validated['locale'] ?? config('app.faker_locale');
+        $n = $validated['n'] ?? 1;
+
+        $teams = Team::factory()->fromLocale($locale)->count($n)->make();
+
+        return response()->json(TeamResource::collection($teams), 200);
     }
 }

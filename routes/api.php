@@ -21,11 +21,11 @@ Route::get('competitions/{competition}/matches', [FootballMatchController::class
 Route::post('competitions/{competition}/teams', [CompetitionController::class, 'addTeam']);
 
 // Team routes
+Route::get('teams/factory', [TeamController::class, 'factory']);
+
 Route::apiResource('teams', TeamController::class);
 Route::get('teams/{team}/players', [PlayerController::class, 'byTeam']);
 Route::get('teams/{team}/matches', [FootballMatchController::class, 'byTeam']);
-
-Route::post('teams/factory', [TeamController::class, 'storeViaFactory']);
 
 // Player routes
 Route::apiResource('players', PlayerController::class);

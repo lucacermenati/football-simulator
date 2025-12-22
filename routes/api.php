@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('competitions', CompetitionController::class);
 Route::get('competitions/{competition}/matches', [FootballMatchController::class, 'byCompetition']);
 Route::post('competitions/{competition}/teams', [CompetitionController::class, 'addTeam']);
+Route::delete('competitions/{competition}/teams', [CompetitionController::class, 'removeTeam']);
 
 // Team routes
 Route::get('teams/factory', [TeamController::class, 'factory']);

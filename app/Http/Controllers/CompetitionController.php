@@ -61,8 +61,20 @@ class CompetitionController extends Controller
             'team_id' => 'required|uuid|exists:teams,id',
         ]);
 
-        // Attach the team only if not already present (prevents duplicates)
         $competition->teams()->syncWithoutDetaching($validated['team_id']);
+
+        $competition->load(['teams']);
+
+        return response()->json(new CompetitionResource($competition));
+    }
+
+    public function removeTeam(Request $request, Competition $competition): JsonResponse
+    {
+        $validated = $request->validate([
+            'team_id' => 'required|uuid|exists:teams,id',
+        ]);
+
+        $competition->teams()->detach($validated['team_id']);
 
         $competition->load(['teams']);
 

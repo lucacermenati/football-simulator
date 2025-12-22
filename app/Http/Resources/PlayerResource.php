@@ -17,6 +17,7 @@ class PlayerResource extends JsonResource
             'birth_date' => $this->birth_date,
             'role' => $this->role,
             'number' => $this->number,
+            'team_id' => $this->team_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'team' => new TeamResource($this->whenLoaded('team')),

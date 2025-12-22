@@ -38,6 +38,32 @@ class TeamController extends Controller
         return response()->json(new TeamResource($team), 201);
     }
 
+    public function bulkStore(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'teams' => 'required|array|min:1',
+            'teams.*.name' => 'required|string|max:255|unique:teams,name',
+            'teams.*.logo' => 'sometimes|string|url',
+            'teams.*.first_color' => 'required|string|max:7',
+            'teams.*.second_color' => 'required|string|max:7',
+            'teams.*.year_of_foundation' => 'required|integer|min:1800|max:' . date('Y'),
+            'teams.*.stadium' => 'required|string|max:255',
+            'teams.*.competition_id' => 'sometimes|exists:competitions,id',
+        ]);
+
+        $createdTeams = collect($validated['teams'])->map(function ($teamData) {
+            $team = Team::create($teamData);
+
+            if (isset($teamData['competition_id'])) {
+                $team->competitions()->attach($teamData['competition_id']);
+            }
+
+            return $team;
+        });
+
+        return response()->json(TeamResource::collection($createdTeams), 201);
+    }
+
     public function show(Team $team): JsonResponse
     {
         $team->load(['players', 'competitions']);

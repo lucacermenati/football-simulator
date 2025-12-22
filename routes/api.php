@@ -23,13 +23,19 @@ Route::delete('competitions/{competition}/teams', [CompetitionController::class,
 
 // Team routes
 Route::get('teams/factory', [TeamController::class, 'factory']);
+Route::post('teams/bulk', [TeamController::class, 'bulkStore']);
 
 Route::apiResource('teams', TeamController::class);
 Route::get('teams/{team}/players', [PlayerController::class, 'byTeam']);
 Route::get('teams/{team}/matches', [FootballMatchController::class, 'byTeam']);
 
 // Player routes
+Route::get('players/factory', [PlayerController::class, 'factory']);
+Route::post('players/bulk', [PlayerController::class, 'bulkStore']);
+
 Route::apiResource('players', PlayerController::class);
+Route::post('players/{player}/team', [PlayerController::class, 'addToTeam']);
+Route::delete('players/{player}/team', [PlayerController::class, 'removeFromTeam']);
 
 // Match routes
 Route::apiResource('matches', FootballMatchController::class);

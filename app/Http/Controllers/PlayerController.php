@@ -13,9 +13,9 @@ class PlayerController extends Controller
 {
     public function index(): ResourceCollection
     {
-        return PlayerResource::collection(
-            Player::with(['team'])->get()
-        );
+        $players = Player::query()->get();
+
+        return PlayerResource::collection($players);
     }
 
     public function store(Request $request): JsonResponse
@@ -26,7 +26,7 @@ class PlayerController extends Controller
             'birth_date' => 'nullable|date',
             'role' => 'required|string|max:255',
             'number' => 'required|integer|min:1|max:99',
-            'team_id' => 'required|uuid|exists:teams,id',
+            'team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
 
         $player = Player::create($validated);
@@ -34,10 +34,29 @@ class PlayerController extends Controller
         return response()->json(new PlayerResource($player), 201);
     }
 
+    public function bulkStore(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'players' => 'required|array|min:1',
+            'players.*.first_name' => 'required|string|max:255',
+            'players.*.last_name' => 'required|string|max:255',
+            'players.*.birth_date' => 'nullable|date',
+            'players.*.role' => 'required|string|max:255',
+            'players.*.number' => 'required|integer|min:1|max:99',
+            'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
+        ]);
+
+        $createdPlayers = collect($validated['players'])->map(function ($playerData) {
+            return Player::create($playerData);
+        });
+
+        return response()->json(PlayerResource::collection($createdPlayers), 201);
+    }
+
     public function show(Player $player): JsonResponse
     {
-        $player->load(['team', 'scoredMatches']);
-        
+        $player->load(['team']);
+
         return response()->json(new PlayerResource($player));
     }
 
@@ -63,11 +82,54 @@ class PlayerController extends Controller
 
         return response()->json(null, 204);
     }
-    
+
     public function byTeam(Team $team): ResourceCollection
     {
-        return PlayerResource::collection(
-            $team->players()->get()
-        );
+        return PlayerResource::collection($team->players);
+    }
+
+    public function addToTeam(Request $request, Player $player): JsonResponse
+    {
+        $validated = $request->validate([
+            'team_id' => 'required|uuid|exists:teams,id',
+        ]);
+
+        // Check if player already has a team
+        if ($player->team_id !== null) {
+            return response()->json([
+                'message' => 'Player already belongs to a team'
+            ], 409);
+        }
+
+        $player->update(['team_id' => $validated['team_id']]);
+        $player->load(['team']);
+
+        return response()->json(new PlayerResource($player));
+    }
+
+    public function removeFromTeam(Player $player): JsonResponse
+    {
+        $player->update(['team_id' => null]);
+        $player->load(['team']);
+
+        return response()->json(new PlayerResource($player));
+    }
+
+    public function factory(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'n' => 'sometimes|integer|min:1',
+            'team_id' => 'sometimes|uuid|exists:teams,id',
+            'locale' => 'sometimes|string',
+        ]);
+
+        $n = $validated['n'] ?? 1;
+        $locale = $validated['locale'] ?? null;
+
+        $players = Player::factory()->fromRandomLocale($locale)->count($n)->make([
+            'team_id' => $validated['team_id'] ?? null,
+        ]);
+
+        return response()->json(PlayerResource::collection($players), 200);
     }
 }

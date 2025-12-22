@@ -30,6 +30,11 @@ class CalendarGenerator
                 $home = $teams[$match];
                 $away = $teams[$n - $match - 1];
 
+                // Alternate home and away games
+                if ($round % 2 === 1) {
+                    [$home, $away] = [$away, $home];
+                }
+
                 $matches[] = [
                     'id' => Str::uuid(),
                     'home_team_id' => $home->id,

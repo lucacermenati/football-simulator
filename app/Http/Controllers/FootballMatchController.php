@@ -129,12 +129,12 @@ class FootballMatchController extends Controller
     public function byTeam(Team $team): ResourceCollection
     {
         // Use a union of home and away matches
-        $matches = $team->homeMatches()
-            ->with(['competition', 'awayTeam'])
+        $matches = $team->homeMatches()->where('played', true)
+            ->with(['competition', 'homeTeam', 'awayTeam'])
             ->get()
             ->concat(
-                $team->awayMatches()->with(['competition', 'homeTeam'])->get()
-            );
+                $team->awayMatches()->where('played', true)->with(['competition', 'homeTeam', 'awayTeam'])->get()
+            )->sortBy('date');
 
         return FootballMatchResource::collection($matches);
     }

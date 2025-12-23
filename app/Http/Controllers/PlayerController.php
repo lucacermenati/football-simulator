@@ -25,6 +25,7 @@ class PlayerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
+            'nationality' => 'nullable|string|size:2',
             'role' => ['required', 'string', Role::validationRule()],
             'number' => 'required|integer|min:1|max:99',
             'team_id' => 'sometimes|uuid|exists:teams,id',
@@ -42,6 +43,7 @@ class PlayerController extends Controller
             'players.*.first_name' => 'required|string|max:255',
             'players.*.last_name' => 'required|string|max:255',
             'players.*.birth_date' => 'nullable|date',
+            'players.*.nationality' => 'nullable|string|size:2',
             'players.*.role' => ['required', 'string', Role::validationRule()],
             'players.*.number' => 'required|integer|min:1|max:99',
             'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
@@ -67,6 +69,7 @@ class PlayerController extends Controller
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
             'birth_date' => 'nullable|date',
+            'nationality' => 'nullable|string|size:2',
             'role' => ['sometimes', 'required', 'string', Role::validationRule()],
             'number' => 'sometimes|required|integer|min:1|max:99',
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
@@ -122,6 +125,7 @@ class PlayerController extends Controller
             'n' => 'sometimes|integer|min:1',
             'team_id' => 'sometimes|uuid|exists:teams,id',
             'locale' => 'sometimes|string',
+            'role' => 'sometimes|string|in:' . implode(',', Role::values()),
         ]);
 
         $n = $validated['n'] ?? 1;
@@ -129,6 +133,7 @@ class PlayerController extends Controller
 
         $players = Player::factory()->fromRandomLocale($locale)->count($n)->make([
             'team_id' => $validated['team_id'] ?? null,
+            'role' => $validated['role'] ?? null,
         ]);
 
         return response()->json(PlayerResource::collection($players), 200);

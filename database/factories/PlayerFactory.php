@@ -30,10 +30,14 @@ class PlayerFactory extends Factory
             $fakerLocale = $locale ?? $locales[array_rand($locales)];
             $faker = fake($fakerLocale);
 
+            // Extract nationality from locale (e.g., 'en_US' -> 'US', 'pt_BR' -> 'BR')
+            $nationality = strtoupper(substr($fakerLocale, -2));
+
             return [
                 'first_name' => $faker->firstName('male'),
                 'last_name' => $faker->lastName(),
                 'birth_date' => $faker->dateTimeBetween('-40 years', '-18 years'),
+                'nationality' => $nationality,
                 'role' => $faker->randomElement(Role::values()),
                 'number' => $faker->numberBetween(1, 99),
             ];

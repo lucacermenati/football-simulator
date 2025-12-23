@@ -17,6 +17,7 @@ class Player extends Model
         'first_name',
         'last_name',
         'birth_date',
+        'nationality',
         'role',
         'number',
         'team_id',

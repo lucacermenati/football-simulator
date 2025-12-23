@@ -57,7 +57,7 @@ class CalendarGenerator
                 'home_team_id' => $match['away_team_id'],
                 'away_team_id' => $match['home_team_id'],
                 'competition_id' => $competition->id,
-                'date' => $match['date']->copy()->addWeeks(count($matches) - 1),
+                'date' => $match['date']->copy()->addWeeks($rounds),
             ];
         }
 

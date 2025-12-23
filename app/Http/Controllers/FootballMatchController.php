@@ -191,4 +191,9 @@ class FootballMatchController extends Controller
 
         return response()->json(FootballMatchResource::collection($matches));
     }
+
+    public function play(FootballMatch $footballMatch): JsonResponse
+    {
+        return response()->json([]);
+    }
 }

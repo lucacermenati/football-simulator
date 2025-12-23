@@ -42,5 +42,6 @@ Route::delete('players/{player}/team', [PlayerController::class, 'removeFromTeam
 
 // Match routes
 Route::apiResource('matches', FootballMatchController::class);
+Route::post('matches/{footballMatch}/play', [FootballMatchController::class, 'play']);
 Route::post('matches/{footballMatch}/scorers', [FootballMatchController::class, 'addScorer']);
 Route::delete('matches/{footballMatch}/scorers/{player}', [FootballMatchController::class, 'removeScorer']);

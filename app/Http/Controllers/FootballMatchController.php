@@ -128,13 +128,16 @@ class FootballMatchController extends Controller
 
     public function byTeam(Team $team): ResourceCollection
     {
-        // Use a union of home and away matches
-        $matches = $team->homeMatches()->where('played', true)
-            ->with(['competition', 'homeTeam', 'awayTeam'])
-            ->get()
-            ->concat(
-                $team->awayMatches()->where('played', true)->with(['competition', 'homeTeam', 'awayTeam'])->get()
-            )->sortBy('date');
+        $homeMatches = $team->homeMatches()
+            ->where('played', true)
+            ->with(['competition', 'homeTeam', 'awayTeam', 'scorers'])
+            ->get();
+        $awayMatches = $team->awayMatches()
+            ->where('played', true)
+            ->with(['competition', 'homeTeam', 'awayTeam', 'scorers'])
+            ->get();
+
+        $matches = $homeMatches->concat($awayMatches)->sortBy('date');
 
         return FootballMatchResource::collection($matches);
     }
@@ -184,12 +187,11 @@ class FootballMatchController extends Controller
         $matches = CalendarGenerator::generateMatches($competition, $startDate);
 
         $matches = FootballMatch::insert($matches);
-        $matches = $competition->matches()->with([
-            'awayTeam',
-            'homeTeam',
-        ])
-        ->orderBy('date')
-        ->get();
+
+        $matches = $competition->matches()
+            ->with(['awayTeam', 'homeTeam'])
+            ->orderBy('date')
+            ->get();
 
         return response()->json(FootballMatchResource::collection($matches));
     }

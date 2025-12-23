@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class Player extends Model
 {
     use HasFactory, HasUuids;
-    
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -21,25 +21,26 @@ class Player extends Model
         'number',
         'team_id',
     ];
-    
+
     protected $casts = [
         'birth_date' => 'date',
         'number' => 'integer',
         'role' => Role::class,
     ];
-    
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
-    
-    public function scoredMatches(): BelongsToMany
+
+    public function matches(): BelongsToMany
     {
         return $this->belongsToMany(FootballMatch::class, 'matches_players', 'player_id', 'match_id')
+            ->using(MatchPlayer::class)
             ->withPivot('minute')
             ->withTimestamps();
     }
-    
+
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";

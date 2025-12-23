@@ -41,6 +41,8 @@ class CalendarGenerator
                     'away_team_id' => $away->id,
                     'competition_id' => $competition->id,
                     'date' => $startDate->copy()->addWeeks($round),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
 
@@ -58,6 +60,8 @@ class CalendarGenerator
                 'away_team_id' => $match['home_team_id'],
                 'competition_id' => $competition->id,
                 'date' => $match['date']->copy()->addWeeks($rounds),
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
         }
 

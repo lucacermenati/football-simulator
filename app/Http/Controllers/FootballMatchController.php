@@ -9,6 +9,7 @@ use App\Models\Player;
 use App\Models\Team;
 use App\Services\CalendarGenerator;
 use App\Services\PoissonMatchSimulator;
+use App\Services\ScorerSimulator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
@@ -193,10 +194,13 @@ class FootballMatchController extends Controller
         return response()->json(FootballMatchResource::collection($matches));
     }
 
-    public function simulate(FootballMatch $footballMatch, PoissonMatchSimulator $simulator): JsonResponse
+    public function simulate(FootballMatch $footballMatch, PoissonMatchSimulator $simulator, ScorerSimulator $scorerSimulator)
     {
         $simulator->simulate($footballMatch);
+        $scorerSimulator->assignScorers($footballMatch);
 
-        return response()->json(new FootballMatchResource($footballMatch->refresh()));
+        $footballMatch->load(['scorers']);
+
+        return response()->json(new FootballMatchResource($footballMatch));
     }
 }

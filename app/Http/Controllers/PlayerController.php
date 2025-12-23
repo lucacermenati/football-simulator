@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;
@@ -24,7 +25,7 @@ class PlayerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
-            'role' => 'required|string|max:255',
+            'role' => ['required', 'string', Role::validationRule()],
             'number' => 'required|integer|min:1|max:99',
             'team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
@@ -41,7 +42,7 @@ class PlayerController extends Controller
             'players.*.first_name' => 'required|string|max:255',
             'players.*.last_name' => 'required|string|max:255',
             'players.*.birth_date' => 'nullable|date',
-            'players.*.role' => 'required|string|max:255',
+            'players.*.role' => ['required', 'string', Role::validationRule()],
             'players.*.number' => 'required|integer|min:1|max:99',
             'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
@@ -66,7 +67,7 @@ class PlayerController extends Controller
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
             'birth_date' => 'nullable|date',
-            'role' => 'sometimes|required|string|max:255',
+            'role' => ['sometimes', 'required', 'string', Role::validationRule()],
             'number' => 'sometimes|required|integer|min:1|max:99',
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
         ]);

@@ -81,4 +81,16 @@ class CompetitionController extends Controller
 
         return response()->json(new CompetitionResource($competition));
     }
+
+    public function standings(Competition $competition): JsonResponse
+    {
+        // To implement
+        return response()->json(new CompetitionResource($competition));
+    }
+
+    public function scorers(Competition $competition): JsonResponse
+    {
+        // To implement
+        return response()->json(new CompetitionResource($competition));
+    }
 }

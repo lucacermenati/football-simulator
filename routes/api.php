@@ -24,6 +24,9 @@ Route::get('competitions/{competition}/matches', [FootballMatchController::class
 Route::post('competitions/{competition}/matches', [FootballMatchController::class, 'generateMatches']);
 Route::delete('competitions/{competition}/matches', [FootballMatchController::class, 'deleteMatches']);
 
+Route::get('competitions/{competition}/standings', [CompetitionController::class, 'standings']);
+Route::get('competitions/{competition}/scorers', [CompetitionController::class, 'scorers']);
+
 // Team routes
 Route::get('teams/factory', [TeamController::class, 'factory']);
 Route::post('teams/bulk', [TeamController::class, 'bulkStore']);

@@ -50,6 +50,17 @@ class CalendarGenerator
             $teams = $teams->values();
         }
 
+        // Add second leg
+        foreach ($matches as $match) {
+            $matches[] = [
+                'id' => Str::uuid(),
+                'home_team_id' => $match['away_team_id'],
+                'away_team_id' => $match['home_team_id'],
+                'competition_id' => $competition->id,
+                'date' => $match['date']->copy()->addWeeks(count($matches) - 1),
+            ];
+        }
+
         return $matches;
     }
 }

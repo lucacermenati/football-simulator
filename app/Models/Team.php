@@ -21,6 +21,7 @@ class Team extends Model
         'year_of_foundation',
         'stadium',
         'rating',
+        'history',
     ];
 
     protected $casts = [

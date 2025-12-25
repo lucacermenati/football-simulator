@@ -4,6 +4,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\FootballMatchController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamLogoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,8 @@ Route::get('teams/factory', [TeamController::class, 'factory']);
 Route::post('teams/bulk', [TeamController::class, 'bulkStore']);
 
 Route::apiResource('teams', TeamController::class);
+Route::post('teams/{team}/logo', [TeamLogoController::class, 'upload']);
+Route::delete('teams/{team}/logo', [TeamLogoController::class, 'delete']);
 Route::get('teams/{team}/players', [PlayerController::class, 'byTeam']);
 Route::get('teams/{team}/matches', [FootballMatchController::class, 'byTeam']);
 

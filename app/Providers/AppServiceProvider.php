@@ -2,11 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\FootballMatch;
-use App\Models\MatchPlayer;
-use App\Observers\FootballMatchObserver;
-use App\Observers\MatchPlayerObserver;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,9 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        JsonResource::withoutWrapping();
-        
-        FootballMatch::observe(FootballMatchObserver::class);
-        MatchPlayer::observe(MatchPlayerObserver::class);
+        Vite::prefetch(concurrency: 3);
     }
 }

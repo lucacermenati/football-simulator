@@ -37,7 +37,6 @@
 </head>
 
 <body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
-
 <a href="#" id="nav-button">
     <span>
         MENU
@@ -45,12 +44,12 @@
     </span>
 </a>
 <div class="tocify-wrapper">
-    
+
             <div class="lang-selector">
                                             <button type="button" class="lang-button" data-language-name="bash">bash</button>
                                             <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
                     </div>
-    
+
     <div class="search">
         <input type="text" class="search" id="input-search" placeholder="Search">
     </div>
@@ -185,7 +184,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
         <h1 id="endpoints">Endpoints</h1>
 
-    
+
 
                                 <h2 id="endpoints-GETapi-competitions">GET api/competitions</h2>
 
@@ -15097,9 +15096,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-            
 
-        
+
+
     </div>
     <div class="dark-box">
                     <div class="lang-selector">

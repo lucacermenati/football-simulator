@@ -1,26 +1,29 @@
-import { Head, Link } from "@inertiajs/react";
+import GuestLayout from "@/Layouts/GuestLayout";
+import { Head } from "@inertiajs/react";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
-    const handleImageError = () => {
-        document
-            .getElementById("screenshot-container")
-            ?.classList.add("!hidden");
-        document.getElementById("docs-card")?.classList.add("!row-span-1");
-        document
-            .getElementById("docs-card-content")
-            ?.classList.add("!flex-row");
-    };
-
     return (
-        <>
+        <GuestLayout>
             <Head title="Welcome" />
-            <div className="w-screen h-screen bg-[url('/background.svg')] bg-no-repeat bg-cover bg-center text-black/50 dark:bg-black dark:text-white/50">
-                <img
-                    src="/logo.svg"
-                    alt="Logo"
-                    className="mx-auto mt-10 w-32 h-32"
-                />
+            <img src="/logo.svg" alt="Logo" className="mx-auto w-64 h-64" />
+            <div className="flex flex-col items-center space-y-4 w-1/2">
+                <h1 className="text-2xl font-bold text-center">
+                    Welcome to Football World Builder & Simulator
+                </h1>
+                <p className="mx-24 text-lg text-gray-700">
+                    Create, shape, and manage your own football universe. Build
+                    leagues, clubs, and histories, simulate seasons, and watch
+                    your world evolve over time.{" "}
+                    <a className="hover:text-red-900" href={route("register")}>
+                        Sign up
+                    </a>{" "}
+                    or{" "}
+                    <a className="hover:text-red-900" href={route("login")}>
+                        log in
+                    </a>{" "}
+                    with your username and password to get started.
+                </p>
             </div>
-        </>
+        </GuestLayout>
     );
 }

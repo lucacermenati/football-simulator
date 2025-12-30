@@ -24,7 +24,9 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
-            <img src="/logo.svg" alt="Logo" className="mx-auto w-32 h-32" />
+            <a href={route("welcome")}>
+                <img src="/logo.svg" alt="Logo" className="mx-auto w-32 h-32" />
+            </a>
             <div className="overflow-hidden px-6 py-4 mt-6 w-full bg-white shadow-md sm:max-w-md sm:rounded-lg">
                 {status && (
                     <div className="mb-4 text-sm font-medium text-green-600">

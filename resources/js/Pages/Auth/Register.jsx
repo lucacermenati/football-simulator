@@ -24,7 +24,9 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Register" />
-            <img src="/logo.svg" alt="Logo" className="mx-auto w-32 h-32" />
+            <a href={route("welcome")}>
+                <img src="/logo.svg" alt="Logo" className="mx-auto w-32 h-32" />
+            </a>
             <div className="overflow-hidden px-6 py-4 mt-6 w-full bg-white shadow-md sm:max-w-md sm:rounded-lg">
                 <form onSubmit={submit}>
                     <div>

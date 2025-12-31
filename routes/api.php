@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\CompetitionController;
-use App\Http\Controllers\FootballMatchController;
-use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\TeamController;
-use App\Http\Controllers\TeamLogoController;
+use App\Http\Controllers\Api\CompetitionController;
+use App\Http\Controllers\Api\FootballMatchController;
+use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\TeamLogoController;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Enums\Role;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;

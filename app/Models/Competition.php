@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\FootballMatch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -16,7 +17,13 @@ class Competition extends Model
     protected $fillable = [
         'name',
         'description',
+        'logo',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function teams(): BelongsToMany
     {

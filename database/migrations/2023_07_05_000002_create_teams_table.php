@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('logo')->nullable();
             $table->string('first_color', 7)->nullable(); // Hex color code
             $table->string('second_color', 7)->nullable(); // Hex color code
             $table->unsignedSmallInteger('year_of_foundation')->nullable();
             $table->string('stadium')->nullable();
+            $table->unsignedTinyInteger('rating')->default(70);
+            $table->text('history')->nullable();
             $table->timestamps();
         });
     }

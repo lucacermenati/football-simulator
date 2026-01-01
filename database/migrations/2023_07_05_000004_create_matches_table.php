@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('goal_home')->default(0);
             $table->integer('goal_away')->default(0);
             $table->dateTime('date');
+            $table->boolean('played')->default(false);
             $table->timestamps();
         });
     }

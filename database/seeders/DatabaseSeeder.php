@@ -11,16 +11,16 @@ class DatabaseSeeder extends Seeder
     {
         // Create admin user
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Luca',
+            'email' => 'luca@igne.nl',
         ]);
-        
+
         // Run our custom seeders in the correct order
         $this->call([
-            TeamSeeder::class,
             CompetitionSeeder::class,
-            PlayerSeeder::class,
-            FootballMatchSeeder::class,
+            // TeamSeeder::class,
+            // PlayerSeeder::class,
+            // FootballMatchSeeder::class,
         ]);
     }
 }

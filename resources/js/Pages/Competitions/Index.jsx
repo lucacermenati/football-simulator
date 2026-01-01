@@ -18,9 +18,21 @@ export default function CompetitionsIndex({ competitions }) {
                         {competitions.map((competition) => (
                             <div
                                 key={competition.id}
-                                className="overflow-hidden bg-white shadow-sm sm:rounded-lg"
+                                className="flex overflow-hidden flex-col bg-white shadow-sm sm:rounded-lg"
                             >
-                                {competition.name}
+                                <img
+                                    src={
+                                        competition.logo ||
+                                        "/competition-placeholder.svg"
+                                    }
+                                    alt={
+                                        competition.logo
+                                            ? competition.name
+                                            : "Competition logo"
+                                    }
+                                    className="object-cover w-full h-32"
+                                />
+                                <div>{competition.name}</div>
                             </div>
                         ))}
                         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">

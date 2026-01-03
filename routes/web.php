@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     /* COMPETITIONS */
     Route::get('/competitions', [CompetitionController::class, 'index'])->name('competitions.index');
+    Route::post('/competitions', [CompetitionController::class, 'store'])->name('competitions.store');
+    Route::get('/competitions/{competition}', [CompetitionController::class, 'show'])->name('competitions.show');
 
     /* TEAMS */
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');

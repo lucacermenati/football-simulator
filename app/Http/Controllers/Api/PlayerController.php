@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
@@ -50,8 +51,10 @@ class PlayerController extends Controller
             'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
 
-        $createdPlayers = collect($validated['players'])->map(function ($playerData) {
-            return Player::create($playerData);
+        $user = $request->user() ?? User::first();
+
+        $createdPlayers = collect($validated['players'])->map(function ($playerData) use ($user) {
+            return $user->players()->create($playerData);
         });
 
         return response()->json(PlayerResource::collection($createdPlayers), 201);

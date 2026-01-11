@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
@@ -56,8 +57,10 @@ class TeamController extends Controller
             'teams.*.competition_id' => 'sometimes|exists:competitions,id',
         ]);
 
-        $createdTeams = collect($validated['teams'])->map(function ($teamData) {
-            $team = Team::create($teamData);
+        $user = $request->user() ?? User::first();
+
+        $createdTeams = collect($validated['teams'])->map(function ($teamData) use ($user) {
+            $team = $user->teams()->create($teamData);
 
             if (isset($teamData['competition_id'])) {
                 $team->competitions()->attach($teamData['competition_id']);

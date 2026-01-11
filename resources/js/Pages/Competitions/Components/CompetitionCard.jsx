@@ -1,14 +1,13 @@
 import Card from "@/Components/Cards/Card";
 
 export default function CompetitionCard({
-    name,
-    imageSrc,
+    competition,
     onClick,
     className = "",
     ...props
 }) {
-    const src = imageSrc || "/competition-placeholder.svg";
-    const alt = imageSrc ? name : "Competition logo";
+    const src = competition.logo || "/competition-placeholder.svg";
+    const alt = competition.name;
 
     return (
         <Card
@@ -23,7 +22,7 @@ export default function CompetitionCard({
                     alt={alt}
                 />
             </div>
-            <div className="p-2">{name}</div>
+            <div className="p-2">{competition.name}</div>
         </Card>
     );
 }

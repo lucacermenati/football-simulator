@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,8 +12,12 @@ class CompetitionController extends Controller
 {
     public function index(Request $request)
     {
+        $competitions = $request->user()->competitions()
+            ->orderBy('created_at', 'desc')
+            ->paginate(11);
+
         return Inertia::render('Competitions/Index', [
-            'competitions' => $request->user()->competitions,
+            'competitions' => CompetitionResource::collection($competitions),
         ]);
     }
 

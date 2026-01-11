@@ -13,8 +13,7 @@ class CompetitionResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'logo' => $this->logo,
             'teams' => TeamResource::collection($this->whenLoaded('teams')),
             'matches' => FootballMatchResource::collection($this->whenLoaded('matches')),
         ];

@@ -1,0 +1,4 @@
+- pagination for competitions list, check laracasts for pagination
+- image intervention for logo upload (image trait)
+- add toast notification for successful creation
+- handle errors in form submission

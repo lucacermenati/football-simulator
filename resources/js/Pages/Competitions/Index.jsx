@@ -5,6 +5,7 @@ import AddCard from "@/Components/Cards/AddCard";
 import Modal from "@/Components/Modal";
 import { useState } from "react";
 import CreateCompetitionForm from "./Components/CreateCompetitionForm";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function CompetitionsIndex({ competitions }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,23 +15,42 @@ export default function CompetitionsIndex({ competitions }) {
             <Head title="Competitions" />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-4 gap-4">
-                        {competitions.map((competition) => (
-                            <Link
-                                href={route("competitions.show", competition)}
+                <div className="flex items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center mx-auto space-x-28">
+                        <Link href={competitions.links.prev ?? "#"}>
+                            <PrimaryButton
+                                disabled={competitions.links.prev === null}
                             >
-                                <CompetitionCard
+                                PREV
+                            </PrimaryButton>
+                        </Link>
+                        <div className="grid grid-cols-4 gap-4">
+                            {competitions.data.map((competition) => (
+                                <Link
                                     key={competition.id}
-                                    name={competition.name}
-                                    imageSrc={competition.logo}
-                                />
-                            </Link>
-                        ))}
-                        <AddCard
-                            key="add-competition"
-                            onClick={() => setIsModalOpen(true)}
-                        />
+                                    href={route(
+                                        "competitions.show",
+                                        competition
+                                    )}
+                                >
+                                    <CompetitionCard
+                                        key={competition.id}
+                                        competition={competition}
+                                    />
+                                </Link>
+                            ))}
+                            <AddCard
+                                key="add-competition"
+                                onClick={() => setIsModalOpen(true)}
+                            />
+                        </div>
+                        <Link href={competitions.links.next ?? "#"}>
+                            <PrimaryButton
+                                disabled={competitions.links.next === null}
+                            >
+                                NEXT
+                            </PrimaryButton>
+                        </Link>
                     </div>
                 </div>
             </div>

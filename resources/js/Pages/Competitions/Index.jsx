@@ -4,7 +4,7 @@ import CompetitionCard from "@/Pages/Competitions/Components/CompetitionCard";
 import AddCard from "@/Components/Cards/AddCard";
 import Modal from "@/Components/Modal";
 import { useState } from "react";
-import CreateCompetitionForm from "./Components/CreateCompetitionForm";
+import CompetitionForm from "./Components/CompetitionForm";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function CompetitionsIndex({ competitions }) {
@@ -54,7 +54,16 @@ export default function CompetitionsIndex({ competitions }) {
                 </div>
             </div>
             <Modal show={isModalOpen}>
-                <CreateCompetitionForm onCancel={() => setIsModalOpen(false)} />
+                <CompetitionForm
+                    url={route("competitions.store")}
+                    method="post"
+                    cancelText="Cancel"
+                    submitText="Create"
+                    title="Create Competition"
+                    description="Fill in all required fields to create a new competition."
+                    onCancel={() => setIsModalOpen(false)}
+                    onSuccess={() => setIsModalOpen(false)}
+                />
             </Modal>
         </AuthenticatedLayout>
     );

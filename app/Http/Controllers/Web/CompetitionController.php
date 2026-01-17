@@ -23,11 +23,11 @@ class CompetitionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
         $competition = $request->user()->competitions()->create([
             'name' => $request->name,
@@ -47,6 +47,24 @@ class CompetitionController extends Controller
         return Inertia::render('Competitions/Show', [
             'competition' => $competition,
         ]);
+    }
+
+    public function update(Request $request, Competition $competition)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $competition->update($request->only(['name', 'description']));
+
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('competitions', 'public');
+            $competition->update(['logo' => "/" . $path]);
+        }
+
+        return redirect()->back()->with('message', 'Competition updated successfully!');
     }
 
     public function destroy(Competition $competition)

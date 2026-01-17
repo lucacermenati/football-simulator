@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/competitions', [CompetitionController::class, 'index'])->name('competitions.index');
     Route::post('/competitions', [CompetitionController::class, 'store'])->name('competitions.store');
     Route::get('/competitions/{competition}', [CompetitionController::class, 'show'])->name('competitions.show');
+    Route::patch('/competitions/{competition}', [CompetitionController::class, 'update'])->name('competitions.update');
     Route::delete('/competitions/{competition}', [CompetitionController::class, 'destroy'])->name('competitions.destroy');
 
     /* TEAMS */

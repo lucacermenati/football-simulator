@@ -87,8 +87,15 @@ export default function CompetitionShow({ competition }) {
             </div>
             <Modal show={isEditModalOpen}>
                 <CompetitionForm
+                    url={route("competitions.update", competition.id)}
+                    method="patch"
+                    cancelText="Cancel"
+                    submitText="Update"
+                    title="Update Competition"
+                    description="Fill in all required fields to update the competition."
                     competition={competition}
                     onCancel={() => setIsEditModalOpen(false)}
+                    onSuccess={() => setIsEditModalOpen(false)}
                 />
             </Modal>
             <Modal show={isDeleteModalOpen}>

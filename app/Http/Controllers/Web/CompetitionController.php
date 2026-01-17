@@ -48,4 +48,11 @@ class CompetitionController extends Controller
             'competition' => $competition,
         ]);
     }
+
+    public function destroy(Competition $competition)
+    {
+        $competition->delete();
+
+        return redirect()->route('competitions.index')->with('message', 'Competition deleted successfully!');
+    }
 }

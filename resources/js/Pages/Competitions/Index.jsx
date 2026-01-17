@@ -13,7 +13,6 @@ export default function CompetitionsIndex({ competitions }) {
     return (
         <AuthenticatedLayout>
             <Head title="Competitions" />
-
             <div className="py-12">
                 <div className="flex items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center mx-auto space-x-28">

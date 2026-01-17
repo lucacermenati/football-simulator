@@ -88,37 +88,10 @@ export default function CompetitionShow({ competition }) {
                         </div>
                     </div>
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            {competition.description}
-                        </div>
+                        <div className="p-6 text-gray-900">TOP SCORERS</div>
                     </div>
                 </div>
             </div>
-            <Modal show={isEditModalOpen}>
-                <CompetitionForm
-                    url={route("competitions.update", competition.id)}
-                    method="post"
-                    cancelText="Cancel"
-                    submitText="Update"
-                    title="Update Competition"
-                    description="Fill in all required fields to update the competition."
-                    competition={competition}
-                    onCancel={() => setIsEditModalOpen(false)}
-                    onSuccess={() => setIsEditModalOpen(false)}
-                />
-            </Modal>
-            <Modal show={isDeleteModalOpen}>
-                <p>Are you sure you want to delete this competition?</p>
-                <SecondaryButton onClick={() => setIsDeleteModalOpen(false)}>
-                    Cancel
-                </SecondaryButton>
-                <Link
-                    method="delete"
-                    href={route("competitions.destroy", competition.id)}
-                >
-                    <PrimaryButton>Delete</PrimaryButton>
-                </Link>
-            </Modal>
         </AuthenticatedLayout>
     );
 }

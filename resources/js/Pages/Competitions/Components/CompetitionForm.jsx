@@ -27,14 +27,17 @@ export default function CompetitionForm({
         e.preventDefault();
 
         const m = method.toLowerCase();
-        const action =
-            m === "put" ? form.put : m === "patch" ? form.patch : form.post;
+        const action = m === "post" ? form.post : form.patch;
+
+        if (!(form.data.logo instanceof File)) {
+            form.setData("logo", null);
+        }
 
         action(url, {
-            forceFormData: true, // important for file uploads
+            forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {
-                form.reset("logo"); // keep name/description if you want; or reset() for all
+                form.reset();
                 onSuccess?.();
             },
         });
@@ -89,15 +92,6 @@ export default function CompetitionForm({
                 <div>
                     <InputLabel htmlFor="logo">Logo</InputLabel>
 
-                    {/* optional: preview existing logo when editing */}
-                    {competition?.logo && (
-                        <img
-                            src={competition.logo}
-                            alt={`${competition.name} logo`}
-                            className="object-contain mt-2 w-16 h-16 rounded"
-                        />
-                    )}
-
                     <FileInput
                         className="mt-2"
                         id="logo"
@@ -105,6 +99,7 @@ export default function CompetitionForm({
                         accept="image/*"
                         onChange={(file) => form.setData("logo", file)}
                         buttonLabel="Upload logo"
+                        initialFileName={competition?.logo || ""}
                     />
 
                     {form.errors.logo && (

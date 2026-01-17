@@ -29,7 +29,7 @@ export default function CompetitionsIndex({ competitions }) {
                                     key={competition.id}
                                     href={route(
                                         "competitions.show",
-                                        competition
+                                        competition,
                                     )}
                                 >
                                     <CompetitionCard

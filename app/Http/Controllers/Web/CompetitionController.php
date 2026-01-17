@@ -23,11 +23,11 @@ class CompetitionController extends Controller
 
     public function store(Request $request)
     {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
         $competition = $request->user()->competitions()->create([
             'name' => $request->name,
@@ -72,5 +72,19 @@ class CompetitionController extends Controller
         $competition->delete();
 
         return redirect()->route('competitions.index')->with('message', 'Competition deleted successfully!');
+    }
+
+    public function standings(Competition $competition)
+    {
+        return Inertia::render('Competitions/Standings', [
+            'competition' => $competition,
+        ]);
+    }
+
+    public function scorers(Competition $competition)
+    {
+        return Inertia::render('Competitions/Scorers', [
+            'competition' => $competition,
+        ]);
     }
 }

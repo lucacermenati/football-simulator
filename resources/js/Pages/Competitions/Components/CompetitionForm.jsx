@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextareaInput from "@/Components/TextareaInput";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 
 export default function CompetitionForm({
     url,
@@ -21,6 +22,7 @@ export default function CompetitionForm({
         name: competition?.name ?? "",
         description: competition?.description ?? "",
         logo: null, // File or null
+        remove_logo: false, // To distinguish two situation with logo: null, "Remove the old logo" and "Do not update the logo"
     });
 
     const submit = (e) => {
@@ -28,10 +30,6 @@ export default function CompetitionForm({
 
         const m = method.toLowerCase();
         const action = m === "post" ? form.post : form.patch;
-
-        if (!(form.data.logo instanceof File)) {
-            form.setData("logo", null);
-        }
 
         action(url, {
             forceFormData: true,
@@ -93,13 +91,15 @@ export default function CompetitionForm({
                     <InputLabel htmlFor="logo">Logo</InputLabel>
 
                     <FileInput
-                        className="mt-2"
                         id="logo"
                         name="logo"
                         accept="image/*"
-                        onChange={(file) => form.setData("logo", file)}
+                        existingUrl={competition?.logo ?? null}
                         buttonLabel="Upload logo"
-                        initialFileName={competition?.logo || ""}
+                        onChange={({ file, remove }) => {
+                            form.setData("logo", file);
+                            form.setData("remove_logo", remove);
+                        }}
                     />
 
                     {form.errors.logo && (

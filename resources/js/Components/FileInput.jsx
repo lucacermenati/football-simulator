@@ -1,5 +1,4 @@
-import { useRef, useState, useEffect } from "react";
-import Cross from "@/Icons/Cross";
+import { useEffect, useRef, useState } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function FileInput({
@@ -8,40 +7,64 @@ export default function FileInput({
     accept,
     disabled = false,
     className = "",
-    buttonLabel = "Upload file",
-    onChange,
-    initialFileName = "",
+    buttonLabel = "Upload logo",
+    existingUrl = null, // string|null (logo già salvato)
+    existingLabel = "Current logo",
+    newLabel = "New file selected",
+    removeLabel = "Remove selected file", // unico bottone remove
+    onChange, // ({ file, remove }) => void
 }) {
     const inputRef = useRef(null);
-    const [fileName, setFileName] = useState(initialFileName);
+
+    const [file, setFile] = useState(null); // File|null
+    const [remove, setRemove] = useState(false); // boolean
+    const [objectUrl, setObjectUrl] = useState(null); // string|null
+
+    const hasNewFile = file instanceof File;
 
     useEffect(() => {
-        setFileName(initialFileName || "");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initialFileName]);
+        if (!(file instanceof File)) {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            setObjectUrl(null);
+            return;
+        }
 
-    const handleButtonClick = () => {
+        const url = URL.createObjectURL(file);
+
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        setObjectUrl(url);
+
+        return () => URL.revokeObjectURL(url);
+    }, [file]);
+
+    const shouldShowExisting = !!existingUrl && !remove;
+    const previewUrl = objectUrl || (shouldShowExisting ? existingUrl : null);
+    const statusLabel = hasNewFile ? newLabel : existingLabel;
+
+    const emit = (nextFile, nextRemove) => {
+        onChange?.({ file: nextFile, remove: nextRemove });
+    };
+
+    const handleUploadClick = () => {
         if (disabled) return;
         inputRef.current?.click();
     };
 
-    const handleInputChange = (e) => {
-        const file =
-            e.target.files && e.target.files[0] ? e.target.files[0] : null;
-        setFileName(file ? file.name : "");
-        if (onChange) onChange(file);
+    const handleFileChange = (e) => {
+        const nextFile = e.target.files?.[0] ?? null;
+        setFile(nextFile);
+        emit(nextFile, remove);
     };
 
-    const handleClear = () => {
-        if (inputRef.current) {
-            inputRef.current.value = "";
-        }
-        setFileName("");
-        if (onChange) onChange(null);
+    const handleRemove = () => {
+        if (inputRef.current) inputRef.current.value = "";
+        setFile(null);
+        setRemove(true);
+        emit(null, true);
     };
 
     return (
-        <div className={"flex items-center gap-3 " + className}>
+        <div className={className}>
             <input
                 ref={inputRef}
                 id={id}
@@ -50,35 +73,43 @@ export default function FileInput({
                 accept={accept}
                 disabled={disabled}
                 className="hidden"
-                onChange={handleInputChange}
+                onChange={handleFileChange}
             />
 
-            <PrimaryButton
-                type="button"
-                onClick={handleButtonClick}
-                disabled={disabled}
-            >
-                {buttonLabel}
-            </PrimaryButton>
-
-            {fileName && (
-                <div className="flex items-center gap-2 min-w-0">
-                    <span
-                        className="truncate text-sm text-gray-700 max-w-[16rem]"
-                        title={fileName}
-                    >
-                        {fileName}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={handleClear}
-                        className="flex items-center justify-center rounded-md p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                        aria-label="Clear file"
-                    >
-                        <Cross className="w-4 h-4" />
-                    </button>
+            {/* Preview */}
+            {previewUrl && (
+                <div className="flex gap-3 items-center mt-2">
+                    <img
+                        src={previewUrl}
+                        alt="Logo preview"
+                        className="object-contain w-16 h-16 bg-white rounded"
+                    />
+                    <div className="text-sm text-lightGrey-800">
+                        {statusLabel}
+                    </div>
                 </div>
             )}
+
+            <div className="flex gap-3 items-center mt-2">
+                <PrimaryButton
+                    type="button"
+                    onClick={handleUploadClick}
+                    disabled={disabled}
+                >
+                    {buttonLabel}
+                </PrimaryButton>
+
+                {previewUrl && (
+                    <button
+                        type="button"
+                        disabled={disabled}
+                        className="text-sm underline text-lightGrey-800 disabled:opacity-50"
+                        onClick={handleRemove}
+                    >
+                        {removeLabel}
+                    </button>
+                )}
+            </div>
         </div>
     );
 }

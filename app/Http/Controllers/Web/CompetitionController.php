@@ -54,10 +54,15 @@ class CompetitionController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_logo' => 'boolean',
         ]);
 
         $competition->update($request->only(['name', 'description']));
+
+        if ($request->input('remove_logo', false)) {
+            $competition->update(['logo' => null]);
+        }
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('competitions', 'public');

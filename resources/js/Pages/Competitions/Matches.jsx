@@ -8,7 +8,7 @@ export default function CompetitionShow({ competition }) {
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
                 <div className="p-6 text-gray-900">
-                    Here will be the scorers
+                    Here will be the matches
                 </div>
             </CompetitionLayout>
         </AuthenticatedLayout>

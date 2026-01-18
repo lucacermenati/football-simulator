@@ -7,9 +7,7 @@ export default function CompetitionShow({ competition }) {
         <AuthenticatedLayout>
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
-                <div className="p-6 text-gray-900">
-                    Here will be the scorers
-                </div>
+                <div className="p-6 text-gray-900">Here will be the teams</div>
             </CompetitionLayout>
         </AuthenticatedLayout>
     );

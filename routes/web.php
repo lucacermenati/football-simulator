@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Web\CompetitionController;
+use App\Http\Controllers\Web\CompetitionMatchController;
+use App\Http\Controllers\Web\CompetitionTeamController;
 use App\Http\Controllers\Web\PlayerController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\TeamController;
@@ -32,6 +34,9 @@ Route::middleware('auth')->group(function () {
     // COMPETITIONS Sub routes
     Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings'])->name('competitions.standings');
     Route::get('/competitions/{competition}/scorers', [CompetitionController::class, 'scorers'])->name('competitions.scorers');
+
+    Route::get('/competitions/{competition}/matches', [CompetitionMatchController::class, 'index'])->name('competitions.matches.index');
+    Route::get('/competitions/{competition}/teams', [CompetitionTeamController::class, 'index'])->name('competitions.teams.index');
 
     /* TEAMS */
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');

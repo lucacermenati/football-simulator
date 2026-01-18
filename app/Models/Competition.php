@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\Concerns\HasLogo;
 
 class Competition extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasLogo;
 
     protected $fillable = [
         'name',

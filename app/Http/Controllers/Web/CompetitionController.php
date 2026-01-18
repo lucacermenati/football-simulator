@@ -35,11 +35,11 @@ class CompetitionController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('competitions', 'public');
-            $competition->update(['logo' => "/" . $path]);
+            $competition->storeLogo($request->file('logo'));
         }
 
-        return redirect()->back()->with('message', 'Competition created successfully!');
+        return redirect()->back()
+            ->with('message', 'Competition created successfully!');
     }
 
     public function show(Competition $competition)
@@ -61,22 +61,23 @@ class CompetitionController extends Controller
         $competition->update($request->only(['name', 'description']));
 
         if ($request->input('remove_logo', false)) {
-            $competition->update(['logo' => null]);
+            $competition->removeLogo();
         }
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('competitions', 'public');
-            $competition->update(['logo' => "/" . $path]);
+            $competition->storeLogo($request->file('logo'));
         }
 
-        return redirect()->back()->with('message', 'Competition updated successfully!');
+        return redirect()->back()
+            ->with('message', 'Competition updated successfully!');
     }
 
     public function destroy(Competition $competition)
     {
         $competition->delete();
 
-        return redirect()->route('competitions.index')->with('message', 'Competition deleted successfully!');
+        return redirect()->route('competitions.index')
+            ->with('message', 'Competition deleted successfully!');
     }
 
     public function standings(Competition $competition)

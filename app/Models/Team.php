@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Collection;
+use App\Models\Concerns\HasLogo;
 
 class Team extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasLogo;
 
     protected $fillable = [
         'name',

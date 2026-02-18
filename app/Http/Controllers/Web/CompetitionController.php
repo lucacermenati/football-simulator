@@ -29,6 +29,7 @@ class CompetitionController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // ------ TODO: This can become an action: CreateCompetition that accepts a CompetitionRequest
         $competition = $request->user()->competitions()->create([
             'name' => $request->name,
             'description' => $request->description,
@@ -37,6 +38,7 @@ class CompetitionController extends Controller
         if ($request->hasFile('logo')) {
             $competition->storeLogo($request->file('logo'));
         }
+        // ------- END TODO
 
         return redirect()->back()
             ->with('message', 'Competition created successfully!');
@@ -58,6 +60,7 @@ class CompetitionController extends Controller
             'remove_logo' => 'boolean',
         ]);
 
+        // ------ TODO: This can become an action: UpdateCompetition that accepts a CompetitionRequest (decide what to do with the remove_logo)
         $competition->update($request->only(['name', 'description']));
 
         if ($request->input('remove_logo', false)) {
@@ -67,6 +70,7 @@ class CompetitionController extends Controller
         if ($request->hasFile('logo')) {
             $competition->storeLogo($request->file('logo'));
         }
+        // ------- END TODO
 
         return redirect()->back()
             ->with('message', 'Competition updated successfully!');

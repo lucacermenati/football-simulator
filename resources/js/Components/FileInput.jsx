@@ -84,7 +84,7 @@ export default function FileInput({
                         alt="Logo preview"
                         className="object-contain w-16 h-16 bg-white rounded"
                     />
-                    <div className="text-sm text-lightGrey-800">
+                    <div className="text-sm text-darkGrey-600">
                         {statusLabel}
                     </div>
                 </div>
@@ -103,7 +103,7 @@ export default function FileInput({
                     <button
                         type="button"
                         disabled={disabled}
-                        className="text-sm underline text-lightGrey-800 disabled:opacity-50"
+                        className="text-sm underline text-darkGrey-600 disabled:opacity-50"
                         onClick={handleRemove}
                     >
                         {removeLabel}

@@ -11,6 +11,10 @@ class CompetitionTeamController extends Controller
 {
     public function index(Request $request, Competition $competition)
     {
-        return Inertia::render('Competitions/Teams');
+        $competition->loadMissing('teams');
+
+        return Inertia::render('Competitions/Teams', [
+            'competition' => $competition,
+        ]);
     }
 }

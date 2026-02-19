@@ -49,7 +49,7 @@ export default function CompetitionForm({
                 </h3>
             )}
             {description && (
-                <p className="mt-1 text-sm text-lightGrey-800">{description}</p>
+                <p className="mt-1 text-sm text-darkGray-600">{description}</p>
             )}
 
             <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>

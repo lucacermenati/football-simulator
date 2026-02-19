@@ -14,7 +14,7 @@ class TeamController extends Controller
     {
         $teams = $request->user()->teams()
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(16);
 
         return Inertia::render('Teams/Index', [
             'teams' => TeamResource::collection($teams),

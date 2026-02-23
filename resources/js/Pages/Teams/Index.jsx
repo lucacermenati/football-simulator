@@ -1,8 +1,11 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import TeamTable from "./Components/TeamTable";
 import TextInput from "@/Components/TextInput";
+import ArrowLeft from "@/Icons/ArrowLeft";
+import ArrowRight from "@/Icons/ArrowRight";
+import clsx from "clsx";
 
 export default function TeamsIndex({ teams }) {
     return (
@@ -54,6 +57,54 @@ export default function TeamsIndex({ teams }) {
                                     </p>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                        <div className="inline-flex gap-2 justify-center p-2 bg-white rounded">
+                            <Link href={teams.links.prev || "#"}>
+                                <ArrowLeft
+                                    className={clsx(
+                                        "w-6 h-6 text-lightGrey-600",
+                                        teams.links.prev
+                                            ? "cursor-pointer"
+                                            : "cursor-auto",
+                                    )}
+                                />
+                            </Link>
+                            {Array.from(
+                                {
+                                    length: teams.meta.last_page,
+                                },
+                                (_, i) => i + 1,
+                            ).map((page) => (
+                                <Link
+                                    key={page}
+                                    href={route("teams.index", {
+                                        page,
+                                    })}
+                                >
+                                    <div
+                                        className={clsx(
+                                            "flex justify-center items-center w-6 h-6 rounded-full bg-lightGrey-600 text-primaryRed-600 border",
+                                            page === teams.meta.current_page
+                                                ? "border-darkGrey-600"
+                                                : "border-primaryRed-600",
+                                        )}
+                                    >
+                                        {page}
+                                    </div>
+                                </Link>
+                            ))}
+                            <Link href={teams.links.next || "#"}>
+                                <ArrowRight
+                                    className={clsx(
+                                        "w-6 h-6 text-lightGrey-600",
+                                        teams.links.next
+                                            ? "cursor-pointer"
+                                            : "cursor-auto",
+                                    )}
+                                />
+                            </Link>
                         </div>
                     </div>
                 </div>

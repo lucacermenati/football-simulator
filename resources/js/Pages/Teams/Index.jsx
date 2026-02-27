@@ -1,9 +1,10 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import TeamTable from "./Components/TeamTable";
-import TextInput from "@/Components/TextInput";
+
 import Pagination from "@/Components/Pagination";
+import Searchbar from "@/Components/Searchbar";
 
 export default function TeamsIndex({ teams }) {
     return (
@@ -19,22 +20,7 @@ export default function TeamsIndex({ teams }) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center mt-2 mb-6">
-                        <TextInput
-                            onChange={(e) => {
-                                router.get(
-                                    route("teams.index"),
-                                    {
-                                        search: e.target.value,
-                                    },
-                                    {
-                                        preserveState: true,
-                                        preserveScroll: true,
-                                    },
-                                );
-                            }}
-                            className="w-64"
-                            placeholder="Search teams..."
-                        />
+                        <Searchbar routeName={"teams.index"} />
                         <div className="grid grid-cols-2 gap-4">
                             <PrimaryButton
                                 className="self-start"

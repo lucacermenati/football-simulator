@@ -12,7 +12,7 @@ class TeamController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'search' => 'sometimes|string'
+            'search' => 'string|nullable'
         ]);
 
         $teams = $request->user()->teams()

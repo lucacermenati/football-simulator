@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
     /* TEAMS */
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
     /* PLAYERS */
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');

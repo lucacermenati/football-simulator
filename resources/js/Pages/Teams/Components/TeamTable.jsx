@@ -3,6 +3,7 @@ import PlusCircle from "@/Icons/PlusCircle";
 import Trash from "@/Icons/Trash";
 import View from "@/Icons/View";
 import TeamLogo from "./TeamLogo";
+import { Link } from "@inertiajs/react";
 
 export default function TeamTable({ teams }) {
     return (
@@ -17,10 +18,12 @@ export default function TeamTable({ teams }) {
                     </div>
 
                     <div className="flex space-x-4">
-                        <View
-                            title="View"
-                            className="w-6 h-6 text-primaryRed-800"
-                        />
+                        <Link href={route("teams.show", team.id)}>
+                            <View
+                                title="View"
+                                className="w-6 h-6 text-primaryRed-800"
+                            />
+                        </Link>
                         <Edit
                             title="Edit"
                             className="w-6 h-6 text-primaryRed-800"

@@ -7,7 +7,7 @@ export default function TeamShow({ team }) {
         <AuthenticatedLayout>
             <Head title={`${team.name} - Details`} />
             <TeamLayout team={team}>
-                <pre>{JSON.stringify(team, null, 2)}</pre>
+                <div className="p-6 text-gray-900">{team.history}</div>
             </TeamLayout>
         </AuthenticatedLayout>
     );

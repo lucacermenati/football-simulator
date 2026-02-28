@@ -1,7 +1,7 @@
 export default function TeamLogo({ team, className = "" }) {
     return team.logo ? (
         <img
-            className={`w-8 h-8 rounded-full border-2 border-lightGray-600 ${className}`}
+            className={`rounded-full border-2 w-min-8 h-min-8 border-lightGray-600 ${className}`}
             src={team.logo}
             alt=""
         />

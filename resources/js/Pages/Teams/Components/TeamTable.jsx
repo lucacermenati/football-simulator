@@ -18,7 +18,11 @@ export default function TeamTable({ teams }) {
                     </div>
 
                     <div className="flex space-x-4">
-                        <Link href={route("teams.show", team.id)}>
+                        <Link
+                            href={route("teams.show", {
+                                team: team.id,
+                            })}
+                        >
                             <View
                                 title="View"
                                 className="w-6 h-6 text-primaryRed-800"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -33,6 +34,28 @@ class TeamController extends Controller
     {
         return Inertia::render('Teams/Show', [
             'team' => TeamResource::make($team),
+        ]);
+    }
+
+    public function destroy(Team $team)
+    {
+        $team->delete();
+
+        return redirect()->route('teams.index');
+    }
+
+    public function info(Team $team)
+    {
+        return Inertia::render('Teams/Info', [
+            'team' => TeamResource::make($team),
+        ]);
+    }
+
+    public function players(Team $team)
+    {
+        return Inertia::render('Teams/Players', [
+            'team' => TeamResource::make($team),
+            'players' => PlayerResource::collection($team->players),
         ]);
     }
 }

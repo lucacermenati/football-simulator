@@ -15,7 +15,7 @@ export default function TeamLayout({ children, team }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between mt-2 mb-6">
                         <div className="flex space-x-4">
-                            <TeamLogo team={team} />
+                            <TeamLogo team={team} className="w-32 h-32" />
                             <div className="flex flex-col">
                                 <Link
                                     className="pt-2 text-2xl font-bold text-darkGrey-600 hover:underline"
@@ -28,8 +28,17 @@ export default function TeamLayout({ children, team }) {
                                 <div className="p-2 mt-auto space-x-4 text-darkGrey-600">
                                     <Link
                                         className="hover:underline"
-                                        // href={route("teams.players", team.id)}
-                                        href="#"
+                                        href={route("teams.info", {
+                                            team: team.id,
+                                        })}
+                                    >
+                                        Info
+                                    </Link>
+                                    <Link
+                                        className="hover:underline"
+                                        href={route("teams.players", {
+                                            team: team.id,
+                                        })}
                                     >
                                         Players
                                     </Link>
@@ -76,8 +85,9 @@ export default function TeamLayout({ children, team }) {
                         </SecondaryButton>
                         <Link
                             method="delete"
-                            // href={route("teams.destroy", team.id)}
-                            href="#"
+                            href={route("teams.destroy", {
+                                team: team.id,
+                            })}
                         >
                             <PrimaryButton>Delete</PrimaryButton>
                         </Link>

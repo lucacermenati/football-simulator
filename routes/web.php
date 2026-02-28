@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
     /* TEAMS */
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
+    Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+    // TEAMS Sub routes
+    Route::get('/teams/{team}/info', [TeamController::class, 'info'])->name('teams.info');
+    Route::get('/teams/{team}/players', [TeamController::class, 'players'])->name('teams.players');
 
     /* PLAYERS */
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');

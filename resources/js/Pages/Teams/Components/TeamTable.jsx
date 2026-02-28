@@ -4,8 +4,15 @@ import Trash from "@/Icons/Trash";
 import View from "@/Icons/View";
 import TeamLogo from "./TeamLogo";
 import { Link } from "@inertiajs/react";
+import { useState } from "react";
+import Modal from "@/Components/Modal";
 
 export default function TeamTable({ teams }) {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState(null);
+
     return (
         <div className="grid grid-cols-2">
             {teams.map((team) => (
@@ -35,19 +42,58 @@ export default function TeamTable({ teams }) {
                         </Link>
                         <Edit
                             title="Edit"
-                            className="w-6 h-6 text-primaryRed-800"
+                            className="w-6 h-6 cursor-pointer text-primaryRed-800"
+                            onClick={() => {
+                                setIsEditModalOpen(true);
+                                setSelectedTeam(team);
+                            }}
                         />
                         <PlusCircle
                             title="Add to a competition"
-                            className="w-6 h-6 text-primaryRed-800"
+                            className="w-6 h-6 cursor-pointer text-primaryRed-800"
+                            onClick={() => {
+                                setIsAddModalOpen(true);
+                                setSelectedTeam(team);
+                            }}
                         />
                         <Trash
                             title="Delete"
-                            className="w-6 h-6 text-primaryRed-800"
+                            className="w-6 h-6 cursor-pointer text-primaryRed-800"
+                            onClick={() => {
+                                setIsDeleteModalOpen(true);
+                                setSelectedTeam(team);
+                            }}
                         />
                     </div>
                 </div>
             ))}
+            <Modal
+                show={isEditModalOpen}
+                onClose={() => {
+                    setIsEditModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                Edit modal content
+            </Modal>
+            <Modal
+                show={isAddModalOpen}
+                onClose={() => {
+                    setIsAddModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                Add to competition modal content
+            </Modal>
+            <Modal
+                show={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                Delete modal content
+            </Modal>
         </div>
     );
 }

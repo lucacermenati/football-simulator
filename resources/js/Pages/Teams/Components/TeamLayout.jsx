@@ -15,7 +15,9 @@ export default function TeamLayout({ children, team }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between mt-2 mb-6">
                         <div className="flex space-x-4">
-                            <TeamLogo team={team} className="w-32 h-32" />
+                            <Link href={route("teams.show", { team: team.id })}>
+                                <TeamLogo team={team} className="w-32 h-32" />
+                            </Link>
                             <div className="flex flex-col">
                                 <Link
                                     className="pt-2 text-2xl font-bold text-darkGrey-600 hover:underline"

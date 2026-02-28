@@ -12,9 +12,14 @@ export default function TeamTable({ teams }) {
                 <div key={team.id} className="grid grid-cols-2 gap-12 p-3">
                     <div className="flex items-center space-x-4">
                         <TeamLogo team={team} className="w-8 h-8" />
-                        <span className="font-medium whitespace-nowrap">
-                            {team.name}
-                        </span>
+                        <Link
+                            className="font-medium whitespace-nowrap hover:underline"
+                            href={route("teams.show", {
+                                team: team.id,
+                            })}
+                        >
+                            <span>{team.name}</span>
+                        </Link>
                     </div>
 
                     <div className="flex space-x-4">

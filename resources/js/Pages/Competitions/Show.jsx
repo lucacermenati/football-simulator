@@ -7,8 +7,11 @@ export default function CompetitionShow({ competition }) {
         <AuthenticatedLayout>
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
-                <div className="p-6 text-gray-900">
-                    {competition.description}
+                <div className="p-6">
+                    <h1 className="mb-4 text-xl font-bold text-primaryRed-600">
+                        The history of {competition.name}
+                    </h1>
+                    <p className="text-gray-900">{competition.description}</p>
                 </div>
             </CompetitionLayout>
         </AuthenticatedLayout>

@@ -7,7 +7,12 @@ export default function TeamShow({ team }) {
         <AuthenticatedLayout>
             <Head title={`${team.name} - Details`} />
             <TeamLayout team={team}>
-                <div className="p-6 text-gray-900">{team.history}</div>
+                <div className="p-6">
+                    <h1 className="mb-4 text-xl font-bold text-primaryRed-600">
+                        The history of {team.name}
+                    </h1>
+                    <p className="text-gray-900">{team.history}</p>
+                </div>
             </TeamLayout>
         </AuthenticatedLayout>
     );

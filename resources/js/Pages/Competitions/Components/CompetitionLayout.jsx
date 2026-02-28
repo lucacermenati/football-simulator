@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
 import CompetitionForm from "./CompetitionForm";
 import Modal from "@/Components/Modal";
+import CompetitionDelete from "./CompetitionDelete";
 
 export default function CompetitionLayout({ children, competition }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -104,28 +104,10 @@ export default function CompetitionLayout({ children, competition }) {
                 />
             </Modal>
             <Modal show={isDeleteModalOpen}>
-                <div className="p-6">
-                    <h3 className="text-lg font-medium text-primaryRed-600">
-                        Delete competition
-                    </h3>
-                    <p>
-                        Are you sure you want to delete this competition? This
-                        action cannot be undone.
-                    </p>
-                    <div className="flex gap-2 justify-end mt-8">
-                        <SecondaryButton
-                            onClick={() => setIsDeleteModalOpen(false)}
-                        >
-                            Cancel
-                        </SecondaryButton>
-                        <Link
-                            method="delete"
-                            href={route("competitions.destroy", competition.id)}
-                        >
-                            <PrimaryButton>Delete</PrimaryButton>
-                        </Link>
-                    </div>
-                </div>
+                <CompetitionDelete
+                    competition={competition}
+                    onCancel={() => setIsDeleteModalOpen(false)}
+                />
             </Modal>
         </>
     );

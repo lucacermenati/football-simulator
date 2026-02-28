@@ -6,6 +6,7 @@ import TeamLogo from "./TeamLogo";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
+import TeamDelete from "./TeamDelete";
 
 export default function TeamTable({ teams }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -92,7 +93,10 @@ export default function TeamTable({ teams }) {
                     setSelectedTeam(null);
                 }}
             >
-                Delete modal content
+                <TeamDelete
+                    team={selectedTeam}
+                    onCancel={() => setIsDeleteModalOpen(false)}
+                />
             </Modal>
         </div>
     );

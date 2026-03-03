@@ -1,3 +1,4 @@
+import FileInput from "@/Components/FileInput";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -16,12 +17,13 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
         stadium: team.stadium ?? "",
         year_of_foundation: team.year_of_foundation ?? 0,
         rating: team.rating ?? 30,
+        remove_logo: false,
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        form.patch(
+        form.post(
             route("teams.update", {
                 team: team.id,
             }),
@@ -162,6 +164,20 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                             {form.errors.rating}
                         </div>
                     )}
+                </div>
+                <div>
+                    <InputLabel htmlFor="logo">Logo</InputLabel>
+                    <FileInput
+                        id="logo"
+                        name="logo"
+                        accept="image/*"
+                        existingUrl={team?.logo ?? null}
+                        buttonLabel="Upload logo"
+                        onChange={({ file, remove }) => {
+                            form.setData("logo", file);
+                            form.setData("remove_logo", remove);
+                        }}
+                    />
                 </div>
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton

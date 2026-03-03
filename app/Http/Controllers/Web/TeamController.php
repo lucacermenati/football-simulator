@@ -7,6 +7,7 @@ use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class TeamController extends Controller
@@ -39,7 +40,27 @@ class TeamController extends Controller
 
     public function update(Request $request, Team $team)
     {
-        dd($request->all(), $team);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'history' => 'nullable|string',
+            'stadium' => 'nullable|string',
+            'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'rating' => 'required|integer|min:30|max:100',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'remove_logo' => ''
+        ]);
+
+        $data = Arr::except($validated, ['logo', 'remove_logo']);
+
+        $team->update($data);
+
+        if ($request->input('remove_logo')){
+            $team->removeLogo();
+        }
+
+        if ($request->hasFile('logo')) {
+            $team->storeLogo($request->file('logo'));
+        }
     }
 
     public function destroy(Team $team)

@@ -7,6 +7,7 @@ import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
 import TeamDelete from "./TeamDelete";
+import TeamEdit from "./TeamEdit";
 
 export default function TeamTable({ teams }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -75,7 +76,11 @@ export default function TeamTable({ teams }) {
                     setSelectedTeam(null);
                 }}
             >
-                Edit modal content
+                <TeamEdit
+                    team={selectedTeam}
+                    onCancel={() => setIsEditModalOpen(false)}
+                    onSuccess={() => setIsEditModalOpen(false)}
+                />
             </Modal>
             <Modal
                 show={isAddModalOpen}

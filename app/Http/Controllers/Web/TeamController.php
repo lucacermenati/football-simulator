@@ -37,6 +37,11 @@ class TeamController extends Controller
         ]);
     }
 
+    public function update(Request $request, Team $team)
+    {
+        dd($request->all(), $team);
+    }
+
     public function destroy(Team $team)
     {
         $team->delete();

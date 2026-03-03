@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     /* TEAMS */
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
+    Route::patch('/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
     // TEAMS Sub routes
     Route::get('/teams/{team}/info', [TeamController::class, 'info'])->name('teams.info');

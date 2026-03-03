@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class CompetitionController extends Controller
@@ -53,15 +54,17 @@ class CompetitionController extends Controller
 
     public function update(Request $request, Competition $competition)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'remove_logo' => 'boolean',
         ]);
 
-        // ------ TODO: This can become an action: UpdateCompetition that accepts a CompetitionRequest (decide what to do with the remove_logo)
-        $competition->update($request->only(['name', 'description']));
+        // ------ TODO: This can become an action: UpdateCompetition
+        $data = Arr::except($validated, ['logo', 'remove_logo']);
+
+        $competition->update($data);
 
         if ($request->input('remove_logo', false)) {
             $competition->removeLogo();

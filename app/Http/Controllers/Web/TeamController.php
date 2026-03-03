@@ -61,6 +61,9 @@ class TeamController extends Controller
         if ($request->hasFile('logo')) {
             $team->storeLogo($request->file('logo'));
         }
+
+        return redirect()->back()
+            ->with('message', $team->name . ' updated successfully!');
     }
 
     public function destroy(Team $team)

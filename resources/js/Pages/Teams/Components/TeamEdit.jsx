@@ -102,14 +102,14 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         id="description"
                         value={form.data.history}
                         onChange={(e) =>
-                            form.setData("description", e.target.value)
+                            form.setData("history", e.target.value)
                         }
                         placeholder="Competition history"
                         rows={5}
                     />
-                    {form.errors.description && (
+                    {form.errors.history && (
                         <div className="mt-1 text-sm text-red-600">
-                            {form.errors.description}
+                            {form.errors.history}
                         </div>
                     )}
                 </div>

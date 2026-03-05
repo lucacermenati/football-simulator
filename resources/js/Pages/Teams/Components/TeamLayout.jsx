@@ -4,6 +4,8 @@ import { Link } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Modal from "@/Components/Modal";
+import TeamEdit from "./TeamEdit";
+import TeamDelete from "./TeamDelete";
 
 export default function TeamLayout({ children, team }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -68,33 +70,18 @@ export default function TeamLayout({ children, team }) {
                 </div>
             </div>
             <Modal show={isEditModalOpen}>
-                <p>Edit team form</p>
+                <TeamEdit
+                    team={team}
+                    onCancel={() => setIsEditModalOpen(false)}
+                    onSuccess={() => setIsEditModalOpen(false)}
+                />
             </Modal>
             <Modal show={isDeleteModalOpen}>
-                <div className="p-6">
-                    <h3 className="text-lg font-medium text-primaryRed-600">
-                        Delete team
-                    </h3>
-                    <p>
-                        Are you sure you want to delete this team? This action
-                        cannot be undone.
-                    </p>
-                    <div className="flex gap-2 justify-end mt-8">
-                        <SecondaryButton
-                            onClick={() => setIsDeleteModalOpen(false)}
-                        >
-                            Cancel
-                        </SecondaryButton>
-                        <Link
-                            method="delete"
-                            href={route("teams.destroy", {
-                                team: team.id,
-                            })}
-                        >
-                            <PrimaryButton>Delete</PrimaryButton>
-                        </Link>
-                    </div>
-                </div>
+                <TeamDelete
+                    team={team}
+                    onCancel={() => setIsDeleteModalOpen(false)}
+                    onSuccess={() => setIsDeleteModalOpen(false)}
+                />
             </Modal>
         </>
     );

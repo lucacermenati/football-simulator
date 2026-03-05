@@ -46,6 +46,8 @@ class TeamController extends Controller
             'stadium' => 'nullable|string',
             'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
             'rating' => 'required|integer|min:30|max:100',
+            'first_color' => 'required|string',
+            'second_color' => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'remove_logo' => ''
         ]);

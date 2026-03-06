@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
+use App\Models\Competition;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -28,6 +29,13 @@ class TeamController extends Controller
 
         return Inertia::render('Teams/Index', [
             'teams' => TeamResource::collection($teams),
+            'availableCompetitions' => Inertia::lazy(function () use ($request) {
+                return Competition::where('user_id', $request->user()->id)
+                    ->whereDoesntHave('teams', function ($query) use ($request) {
+                        $query->where('id', $request->selected_team_id);
+                    })
+                    ->get();
+            }),
         ]);
     }
 

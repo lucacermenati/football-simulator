@@ -1,12 +1,21 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import TeamTable from "./Components/TeamTable";
+import { useState } from "react";
 
 import Pagination from "@/Components/Pagination";
 import Searchbar from "@/Components/Searchbar";
+import Modal from "@/Components/Modal";
+import TeamEdit from "./Components/TeamEdit";
+import TeamDelete from "./Components/TeamDelete";
 
 export default function TeamsIndex({ teams }) {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState(null);
+
     return (
         <AuthenticatedLayout
             header={
@@ -43,7 +52,52 @@ export default function TeamsIndex({ teams }) {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             {teams.data.length > 0 ? (
-                                <TeamTable teams={teams.data} />
+                                <TeamTable
+                                    teams={teams.data}
+                                    actions={[
+                                        {
+                                            icon: "view",
+                                            onClick: (team) => {
+                                                router.visit(
+                                                    route(
+                                                        "teams.show",
+                                                        team.id,
+                                                    ),
+                                                );
+                                            },
+                                        },
+                                        {
+                                            icon: "edit",
+                                            onClick: (team) => {
+                                                console.log(
+                                                    "Edit " +
+                                                        team.name +
+                                                        " clicked",
+                                                );
+                                            },
+                                        },
+                                        {
+                                            icon: "add",
+                                            onClick: (team) => {
+                                                console.log(
+                                                    "Add " +
+                                                        team.name +
+                                                        " clicked",
+                                                );
+                                            },
+                                        },
+                                        {
+                                            icon: "delete",
+                                            onClick: (team) => {
+                                                console.log(
+                                                    "Delete " +
+                                                        team.name +
+                                                        " clicked",
+                                                );
+                                            },
+                                        },
+                                    ]}
+                                />
                             ) : (
                                 <div>
                                     <h1 className="mb-4 text-xl font-semibold">
@@ -66,6 +120,40 @@ export default function TeamsIndex({ teams }) {
                     />
                 </div>
             </div>
+            <Modal
+                show={isEditModalOpen}
+                onClose={() => {
+                    setIsEditModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                <TeamEdit
+                    team={selectedTeam}
+                    onCancel={() => setIsEditModalOpen(false)}
+                    onSuccess={() => setIsEditModalOpen(false)}
+                />
+            </Modal>
+            <Modal
+                show={isAddModalOpen}
+                onClose={() => {
+                    setIsAddModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                Add to competition modal content
+            </Modal>
+            <Modal
+                show={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedTeam(null);
+                }}
+            >
+                <TeamDelete
+                    team={selectedTeam}
+                    onCancel={() => setIsDeleteModalOpen(false)}
+                />
+            </Modal>
         </AuthenticatedLayout>
     );
 }

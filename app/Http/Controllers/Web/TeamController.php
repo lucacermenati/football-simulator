@@ -32,7 +32,7 @@ class TeamController extends Controller
             'availableCompetitions' => Inertia::lazy(function () use ($request) {
                 return Competition::where('user_id', $request->user()->id)
                     ->whereDoesntHave('teams', function ($query) use ($request) {
-                        $query->where('id', $request->selected_team_id);
+                        $query->where('teams.id', $request->selected_team_id);
                     })
                     ->get();
             }),

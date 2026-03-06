@@ -9,8 +9,9 @@ import Searchbar from "@/Components/Searchbar";
 import Modal from "@/Components/Modal";
 import TeamEdit from "./Components/TeamEdit";
 import TeamDelete from "./Components/TeamDelete";
+import TeamAdd from "./Components/TeamAdd";
 
-export default function TeamsIndex({ teams }) {
+export default function TeamsIndex({ teams, availableCompetitions }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -69,31 +70,31 @@ export default function TeamsIndex({ teams }) {
                                         {
                                             icon: "edit",
                                             onClick: (team) => {
-                                                console.log(
-                                                    "Edit " +
-                                                        team.name +
-                                                        " clicked",
-                                                );
+                                                setSelectedTeam(team);
+                                                setIsEditModalOpen(true);
                                             },
                                         },
                                         {
                                             icon: "add",
                                             onClick: (team) => {
-                                                console.log(
-                                                    "Add " +
-                                                        team.name +
-                                                        " clicked",
-                                                );
+                                                router.reload({
+                                                    only: [
+                                                        "availableCompetitions",
+                                                    ],
+                                                    data: {
+                                                        selected_team_id:
+                                                            team.id,
+                                                    },
+                                                });
+                                                setSelectedTeam(team);
+                                                setIsAddModalOpen(true);
                                             },
                                         },
                                         {
                                             icon: "delete",
                                             onClick: (team) => {
-                                                console.log(
-                                                    "Delete " +
-                                                        team.name +
-                                                        " clicked",
-                                                );
+                                                setSelectedTeam(team);
+                                                setIsDeleteModalOpen(true);
                                             },
                                         },
                                     ]}
@@ -140,7 +141,10 @@ export default function TeamsIndex({ teams }) {
                     setSelectedTeam(null);
                 }}
             >
-                Add to competition modal content
+                <TeamAdd
+                    team={selectedTeam}
+                    availableCompetitions={availableCompetitions}
+                />
             </Modal>
             <Modal
                 show={isDeleteModalOpen}

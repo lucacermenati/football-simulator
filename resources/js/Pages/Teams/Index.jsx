@@ -144,6 +144,14 @@ export default function TeamsIndex({ teams, availableCompetitions }) {
                 <TeamAdd
                     team={selectedTeam}
                     availableCompetitions={availableCompetitions}
+                    onSuccess={() => {
+                        setIsAddModalOpen(false);
+                        setSelectedTeam(null);
+                    }}
+                    onCancel={() => {
+                        setIsAddModalOpen(false);
+                        setSelectedTeam(null);
+                    }}
                 />
             </Modal>
             <Modal

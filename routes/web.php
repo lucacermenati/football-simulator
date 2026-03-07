@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\CompetitionMatchController;
 use App\Http\Controllers\Web\CompetitionTeamController;
 use App\Http\Controllers\Web\PlayerController;
 use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\TeamCompetitionController;
 use App\Http\Controllers\Web\TeamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,8 @@ Route::middleware('auth')->group(function () {
     // TEAMS Sub routes
     Route::get('/teams/{team}/info', [TeamController::class, 'info'])->name('teams.info');
     Route::get('/teams/{team}/players', [TeamController::class, 'players'])->name('teams.players');
+    // TEAMS Competition routes
+    Route::post('/teams/{team}/competitions', [TeamCompetitionController::class, 'store'])->name('teams.competition.store');
 
     /* PLAYERS */
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');

@@ -7,7 +7,17 @@ export default function CompetitionShow({ competition }) {
         <AuthenticatedLayout>
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
-                <div className="p-6 text-gray-900">Here will be the teams</div>
+                <div className="p-6 text-gray-900">
+                    {competition.teams?.length > 0 ? (
+                        <ul>
+                            {competition.teams.map((team) => (
+                                <li key={team.id}>{team.name}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No teams in this competition</p>
+                    )}
+                </div>
             </CompetitionLayout>
         </AuthenticatedLayout>
     );

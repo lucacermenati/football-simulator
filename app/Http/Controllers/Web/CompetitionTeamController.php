@@ -17,4 +17,11 @@ class CompetitionTeamController extends Controller
             'competition' => $competition,
         ]);
     }
+
+    public function destroy(Request $request, Competition $competition, $teamId)
+    {
+        $competition->teams()->detach($teamId);
+
+        return redirect()->back();
+    }
 }

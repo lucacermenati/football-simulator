@@ -1,4 +1,5 @@
 import Edit from "@/Icons/Edit";
+import MinusCircle from "@/Icons/MinusCircle";
 import PlusCircle from "@/Icons/PlusCircle";
 import Trash from "@/Icons/Trash";
 import View from "@/Icons/View";
@@ -7,6 +8,7 @@ const iconsByLabel = {
     view: View,
     edit: Edit,
     add: PlusCircle,
+    remove: MinusCircle,
     delete: Trash,
 };
 

@@ -11,6 +11,23 @@ return [
         'pt_PT', // Portugal
         'nl_NL', // Netherlands
 
+        // European (additional)
+        'sv_SE', // Sweden
+        'nb_NO', // Norway
+        'is_IS', // Iceland
+        'pl_PL', // Poland
+        'fi_FI', // Finland
+        'fr_BE', // Belgium
+        'de_CH', // Switzerland
+        'de_AT', // Austria
+        'en_IE', // Ireland
+        'el_GR', // Greece
+        'cs_CZ', // Czech Republic
+        'sk_SK', // Slovakia
+        'hu_HU', // Hungary
+        'ro_RO', // Romania
+        'bg_BG', // Bulgaria
+
         // South American
         'pt_BR', // Brazil
         'es_AR', // Argentina

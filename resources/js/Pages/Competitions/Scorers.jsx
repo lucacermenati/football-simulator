@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CompetitionLayout from "./Components/CompetitionLayout";
 import { Head } from "@inertiajs/react";
 
-export default function CompetitionShow({ competition }) {
+export default function CompetitionScorers({ competition }) {
     return (
         <AuthenticatedLayout>
             <Head title="Competition Details" />

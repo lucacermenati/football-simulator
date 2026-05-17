@@ -3,7 +3,7 @@ import ArrowRight from "@/Icons/ArrowRight";
 import { Link } from "@inertiajs/react";
 import clsx from "clsx";
 
-export default function Pagination({ routeName, links, meta }) {
+export default function Pagination({ links, meta }) {
     return (
         <div className="flex justify-center mt-6">
             <div className="inline-flex gap-2 justify-center p-2 bg-white rounded">
@@ -25,9 +25,13 @@ export default function Pagination({ routeName, links, meta }) {
                 ).map((page) => (
                     <Link
                         key={page}
-                        href={route(routeName, {
-                            page,
-                        })}
+                        href={(() => {
+                            const url = new URL(meta.path);
+
+                            url.searchParams.set("page", page);
+
+                            return url.toString();
+                        })()}
                     >
                         <div
                             className={clsx(

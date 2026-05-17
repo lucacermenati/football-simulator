@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
 use Illuminate\Http\Request;
 use App\Models\Competition;
 use App\Models\Team;
@@ -12,16 +13,16 @@ class CompetitionTeamController extends Controller
 {
     public function index(Competition $competition)
     {
-        $competitionTeamsQuery = $competition->teams();
+        $teams = $competition->teams()->paginate(12);
 
         $availableTeams = Team::query()
-            ->whereNotIn('id', $competitionTeamsQuery->pluck('teams.id'))
+            ->whereNotIn('id', $competition->teams()->pluck('teams.id'))
             ->get();
 
         return Inertia::render('Competitions/Teams', [
             'competition' => $competition,
-            'teams' => $competitionTeamsQuery->paginate(10),
-            'availableTeams' => $availableTeams,
+            'teams' => TeamResource::collection($teams),
+            'availableTeams' => TeamResource::collection($availableTeams),
         ]);
     }
 

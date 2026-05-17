@@ -10,6 +10,7 @@ import Checkbox from "@/Components/Checkbox";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TeamLogo from "../Teams/Components/TeamLogo";
+import Pagination from "@/Components/Pagination";
 
 export default function CompetitionTeamsShow({
     competition,
@@ -83,6 +84,9 @@ export default function CompetitionTeamsShow({
                     )}
                 </div>
             </CompetitionLayout>
+            {teams.data && teams.data.length > 0 && (
+                <Pagination links={teams.links} meta={teams.meta} />
+            )}
             <Modal
                 show={isRemoveModalOpen}
                 onClose={() => {

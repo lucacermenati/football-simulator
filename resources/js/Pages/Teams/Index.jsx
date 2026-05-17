@@ -114,11 +114,7 @@ export default function TeamsIndex({ teams, availableCompetitions }) {
                             )}
                         </div>
                     </div>
-                    <Pagination
-                        routeName="teams.index"
-                        links={teams.links}
-                        meta={teams.meta}
-                    />
+                    <Pagination links={teams.links} meta={teams.meta} />
                 </div>
             </div>
             <Modal

@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/competitions/{competition}/matches', [CompetitionMatchController::class, 'index'])->name('competitions.matches.index');
     Route::get('/competitions/{competition}/teams', [CompetitionTeamController::class, 'index'])->name('competitions.teams.index');
+    Route::post('/competitions/{competition}/teams', [CompetitionTeamController::class, 'add'])->name('competitions.teams.add');
     Route::delete('/competitions/{competition}/teams/{team}', [CompetitionTeamController::class, 'destroy'])->name('competitions.teams.destroy');
 
     /* TEAMS */

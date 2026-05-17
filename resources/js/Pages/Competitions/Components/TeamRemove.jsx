@@ -1,10 +1,22 @@
-import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { Link, useForm } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 export default function TeamRemove({ competition, team, onSuccess, onCancel }) {
     if (!team) return <div></div>;
+
+    const removeTeam = (competitionId, teamId) => {
+        router.delete(
+            route("competitions.teams.destroy", {
+                competition: competitionId,
+                team: teamId,
+            }),
+            {
+                preserveScroll: true,
+                onSuccess,
+            },
+        );
+    };
 
     return (
         <div className="p-6">
@@ -19,15 +31,12 @@ export default function TeamRemove({ competition, team, onSuccess, onCancel }) {
                 <SecondaryButton onClick={() => onCancel()}>
                     Cancel
                 </SecondaryButton>
-                <Link
-                    method="delete"
-                    href={route("competitions.teams.destroy", [
-                        competition.id,
-                        team.id,
-                    ])}
+
+                <PrimaryButton
+                    onClick={() => removeTeam(competition.id, team.id)}
                 >
-                    <PrimaryButton>Remove</PrimaryButton>
-                </Link>
+                    Remove
+                </PrimaryButton>
             </div>
         </div>
     );

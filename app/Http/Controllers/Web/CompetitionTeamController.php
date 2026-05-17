@@ -25,6 +25,18 @@ class CompetitionTeamController extends Controller
         ]);
     }
 
+    public function add(Request $request, Competition $competition)
+    {
+        $request->validate([
+            'teams' => 'required|array',
+            'teams.*' => 'exists:teams,id',
+        ]);
+
+        $competition->teams()->syncWithoutDetaching($request->teams);
+
+        return redirect()->back();
+    }
+
     public function destroy(Request $request, Competition $competition, $teamId)
     {
         $competition->teams()->detach($teamId);

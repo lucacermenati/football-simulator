@@ -25,21 +25,23 @@ export default function CompetitionTeamsShow({
     });
 
     const toggleSelectedTeam = (teamId, checked) => {
-        console.log(teamId, checked);
-        // bulkAddForm.setData("teams", (current) => {
-        //     const currentTeams = Array.isArray(current) ? current : [];
-        //     if (checked) {
-        //         return currentTeams.includes(teamId)
-        //             ? currentTeams
-        //             : [...currentTeams, teamId];
-        //     }
-        //     return currentTeams.filter((id) => id !== teamId);
-        // });
+        const currentTeams = bulkAddForm.data.teams;
+
+        const updatedTeams = checked
+            ? [...currentTeams, teamId]
+            : currentTeams.filter((id) => id !== teamId);
+
+        bulkAddForm.setData("teams", updatedTeams);
     };
 
     const submitBulkAddForm = (e) => {
         e.preventDefault();
-        console.log(bulkAddForm.data);
+
+        bulkAddForm.post(route("competitions.teams.add", competition.id), {
+            onSuccess: () => {
+                setIsBulkAddModalOpen(false);
+            },
+        });
     };
 
     return (
@@ -47,7 +49,7 @@ export default function CompetitionTeamsShow({
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
                 <div className="p-6 text-gray-900">
-                    {teams.data && teams.data.length && false > 0 ? (
+                    {teams.data && teams.data.length > 0 ? (
                         <TeamTable
                             teams={teams.data}
                             actions={[
@@ -64,6 +66,7 @@ export default function CompetitionTeamsShow({
                                 {
                                     icon: "remove",
                                     onClick: (team) => {
+                                        // Clicking here error!
                                         setSelectedTeam(team);
                                         setIsRemoveModalOpen(true);
                                     },

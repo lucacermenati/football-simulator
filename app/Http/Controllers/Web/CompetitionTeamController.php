@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class CompetitionTeamController extends Controller
 {
-    public function index(Request $request, Competition $competition)
+    public function index(Competition $competition)
     {
         $competitionTeamsQuery = $competition->teams();
 
@@ -37,7 +37,7 @@ class CompetitionTeamController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Request $request, Competition $competition, $teamId)
+    public function destroy(Competition $competition, string $teamId)
     {
         $competition->teams()->detach($teamId);
 

@@ -1,8 +1,15 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 export default function TeamDelete({ team, onCancel }) {
+    const deleteTeam = () => {
+        router.delete(route("teams.destroy", team.id), {
+            preserveScroll: true,
+            onSuccess: () => onCancel(),
+        });
+    };
+
     return (
         <div className="p-6">
             <h3 className="text-lg font-medium text-primaryRed-600">
@@ -16,9 +23,7 @@ export default function TeamDelete({ team, onCancel }) {
                 <SecondaryButton onClick={() => onCancel()}>
                     Cancel
                 </SecondaryButton>
-                <Link method="delete" href={route("teams.destroy", team.id)}>
-                    <PrimaryButton>Delete</PrimaryButton>
-                </Link>
+                <PrimaryButton onClick={deleteTeam}>Delete</PrimaryButton>
             </div>
         </div>
     );

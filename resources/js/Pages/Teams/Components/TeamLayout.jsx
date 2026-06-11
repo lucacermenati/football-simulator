@@ -18,7 +18,7 @@ export default function TeamLayout({ children, team }) {
                     <div className="flex justify-between mt-2 mb-6">
                         <div className="flex space-x-4">
                             <Link href={route("teams.show", { team: team.id })}>
-                                <TeamLogo team={team} className="w-32 h-32" />
+                                <TeamLogo team={team} size={32} />
                             </Link>
                             <div className="flex flex-col">
                                 <Link

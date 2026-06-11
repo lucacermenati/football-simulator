@@ -8,7 +8,7 @@ export default function TeamTable({ teams, actions = [] }) {
             {teams.map((team) => (
                 <div key={team.id} className="grid grid-cols-2 gap-12 p-3">
                     <div className="flex items-center space-x-4">
-                        <TeamLogo team={team} className="w-8 h-8" />
+                        <TeamLogo team={team} size={8} />
                         <Link
                             className="font-medium whitespace-nowrap hover:underline"
                             href={route("teams.show", {

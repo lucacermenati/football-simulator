@@ -133,7 +133,7 @@ export default function CompetitionTeamsShow({
                                 }
                             >
                                 <div className="flex gap-2 items-center">
-                                    <TeamLogo team={team} className="w-6 h-6" />
+                                    <TeamLogo team={team} size={6} />
                                     {team.name}
                                 </div>
                             </Checkbox>

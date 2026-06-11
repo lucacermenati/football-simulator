@@ -90,7 +90,7 @@ export default function CompetitionLayout({
                             </PrimaryButton>
                         </div>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end p-2">
                         <Actions actions={actions} item={competition} />
                     </div>
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">

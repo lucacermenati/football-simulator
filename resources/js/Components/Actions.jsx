@@ -3,6 +3,7 @@ import MinusCircle from "@/Icons/MinusCircle";
 import PlusCircle from "@/Icons/PlusCircle";
 import Trash from "@/Icons/Trash";
 import View from "@/Icons/View";
+import Cog from "@/Icons/Cog";
 
 const iconsByLabel = {
     view: View,
@@ -10,6 +11,7 @@ const iconsByLabel = {
     add: PlusCircle,
     remove: MinusCircle,
     delete: Trash,
+    cog: Cog,
 };
 
 export default function Actions({ actions, item }) {

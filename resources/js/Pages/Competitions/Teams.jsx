@@ -48,7 +48,20 @@ export default function CompetitionTeamsShow({
     return (
         <AuthenticatedLayout>
             <Head title="Competition Details" />
-            <CompetitionLayout competition={competition}>
+            <CompetitionLayout
+                competition={competition}
+                actions={[
+                    {
+                        icon: "cog",
+                        onClick: (competition) => {
+                            console.log(
+                                "Clicked competitions manage",
+                                competition,
+                            );
+                        },
+                    },
+                ]}
+            >
                 <div className="p-6 text-gray-900">
                     {teams.data && teams.data.length > 0 ? (
                         <TeamTable

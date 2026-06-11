@@ -4,8 +4,13 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import CompetitionForm from "./CompetitionForm";
 import Modal from "@/Components/Modal";
 import CompetitionDelete from "./CompetitionDelete";
+import Actions from "@/Components/Actions";
 
-export default function CompetitionLayout({ children, competition }) {
+export default function CompetitionLayout({
+    children,
+    competition,
+    actions = [],
+}) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -84,6 +89,9 @@ export default function CompetitionLayout({ children, competition }) {
                                 DELETE
                             </PrimaryButton>
                         </div>
+                    </div>
+                    <div className="flex justify-end">
+                        <Actions actions={actions} item={competition} />
                     </div>
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         {children}

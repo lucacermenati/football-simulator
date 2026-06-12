@@ -185,9 +185,11 @@ class FootballMatchController extends Controller
 
         $startDate = $validated['start_date'] ?? now();
 
-        $matches = CalendarGenerator::generateMatches($competition, $startDate);
+        $success = CalendarGenerator::generateMatches($competition, $startDate);
 
-        $matches = FootballMatch::insert($matches);
+        if (!$success) {
+            return response()->json(['error' => 'Failed to generate matches'], 500);
+        }
 
         $matches = $competition->matches()
             ->with(['awayTeam', 'homeTeam'])

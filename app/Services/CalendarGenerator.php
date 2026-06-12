@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Competition;
+use App\Models\FootballMatch;
 use Carbon\Carbon;
 use InvalidArgumentException;
 use Str;
@@ -41,6 +42,7 @@ class CalendarGenerator
                     'away_team_id' => $away->id,
                     'competition_id' => $competition->id,
                     'date' => $startDate->copy()->addWeeks($round),
+                    'day' => $round + 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -60,11 +62,12 @@ class CalendarGenerator
                 'away_team_id' => $match['home_team_id'],
                 'competition_id' => $competition->id,
                 'date' => $match['date']->copy()->addWeeks($rounds),
+                'day' => $rounds + $match['day'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
         }
 
-        return $matches;
+        return FootballMatch::insert($matches);
     }
 }

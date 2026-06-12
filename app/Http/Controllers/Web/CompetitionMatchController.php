@@ -5,16 +5,38 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Competition;
+use App\Services\CalendarGenerator;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class CompetitionMatchController extends Controller
 {
     public function index(Request $request, Competition $competition)
     {
-        $competition->loadMissing('matches');
+        $day = $request->input('day', 1);
+
+        $matches = $competition->matches()
+            ->with(['homeTeam', 'awayTeam'])
+            ->where('day', $day)
+            ->get();
 
         return Inertia::render('Competitions/Matches', [
             'competition' => $competition,
+            'matches' => $matches,
+            'day' => $day,
         ]);
+    }
+
+    public function generate(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
+    {
+        $validated = $request->validate([
+            'start_date' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
+        ]);
+
+        // TODO: Add error handling: the user does not own the competition, the matches are already generated
+
+        $calendarGenerator->generateMatches($competition, $validated['start_date']);
+
+        return redirect()->back()->with('success', 'Matches generated successfully');
     }
 }

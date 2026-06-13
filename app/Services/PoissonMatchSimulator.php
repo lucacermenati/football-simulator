@@ -20,7 +20,7 @@ class PoissonMatchSimulator
         $homeRating = $homeTeam->rating + $ratingMicroVarianceHome + $randomEventHome + config('simulator.poisson.home_advantage');
         $awayRating = $awayTeam->rating + $ratingMicroVarianceAway + $randomEventAway;
 
-        $deltaRating = abs($homeRating - $awayRating);
+        $deltaRating = $homeRating - $awayRating;
 
         $g0  = (float) $config['expected_goals']['g0'];
         $div = (float) $config['expected_goals']['delta_divisor'];
@@ -68,7 +68,7 @@ class PoissonMatchSimulator
     public static function randomEvent()
     {
         $config = config('simulator.poisson.random_event');
-        $randomNumber = random_int(0, 1);
+        $randomNumber = mt_rand() / mt_getrandmax();
 
         if ($randomNumber < $config['good']) {
             return $config['advantage'];

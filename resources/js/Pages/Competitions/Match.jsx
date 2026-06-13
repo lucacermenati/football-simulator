@@ -8,21 +8,27 @@ export default function CompetitionMatch({ competition, match }) {
         <AuthenticatedLayout>
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
-                <div className="flex justify-between items-center px-6 py-4">
-                    <div className="flex justify-between items-center space-x-4">
-                        <TeamLogo team={match.home_team} size={16} />
-                        <span>{match.home_team.name}</span>
+                <div className="px-6 py-4">
+                    <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center space-x-4">
+                            <TeamLogo team={match.home_team} size={16} />
+                            <span>{match.home_team.name}</span>
+                        </div>
+                        <div className="text-2xl font-bold">
+                            {match.goal_home}
+                        </div>
+                        <div className="text-2xl font-bold">
+                            {match.goal_away}
+                        </div>
+                        <div className="flex justify-between items-center space-x-4">
+                            <span>{match.away_team.name}</span>
+                            <TeamLogo team={match.away_team} size={16} />
+                        </div>
                     </div>
-                    <h1>{match.goal_home}</h1>
-                    <h1>{match.goal_away}</h1>
-                    <div className="flex justify-between items-center space-x-4">
-                        <span>{match.away_team.name}</span>
-                        <TeamLogo team={match.away_team} size={16} />
+                    <div className="flex flex-col justify-center items-center">
+                        <div>{new Date(match.date).toLocaleDateString()}</div>
+                        <div>{match.home_team.stadium}</div>
                     </div>
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                    <div>{new Date(match.date).toLocaleDateString()}</div>
-                    <div>{match.home_team.stadium}</div>
                 </div>
             </CompetitionLayout>
         </AuthenticatedLayout>

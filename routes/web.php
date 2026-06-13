@@ -36,7 +36,6 @@ Route::middleware('auth')->group(function () {
     // COMPETITIONS Sub routes
     Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings'])->name('competitions.standings');
     Route::get('/competitions/{competition}/scorers', [CompetitionController::class, 'scorers'])->name('competitions.scorers');
-
     Route::get('/competitions/{competition}/matches', [CompetitionMatchController::class, 'index'])->name('competitions.matches.index');
     Route::post('/competitions/{competition}/matches', [CompetitionMatchController::class, 'generate'])->name('competitions.matches.generate');
     Route::get('/competitions/{competition}/teams', [CompetitionTeamController::class, 'index'])->name('competitions.teams.index');
@@ -57,7 +56,7 @@ Route::middleware('auth')->group(function () {
     /* PLAYERS */
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
 
-    /* MATCH */
+    /* MATCHES */
     Route::post('/matches/{match}/simulate', [FootballMatchController::class, 'simulate'])->name('matches.simulate');
 });
 

@@ -6,10 +6,10 @@ export default function MatchCard({ match }) {
     return (
         <div className="grid grid-cols-[1fr_auto_1fr] items-center border-b border-lightGrey-600">
             {/* Teams + scores */}
-            <div className="grid grid-cols-2 gap-y-2 py-2">
+            <div className="grid grid-cols-[1fr_auto] gap-y-2 py-2 pr-4">
                 <div className="flex items-center space-x-2">
                     <TeamLogo team={match.home_team} size={6} />
-                    <span className="font-semibold">
+                    <span className="font-semibold whitespace-nowrap">
                         {match.home_team.name}
                     </span>
                 </div>
@@ -17,7 +17,7 @@ export default function MatchCard({ match }) {
 
                 <div className="flex items-center space-x-2">
                     <TeamLogo team={match.away_team} size={6} />
-                    <span className="font-semibold">
+                    <span className="font-semibold whitespace-nowrap">
                         {match.away_team.name}
                     </span>
                 </div>

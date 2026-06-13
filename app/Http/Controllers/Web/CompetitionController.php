@@ -95,10 +95,7 @@ class CompetitionController extends Controller
     public function standings(Competition $competition)
     {
         // TODO: Make the standing calculation a service
-        $standings = $cacheKey = "competition.{$competition->id}.standings";
-
-        $standings = Cache::remember($cacheKey, now()->addHours(24), function () use ($competition) {
-                return Team::select('id', 'name')
+        $standings = Team::select('id', 'name')
                     ->whereHas('competitions', function ($query) use ($competition) {
                         $query->where('competitions.id', $competition->id);
                     })->addSelect([
@@ -134,7 +131,6 @@ class CompetitionController extends Controller
                     ->orderBy('points', 'desc')
                     ->orderBy('gol', 'desc')
                     ->get();
-            });
 
         return Inertia::render('Competitions/Standings', [
             'competition' => $competition,
@@ -144,11 +140,8 @@ class CompetitionController extends Controller
 
     public function scorers(Competition $competition)
     {
-        $cacheKey = "competition.{$competition->id}.scorers";
-        $isCached = Cache::has($cacheKey);
-
-        $scorers = Cache::remember($cacheKey, now()->addHours(24), function () use ($competition) {
-                return Player::select('id', 'first_name', 'last_name')
+        // TODO: Make the top scorers calculation a service
+        $scorers = Player::select('id', 'first_name', 'last_name')
                     ->whereHas('matches', function ($query) use ($competition) {
                         $query->where('matches.competition_id', $competition->id);
                     })
@@ -162,7 +155,6 @@ class CompetitionController extends Controller
                     ])
                     ->orderBy('goals', 'desc')
                     ->get();
-            });
 
         return Inertia::render('Competitions/Scorers', [
             'competition' => $competition,

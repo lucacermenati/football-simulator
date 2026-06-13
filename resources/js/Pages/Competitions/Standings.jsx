@@ -2,14 +2,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CompetitionLayout from "./Components/CompetitionLayout";
 import { Head } from "@inertiajs/react";
 
-export default function CompetitionStandings({ competition }) {
+export default function CompetitionStandings({ competition, standings }) {
     return (
         <AuthenticatedLayout>
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
-                <div className="p-6 text-gray-900">
-                    Here will be the standings
-                </div>
+                <pre>{JSON.stringify(standings, null, 2)}</pre>
             </CompetitionLayout>
         </AuthenticatedLayout>
     );

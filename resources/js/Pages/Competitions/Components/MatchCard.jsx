@@ -1,0 +1,45 @@
+import PrimaryButton from "@/Components/PrimaryButton";
+import TeamLogo from "@/Pages/Teams/Components/TeamLogo";
+import { Link } from "@inertiajs/react";
+
+export default function MatchCard({ match }) {
+    return (
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center border-b border-lightGrey-600">
+            {/* Teams + scores */}
+            <div className="grid grid-cols-2 gap-y-2 py-2">
+                <div className="flex items-center space-x-2">
+                    <TeamLogo team={match.home_team} size={6} />
+                    <span className="font-semibold">
+                        {match.home_team.name}
+                    </span>
+                </div>
+                <span className="font-semibold">{match.goal_home}</span>
+
+                <div className="flex items-center space-x-2">
+                    <TeamLogo team={match.away_team} size={6} />
+                    <span className="font-semibold">
+                        {match.away_team.name}
+                    </span>
+                </div>
+                <span className="font-semibold">{match.goal_away}</span>
+            </div>
+
+            {/* Vertical separator */}
+            <div className="h-14 border-l border-gray-300" />
+
+            {/* Info */}
+            <div className="pl-4">
+                {match.played ? (
+                    <span className="font-semibold">DONE</span>
+                ) : (
+                    <Link
+                        method="post"
+                        href={route("matches.simulate", match.id)}
+                    >
+                        <PrimaryButton>PLAY</PrimaryButton>
+                    </Link>
+                )}
+            </div>
+        </div>
+    );
+}

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\CompetitionController;
 use App\Http\Controllers\Web\CompetitionMatchController;
 use App\Http\Controllers\Web\CompetitionTeamController;
+use App\Http\Controllers\Web\FootballMatchController;
 use App\Http\Controllers\Web\PlayerController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\TeamCompetitionController;
@@ -55,6 +56,9 @@ Route::middleware('auth')->group(function () {
 
     /* PLAYERS */
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
+
+    /* MATCH */
+    Route::post('/matches/{match}/simulate', [FootballMatchController::class, 'simulate'])->name('matches.simulate');
 });
 
 require __DIR__.'/auth.php';

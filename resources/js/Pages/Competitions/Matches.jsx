@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from "react";
 import CompetitionMatchesForm from "./Components/CompetitionMatchesForm";
+import MatchCard from "./Components/MatchCard";
 
 export default function CompetitionMatches({ competition, day, matches }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,9 +15,10 @@ export default function CompetitionMatches({ competition, day, matches }) {
             <Head title="Competition Details" />
             <CompetitionLayout competition={competition}>
                 {(matches.length && (
-                    <div className="p-6 text-gray-900">
-                        Here will be the matches for day {day}
-                        <pre>{JSON.stringify(matches, null, 2)}</pre>
+                    <div className="grid grid-cols-2 p-2">
+                        {matches.map((match) => (
+                            <MatchCard key={match.id} match={match} />
+                        ))}
                     </div>
                 )) || (
                     <div className="flex justify-center items-center p-16">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Competition;
+use App\Models\FootballMatch;
 use App\Services\CalendarGenerator;
 use Carbon\Carbon;
 use Inertia\Inertia;

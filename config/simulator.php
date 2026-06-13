@@ -13,10 +13,10 @@ return [
             'advantage' => env('SIMULATOR_POISSON_RANDOM_EVENT_ADVANTAGE', 5),
         ],
         'expected_goals' => [
-            'g0' => env('SIMULATOR_POISSON_EXPECTED_GOALS_G0', 1.25),
-            'delta_divisor' => env('SIMULATOR_POISSON_EXPECTED_GOALS_DELTA_DIVISOR', 20),
+            'g0' => env('SIMULATOR_POISSON_EXPECTED_GOALS_G0', 1.1),
+            'delta_divisor' => env('SIMULATOR_POISSON_EXPECTED_GOALS_DELTA_DIVISOR', 22),
             'min' => env('SIMULATOR_POISSON_EXPECTED_GOALS_MIN', 0.15),
-            'max' => env('SIMULATOR_POISSON_EXPECTED_GOALS_MAX', 3.5),
+            'max' => env('SIMULATOR_POISSON_EXPECTED_GOALS_MAX', 2.5),
         ],
-    ],
+    ],1
 ];

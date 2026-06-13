@@ -32,6 +32,7 @@ export default function CompetitionMatches({ competition, day, matches }) {
                 <CompetitionMatchesForm
                     competition={competition}
                     onCancel={() => setIsModalOpen(false)}
+                    onSuccess={() => setIsModalOpen(false)}
                 />
             </Modal>
         </AuthenticatedLayout>

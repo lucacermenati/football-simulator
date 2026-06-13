@@ -28,6 +28,16 @@ class CompetitionMatchController extends Controller
         ]);
     }
 
+    public function show(Competition $competition, FootballMatch $match)
+    {
+        $match->load(['homeTeam', 'awayTeam']);
+
+        return Inertia::render('Competitions/Match', [
+            'competition' => $competition,
+            'match' => $match,
+        ]);
+    }
+
     public function generate(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
         $validated = $request->validate([

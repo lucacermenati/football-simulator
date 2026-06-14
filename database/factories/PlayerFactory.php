@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PlayerFactory extends Factory
 {
@@ -17,7 +18,7 @@ class PlayerFactory extends Factory
             'first_name' => $this->faker->firstName('male'),
             'last_name' => $this->faker->lastName(),
             'birth_date' => $this->faker->dateTimeBetween('-40 years', '-18 years'),
-            'role' => $this->faker->randomElement(Role::values()),
+            'role' => $this->randomRole(),
             'number' => $this->faker->numberBetween(1, 99),
             'team_id' => Team::factory(),
         ];
@@ -36,13 +37,23 @@ class PlayerFactory extends Factory
             };
 
             return [
-                'first_name' => $faker->firstName('male'),
-                'last_name' => $faker->lastName(),
+                'first_name' => Str::ascii($faker->firstName('male')),
+                'last_name' => Str::ascii($faker->lastName()),
                 'birth_date' => $faker->dateTimeBetween('-40 years', '-18 years'),
                 'nationality' => $nationality,
-                'role' => $faker->randomElement(Role::values()),
+                'role' => $this->randomRole(),
                 'number' => $faker->numberBetween(1, 99),
             ];
         });
+    }
+
+    private function randomRole(): Role
+    {
+        return fake()->randomElement([
+            Role::Goalkeeper,
+            ...array_fill(0, 4, Role::Defender),
+            ...array_fill(0, 4, Role::Midfielder),
+            ...array_fill(0, 3, Role::Forward),
+        ]);
     }
 }

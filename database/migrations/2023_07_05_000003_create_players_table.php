@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nationality', 2)->nullable();
             $table->string('role');
             $table->integer('number')->unsigned()->nullable();
-            $table->foreignUuid('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignUuid('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -1,11 +1,14 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import PlayerTable from "./Components/PlayerTable";
 import Searchbar from "@/Components/Searchbar";
 import Pagination from "@/Components/Pagination";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function PlayersIndex({ players }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -14,6 +17,19 @@ export default function PlayersIndex({ players }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+
+    const form = useForm({
+        size: 11,
+    });
+
+    const generatePlayers = (e) => {
+        e.preventDefault();
+        form.post(route("players.generate"), {
+            onSuccess: () => {
+                setIsGenerateModalOpen(false);
+            },
+        });
+    };
 
     return (
         <AuthenticatedLayout
@@ -108,9 +124,51 @@ export default function PlayersIndex({ players }) {
                     <h1>Create a Player</h1>
                 </div>
             </Modal>
-            <Modal show={isGenerateModalOpen}>
-                <div>
-                    <h1>Generate Players</h1>
+            <Modal
+                show={isGenerateModalOpen}
+                onClose={() => {
+                    setIsGenerateModalOpen(false);
+                }}
+            >
+                <div className="p-6">
+                    <h3 className="text-lg font-medium text-primaryRed-600">
+                        Players Factory
+                    </h3>
+                    <form
+                        className="flex flex-col mt-4 space-y-4"
+                        onSubmit={generatePlayers}
+                    >
+                        <InputLabel htmlFor="size">
+                            How many players do you want to generate?
+                        </InputLabel>
+                        <TextInput
+                            id="size"
+                            value={form.data.size}
+                            onChange={(e) =>
+                                form.setData("size", e.target.value)
+                            }
+                            type="number"
+                            placeholder="Size"
+                        />
+                        <div className="flex gap-2 justify-end mt-8">
+                            <SecondaryButton
+                                type="button"
+                                onClick={() => {
+                                    form.reset("logo");
+                                    onCancel?.();
+                                }}
+                            >
+                                Cancel
+                            </SecondaryButton>
+
+                            <PrimaryButton
+                                type="submit"
+                                disabled={form.processing}
+                            >
+                                Generate
+                            </PrimaryButton>
+                        </div>
+                    </form>
                 </div>
             </Modal>
             <Modal show={isEditModalOpen}>

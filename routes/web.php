@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
     Route::get('/players/{player}', [PlayerController::class, 'show'])->name('players.show');
 
+    Route::post('/players/generate', [PlayerController::class, 'generate'])->name('players.generate');
+
     /* MATCHES */
     Route::post('/matches/{match}/simulate', [FootballMatchController::class, 'simulate'])->name('matches.simulate');
 });

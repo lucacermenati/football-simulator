@@ -1,9 +1,10 @@
+import Actions from "@/Components/Actions";
 import Edit from "@/Icons/Edit";
 import PlusCircle from "@/Icons/PlusCircle";
 import Trash from "@/Icons/Trash";
 import View from "@/Icons/View";
 
-export default function PlayerTable({ players }) {
+export default function PlayerTable({ players, actions = [] }) {
     return (
         <div className="grid grid-cols-2">
             {players.map((player) => (
@@ -19,24 +20,7 @@ export default function PlayerTable({ players }) {
                         </span>
                     </div>
 
-                    <div className="flex space-x-4">
-                        <View
-                            title="View"
-                            className="w-6 h-6 text-primaryRed-800"
-                        />
-                        <Edit
-                            title="Edit"
-                            className="w-6 h-6 text-primaryRed-800"
-                        />
-                        <PlusCircle
-                            title="Add to a competition"
-                            className="w-6 h-6 text-primaryRed-800"
-                        />
-                        <Trash
-                            title="Delete"
-                            className="w-6 h-6 text-primaryRed-800"
-                        />
-                    </div>
+                    <Actions actions={actions} item={player} />
                 </div>
             ))}
         </div>

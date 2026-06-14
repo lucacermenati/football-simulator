@@ -32,6 +32,12 @@ export default {
                     700: "#1E1E1E",
                     800: "#141414",
                 },
+                roleColors: {
+                    Goalkeeper: "#FBBF24",
+                    Defender: "#60A5FA",
+                    Midfielder: "#34D399",
+                    Forward: "#D0312D",
+                },
             },
         },
     },

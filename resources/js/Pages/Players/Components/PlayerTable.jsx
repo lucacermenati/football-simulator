@@ -1,13 +1,6 @@
 import Actions from "@/Components/Actions";
 
 export default function PlayerTable({ players, actions = [] }) {
-    const roleColors = {
-        Goalkeeper: "bg-yellow-500",
-        Defender: "bg-blue-500",
-        Midfielder: "bg-green-500",
-        Forward: "bg-red-500",
-    };
-
     return (
         <div className="grid grid-cols-2">
             {players.map((player) => (
@@ -27,9 +20,7 @@ export default function PlayerTable({ players, actions = [] }) {
                     </div>
 
                     <div
-                        className={`w-5 h-5 rounded-full ${
-                            roleColors[player.role] ?? "bg-lightGrey-600"
-                        }`}
+                        className={`w-5 h-5 rounded-full bg-roleColors-${player.role}`}
                     />
 
                     <Actions actions={actions} item={player} />

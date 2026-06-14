@@ -1,6 +1,6 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import PlayerTable from "./Components/PlayerTable";
 import Searchbar from "@/Components/Searchbar";
 import Pagination from "@/Components/Pagination";
@@ -10,13 +10,15 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function PlayersIndex({ players }) {
+export default function PlayersIndex({ players, filters }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+
+    console.log(filters);
 
     const form = useForm({
         size: 11,
@@ -44,7 +46,32 @@ export default function PlayersIndex({ players }) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center mt-2 mb-6">
-                        <Searchbar routeName={"players.index"} />
+                        {/* Filters */}
+                        <div className="flex justify-start items-center space-x-6">
+                            <Searchbar routeName={"players.index"} />
+                            <Link
+                                href={route("players.index", {
+                                    ...filters,
+                                    free: parseInt(filters.free ?? "0") ? 0 : 1,
+                                })}
+                            >
+                                <div
+                                    className={`w-6 h-6 rounded-full bg-lightGrey-600 ${parseInt(filters.free ?? "0") ? "border-2 border-darkGrey-600" : ""}`}
+                                />
+                            </Link>
+                            <div className="flex justify-start items-center space-x-2">
+                                <div className="w-6 h-6 rounded-full bg-roleColors-Goalkeeper" />
+                                <div className="w-6 h-6 rounded-full bg-roleColors-Defender" />
+                                <div className="w-6 h-6 rounded-full bg-roleColors-Midfielder" />
+                                <div className="w-6 h-6 rounded-full bg-roleColors-Forward" />
+                            </div>
+                            <img
+                                className="w-6 h-6 rounded-full"
+                                src="images/flags/null.svg"
+                                alt="No flag"
+                            />
+                        </div>
+                        {/* Buttons */}
                         <div className="grid grid-cols-2 gap-4">
                             <PrimaryButton
                                 className="self-start"

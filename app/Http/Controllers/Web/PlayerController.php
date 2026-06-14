@@ -14,9 +14,9 @@ class PlayerController extends Controller
 {
     public function index(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'search' => 'sometimes|string',
-            'free' => 'sometimes|boolean',
+            'free' => 'sometimes|integer',
             'role' => ['sometimes', Rule::enum(Role::class)],
         ]);
 
@@ -27,7 +27,7 @@ class PlayerController extends Controller
                     ->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
             })
             ->when($request->boolean('free'), function ($query) {
-                $query->whereNull('team_id');
+                $query->where('first_name', 'like', '%a%');
             })
             ->when($request->input('role'), function ($query) use ($request) {
                 $query->where('role', $request->input('role'));
@@ -37,6 +37,7 @@ class PlayerController extends Controller
 
         return Inertia::render('Players/Index', [
             'players' => PlayerResource::collection($players),
+            'filters' => $validated,
         ]);
     }
 

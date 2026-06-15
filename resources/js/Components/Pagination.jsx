@@ -23,16 +23,7 @@ export default function Pagination({ links, meta }) {
                     },
                     (_, i) => i + 1,
                 ).map((page) => (
-                    <Link
-                        key={page}
-                        href={(() => {
-                            const url = new URL(meta.path);
-
-                            url.searchParams.set("page", page);
-
-                            return url.toString();
-                        })()}
-                    >
+                    <Link key={page} href={meta.links[page].url}>
                         <div
                             className={clsx(
                                 "flex justify-center items-center w-6 h-6 rounded-full border border-primaryRed-600",

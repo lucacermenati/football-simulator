@@ -19,6 +19,7 @@ class PlayersFilterRequest extends FormRequest
             'search' => 'sometimes|string',
             'free' => 'sometimes|integer',
             'role' => ['sometimes', Rule::enum(Role::class)],
+            'nationality' => 'sometimes|string'
         ];
     }
 
@@ -27,7 +28,9 @@ class PlayersFilterRequest extends FormRequest
         return [
             'search' => $this->input('search'),
             'free' => $this->boolean('free'),
-            'role' => $this->input('role')
+            'role' => $this->input('role'),
+            'nationality' => $this->input('nationality'),
+            'page' => $this->input('page')
         ];
     }
 }

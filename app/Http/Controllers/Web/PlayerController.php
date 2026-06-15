@@ -26,13 +26,22 @@ class PlayerController extends Controller
             ->when($request->input('role'), function ($query) use ($request) {
                 $query->where('role', $request->input('role'));
             })
+            ->when($request->input('nationality'), function ($query) use ($request) {
+                $query->where('nationality', $request->input('nationality'));
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(16)
             ->withQueryString();
 
+        $nationalities = Player::query()
+            ->pluck('nationality')
+            ->unique()
+            ->values();
+
         return Inertia::render('Players/Index', [
             'players' => PlayerResource::collection($players),
             'filters' => $request->filters(),
+            'nationalities' => $nationalities,
         ]);
     }
 

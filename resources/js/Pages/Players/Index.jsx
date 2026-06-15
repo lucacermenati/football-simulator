@@ -7,8 +7,10 @@ import Pagination from "@/Components/Pagination";
 import { useState, useEffect } from "react";
 import Modal from "@/Components/Modal";
 import PlayerGenerate from "./Components/PlayerGenerate";
+import InputLabel from "@/Components/InputLabel";
 
-export default function PlayersIndex({ players, filters }) {
+export default function PlayersIndex({ players, filters, nationalities }) {
+    const [isNationalityModalOpen, setIsNationalityModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -20,6 +22,8 @@ export default function PlayersIndex({ players, filters }) {
         search: filters.search,
         free: filters.free,
         role: filters.role,
+        nationality: filters.nationality,
+        page: filters.page,
     });
 
     const toggleFree = () => {
@@ -27,6 +31,7 @@ export default function PlayersIndex({ players, filters }) {
             return {
                 ...query,
                 free: !query.free,
+                page: null,
             };
         });
     };
@@ -36,8 +41,21 @@ export default function PlayersIndex({ players, filters }) {
             return {
                 ...query,
                 role: role === query.role ? null : role,
+                page: null,
             };
         });
+    };
+
+    const selectNationality = (nationality) => {
+        setQuery((query) => {
+            return {
+                ...query,
+                nationality: nationality,
+                page: null,
+            };
+        });
+
+        setIsNationalityModalOpen(false);
     };
 
     useEffect(() => {
@@ -47,6 +65,8 @@ export default function PlayersIndex({ players, filters }) {
                 search: query.search || undefined,
                 free: query.free ? 1 : undefined,
                 role: query.role || undefined,
+                nationality: query.nationality || undefined,
+                page: filters.page || undefined,
             },
             {
                 preserveState: true,
@@ -71,7 +91,10 @@ export default function PlayersIndex({ players, filters }) {
                     <div className="flex justify-between items-center mt-2 mb-6">
                         {/* Filters */}
                         <div className="flex justify-start items-center space-x-6">
-                            <Searchbar routeName={"players.index"} />
+                            <Searchbar
+                                routeName={"players.index"}
+                                query={query}
+                            />
                             <div
                                 onClick={() => toggleFree()}
                                 className={`w-6 h-6 rounded-full bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
@@ -95,8 +118,13 @@ export default function PlayersIndex({ players, filters }) {
                                 />
                             </div>
                             <img
+                                onClick={() => setIsNationalityModalOpen(true)}
                                 className="w-6 h-6 rounded-full"
-                                src="images/flags/null.svg"
+                                src={
+                                    filters.nationality
+                                        ? `/images/flags/${filters.nationality}.svg`
+                                        : "images/flags/null.svg"
+                                }
                                 alt="No flag"
                             />
                         </div>
@@ -175,6 +203,36 @@ export default function PlayersIndex({ players, filters }) {
                     <Pagination links={players.links} meta={players.meta} />
                 </div>
             </div>
+            <Modal show={isNationalityModalOpen}>
+                <div className="p-6">
+                    <h3 className="text-lg font-medium text-primaryRed-600">
+                        Nationality
+                    </h3>
+                    <InputLabel>Select a nationality</InputLabel>
+                    <div className="grid grid-cols-4 gap-4 p-4">
+                        <img
+                            onClick={() => selectNationality(null)}
+                            key={"No-flag"}
+                            className="w-6 h-6 rounded-full"
+                            src={`/images/flags/null.svg`}
+                            alt="No filter"
+                        />
+                        {nationalities.map((nationality) => {
+                            return (
+                                <img
+                                    onClick={() =>
+                                        selectNationality(nationality)
+                                    }
+                                    key={nationality}
+                                    className="w-6 h-6 rounded-full border border-lightGrey-600"
+                                    src={`/images/flags/${nationality}.svg`}
+                                    alt={nationality}
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
+            </Modal>
             <Modal show={isCreateModalOpen}>
                 <div>
                     <h1>Create a Player</h1>

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Modal from "@/Components/Modal";
 import PlayerGenerate from "./Components/PlayerGenerate";
 import InputLabel from "@/Components/InputLabel";
+import PlayerCreate from "./Components/PlayerCreate";
 
 export default function PlayersIndex({ players, filters, nationalities }) {
     const [isNationalityModalOpen, setIsNationalityModalOpen] = useState(false);
@@ -91,6 +92,7 @@ export default function PlayersIndex({ players, filters, nationalities }) {
                     <div className="flex justify-between items-center mt-2 mb-6">
                         {/* Filters */}
                         <div className="flex justify-start items-center space-x-6">
+                            {/* TODO: Update search bar to accept an onChange and update the bigger query in the outer component */}
                             <Searchbar
                                 routeName={"players.index"}
                                 query={query}
@@ -234,9 +236,14 @@ export default function PlayersIndex({ players, filters, nationalities }) {
                 </div>
             </Modal>
             <Modal show={isCreateModalOpen}>
-                <div>
-                    <h1>Create a Player</h1>
-                </div>
+                <PlayerCreate
+                    onSuccess={() => {
+                        setIsCreateModalOpen(false);
+                    }}
+                    onCancel={() => {
+                        setIsCreateModalOpen(false);
+                    }}
+                />
             </Modal>
             <Modal
                 show={isGenerateModalOpen}

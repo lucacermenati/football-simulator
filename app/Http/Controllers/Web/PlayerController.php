@@ -54,6 +54,26 @@ class PlayerController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'nationality' => 'nullable|string|max:255',
+            'role' => 'nullable|string|max:255',
+            'number' => 'nullable|integer|min:1|max:99',
+        ]);
+
+        Player::factory()->fromRandomLocale($request->input('nationality', null))
+            ->create(array_merge(array_filter($validated), [
+                'user_id' => $request->user()->id,
+                'team_id' => null,
+            ]));
+
+        return redirect()->back()->with('success', 'Player created successfully!');
+    }
+
     public function generate(Request $request)
     {
         $validated = $request->validate([

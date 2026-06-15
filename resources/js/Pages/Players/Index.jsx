@@ -1,10 +1,10 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import PlayerTable from "./Components/PlayerTable";
 import Searchbar from "@/Components/Searchbar";
 import Pagination from "@/Components/Pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -18,7 +18,45 @@ export default function PlayersIndex({ players, filters }) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
-    console.log(filters);
+    const [query, setQuery] = useState({
+        search: filters.search,
+        free: filters.free,
+        role: filters.role,
+    });
+
+    const toggleFree = () => {
+        setQuery((query) => {
+            return {
+                ...query,
+                free: !query.free,
+            };
+        });
+    };
+
+    const toggleRole = (role) => {
+        setQuery((query) => {
+            return {
+                ...query,
+                role: role === query.role ? null : role,
+            };
+        });
+    };
+
+    useEffect(() => {
+        router.get(
+            route("players.index"),
+            {
+                search: query.search || undefined,
+                free: query.free ? 1 : undefined,
+                role: query.role || undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            },
+        );
+    }, [query]);
 
     const form = useForm({
         size: 11,
@@ -49,21 +87,27 @@ export default function PlayersIndex({ players, filters }) {
                         {/* Filters */}
                         <div className="flex justify-start items-center space-x-6">
                             <Searchbar routeName={"players.index"} />
-                            <Link
-                                href={route("players.index", {
-                                    ...filters,
-                                    free: parseInt(filters.free ?? "0") ? 0 : 1,
-                                })}
-                            >
-                                <div
-                                    className={`w-6 h-6 rounded-full bg-lightGrey-600 ${parseInt(filters.free ?? "0") ? "border-2 border-darkGrey-600" : ""}`}
-                                />
-                            </Link>
+                            <div
+                                onClick={() => toggleFree()}
+                                className={`w-6 h-6 rounded-full bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
+                            />
                             <div className="flex justify-start items-center space-x-2">
-                                <div className="w-6 h-6 rounded-full bg-roleColors-Goalkeeper" />
-                                <div className="w-6 h-6 rounded-full bg-roleColors-Defender" />
-                                <div className="w-6 h-6 rounded-full bg-roleColors-Midfielder" />
-                                <div className="w-6 h-6 rounded-full bg-roleColors-Forward" />
+                                <div
+                                    onClick={() => toggleRole("Goalkeeper")}
+                                    className={`w-6 h-6 rounded-full bg-roleColors-Goalkeeper ${filters.role === "Goalkeeper" ? "border-2 border-primaryRed-600" : ""}`}
+                                />
+                                <div
+                                    onClick={() => toggleRole("Defender")}
+                                    className={`w-6 h-6 rounded-full bg-roleColors-Defender ${filters.role === "Defender" ? "border-2 border-primaryRed-600" : ""}`}
+                                />
+                                <div
+                                    onClick={() => toggleRole("Midfielder")}
+                                    className={`w-6 h-6 rounded-full bg-roleColors-Midfielder ${filters.role === "Midfielder" ? "border-2 border-primaryRed-600" : ""}`}
+                                />
+                                <div
+                                    onClick={() => toggleRole("Forward")}
+                                    className={`w-6 h-6 rounded-full bg-roleColors-Forward ${filters.role === "Forward" ? "border-2 border-primaryRed-600" : ""}`}
+                                />
                             </div>
                             <img
                                 className="w-6 h-6 rounded-full"

@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     // TEAMS Sub routes
     Route::get('/teams/{team}/info', [TeamController::class, 'info'])->name('teams.info');
     Route::get('/teams/{team}/players', [TeamController::class, 'players'])->name('teams.players');
+    Route::post('/teams/{team}/players', [TeamController::class, 'addPlayer'])->name('teams.players.add');
     // TEAMS Competition routes
     Route::post('/teams/{team}/competitions', [TeamCompetitionController::class, 'store'])->name('teams.competition.store');
 

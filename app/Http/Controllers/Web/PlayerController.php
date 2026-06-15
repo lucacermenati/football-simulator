@@ -38,10 +38,13 @@ class PlayerController extends Controller
             ->unique()
             ->values();
 
+        $teams = $request->user()->teams()->get();
+
         return Inertia::render('Players/Index', [
             'players' => PlayerResource::collection($players),
             'filters' => $request->filters(),
             'nationalities' => $nationalities,
+            'teams' => $teams,
         ]);
     }
 

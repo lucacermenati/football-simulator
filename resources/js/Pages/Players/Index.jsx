@@ -10,8 +10,14 @@ import PlayerGenerate from "./Components/PlayerGenerate";
 import InputLabel from "@/Components/InputLabel";
 import PlayerCreate from "./Components/PlayerCreate";
 import PlayerDelete from "./Components/PlayerDelete";
+import PlayerAdd from "./Components/PlayerAdd";
 
-export default function PlayersIndex({ players, filters, nationalities }) {
+export default function PlayersIndex({
+    players,
+    filters,
+    nationalities,
+    teams,
+}) {
     const [isNationalityModalOpen, setIsNationalityModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
@@ -267,9 +273,12 @@ export default function PlayersIndex({ players, filters, nationalities }) {
                 </div>
             </Modal>
             <Modal show={isAddModalOpen}>
-                <div>
-                    <h1>Add Player to Team</h1>
-                </div>
+                <PlayerAdd
+                    player={selectedPlayer}
+                    teams={teams}
+                    onCancel={() => setIsAddModalOpen(false)}
+                    onSuccess={() => setIsAddModalOpen(false)}
+                />
             </Modal>
             <Modal show={isDeleteModalOpen}>
                 <PlayerDelete

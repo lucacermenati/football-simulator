@@ -22,9 +22,6 @@ export default function TeamAdd({
             onSuccess: () => {
                 onSuccess?.();
             },
-            onError: (error) => {
-                console.log({ error });
-            },
         });
     };
 

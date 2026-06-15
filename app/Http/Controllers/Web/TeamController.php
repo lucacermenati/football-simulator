@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
+use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -96,5 +97,18 @@ class TeamController extends Controller
             'team' => TeamResource::make($team),
             'players' => PlayerResource::collection($team->players),
         ]);
+    }
+
+    public function addPlayer(Request $request, Team $team)
+    {
+        $validated = $request->validate([
+            'player_id' => 'required|exists:players,id',
+        ]);
+
+        Player::find($validated['player_id'])->update([
+            'team_id' => $team->id,
+        ]);
+
+        return redirect()->back()->with('message', 'Player added successfully!');
     }
 }

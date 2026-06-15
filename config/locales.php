@@ -31,7 +31,6 @@ return [
         'hu_HU', // Hungary
         'sl_SI', // Slovenia
         'hr_HR', // Croatia
-        'sr_Latn_RS', // Serbia (Latin)
         'sr_RS', // Serbia
         'lt_LT', // Lithuania
         'lv_LV', // Latvia
@@ -52,6 +51,7 @@ return [
         'es_VE', // Venezuela
 
         // North America & Oceania
+        'en_US', // United States
         'en_CA', // Canada
         'fr_CA', // French Canada
         'en_AU', // Australia

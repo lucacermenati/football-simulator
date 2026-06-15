@@ -56,16 +56,16 @@ class PlayerController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
-            'nationality' => 'nullable|string|max:255',
+            'nationality' => 'nullable|string|max:5',
             'role' => 'nullable|string|max:255',
             'number' => 'nullable|integer|min:1|max:99',
         ]);
 
-        $playerData = array_merge(array_filter($validated), [
+        $playerData = array_merge(array_filter($request->except('nationality')), [
             'user_id' => $request->user()->id,
             'team_id' => null,
         ]);
@@ -88,5 +88,12 @@ class PlayerController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Players generated successfully!');
+    }
+
+    public function destroy(Request $request, Player $player)
+    {
+        $player->delete();
+
+        return redirect()->back()->with('success', 'Player deleted successfully!');
     }
 }

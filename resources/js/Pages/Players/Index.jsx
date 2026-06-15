@@ -9,6 +9,7 @@ import Modal from "@/Components/Modal";
 import PlayerGenerate from "./Components/PlayerGenerate";
 import InputLabel from "@/Components/InputLabel";
 import PlayerCreate from "./Components/PlayerCreate";
+import PlayerDelete from "./Components/PlayerDelete";
 
 export default function PlayersIndex({ players, filters, nationalities }) {
     const [isNationalityModalOpen, setIsNationalityModalOpen] = useState(false);
@@ -271,9 +272,15 @@ export default function PlayersIndex({ players, filters, nationalities }) {
                 </div>
             </Modal>
             <Modal show={isDeleteModalOpen}>
-                <div>
-                    <h1>Delete Player</h1>
-                </div>
+                <PlayerDelete
+                    player={selectedPlayer}
+                    onSuccess={() => {
+                        setIsDeleteModalOpen(false);
+                    }}
+                    onCancel={() => {
+                        setIsDeleteModalOpen(false);
+                    }}
+                />
             </Modal>
         </AuthenticatedLayout>
     );

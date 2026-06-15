@@ -65,11 +65,13 @@ class PlayerController extends Controller
             'number' => 'nullable|integer|min:1|max:99',
         ]);
 
+        $playerData = array_merge(array_filter($validated), [
+            'user_id' => $request->user()->id,
+            'team_id' => null,
+        ]);
+
         Player::factory()->fromRandomLocale($request->input('nationality', null))
-            ->create(array_merge(array_filter($validated), [
-                'user_id' => $request->user()->id,
-                'team_id' => null,
-            ]));
+            ->create($playerData);
 
         return redirect()->back()->with('success', 'Player created successfully!');
     }

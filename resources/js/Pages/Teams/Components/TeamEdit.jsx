@@ -49,7 +49,7 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                 Update the team information below.
             </p>
             <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>
-                <div className="flex gap-12 items-center">
+                <div className="flex gap-12 items-center mt-8">
                     <div>
                         <InputLabel htmlFor="name">Name</InputLabel>
                         <TextInput

@@ -27,6 +27,9 @@ export default function CompetitionMatchesForm({
                 form.reset();
                 onSuccess?.();
             },
+            onError: (error) => {
+                console.log({ error });
+            },
         });
     };
 

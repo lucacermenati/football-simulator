@@ -38,6 +38,9 @@ export default function CompetitionForm({
                 form.reset();
                 onSuccess?.();
             },
+            onError: (error) => {
+                console.log({ error });
+            },
         });
     };
 

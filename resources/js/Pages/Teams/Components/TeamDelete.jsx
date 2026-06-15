@@ -7,6 +7,9 @@ export default function TeamDelete({ team, onCancel }) {
         router.delete(route("teams.destroy", team.id), {
             preserveScroll: true,
             onSuccess: () => onCancel(),
+            onError: (error) => {
+                console.log({ error });
+            },
         });
     };
 

@@ -15,6 +15,9 @@ export default function PlayerGenerate({ onSuccess, onCancel }) {
             onSuccess: () => {
                 onSuccess();
             },
+            onError: (error) => {
+                console.log({ error });
+            },
         });
     };
 

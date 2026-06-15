@@ -42,6 +42,9 @@ export default function CompetitionTeamsShow({
             onSuccess: () => {
                 setIsBulkAddModalOpen(false);
             },
+            onError: (error) => {
+                console.log({ error });
+            },
         });
     };
 

@@ -13,7 +13,6 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
     });
 
     const submit = (e) => {
-        console.log(e);
         e.preventDefault();
         form.post(route("players.store"), {
             onSuccess: () => {

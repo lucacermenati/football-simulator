@@ -33,6 +33,9 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                     form.reset();
                     onSuccess?.();
                 },
+                onError: (error) => {
+                    console.log({ error });
+                },
             },
         );
     };

@@ -107,36 +107,45 @@ export default function PlayersIndex({
                             />
                             <div
                                 onClick={() => toggleFree()}
-                                className={`w-6 h-6 rounded-full bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
+                                className={`w-6 h-6 rounded-full cursor-pointer bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
                             />
                             <div className="flex justify-start items-center space-x-2">
                                 <div
                                     onClick={() => toggleRole("Goalkeeper")}
-                                    className={`w-6 h-6 rounded-full bg-roleColors-Goalkeeper ${filters.role === "Goalkeeper" ? "border-2 border-primaryRed-600" : ""}`}
+                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Goalkeeper ${filters.role === "Goalkeeper" ? "border-2 border-primaryRed-600" : ""}`}
                                 />
                                 <div
                                     onClick={() => toggleRole("Defender")}
-                                    className={`w-6 h-6 rounded-full bg-roleColors-Defender ${filters.role === "Defender" ? "border-2 border-primaryRed-600" : ""}`}
+                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Defender ${filters.role === "Defender" ? "border-2 border-primaryRed-600" : ""}`}
                                 />
                                 <div
                                     onClick={() => toggleRole("Midfielder")}
-                                    className={`w-6 h-6 rounded-full bg-roleColors-Midfielder ${filters.role === "Midfielder" ? "border-2 border-primaryRed-600" : ""}`}
+                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Midfielder ${filters.role === "Midfielder" ? "border-2 border-primaryRed-600" : ""}`}
                                 />
                                 <div
                                     onClick={() => toggleRole("Forward")}
-                                    className={`w-6 h-6 rounded-full bg-roleColors-Forward ${filters.role === "Forward" ? "border-2 border-primaryRed-600" : ""}`}
+                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Forward ${filters.role === "Forward" ? "border-2 border-primaryRed-600" : ""}`}
                                 />
                             </div>
-                            <img
-                                onClick={() => setIsNationalityModalOpen(true)}
-                                className="w-6 h-6 rounded-full"
-                                src={
-                                    filters.nationality
-                                        ? `/images/flags/${filters.nationality}.svg`
-                                        : "images/flags/null.svg"
-                                }
-                                alt="No flag"
-                            />
+                            {filters.nationality ? (
+                                <Flag
+                                    nationality={filters.nationality}
+                                    onClick={() =>
+                                        setIsNationalityModalOpen(true)
+                                    }
+                                    size={6}
+                                    className="cursor-pointer"
+                                ></Flag>
+                            ) : (
+                                <img
+                                    onClick={() =>
+                                        setIsNationalityModalOpen(true)
+                                    }
+                                    className="w-6 h-6 rounded-full cursor-pointer"
+                                    src={"images/flags/null.svg"}
+                                    alt="No flag"
+                                />
+                            )}
                         </div>
                         {/* Buttons */}
                         <div className="grid grid-cols-2 gap-4">

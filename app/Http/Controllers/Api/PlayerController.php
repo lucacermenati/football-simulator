@@ -135,7 +135,7 @@ class PlayerController extends Controller
         $n = $validated['n'] ?? 1;
         $locale = $validated['locale'] ?? null;
 
-        $players = Player::factory()->fromRandomLocale($locale)->count($n)->make([
+        $players = Player::factory()->country($locale)->count($n)->make([
             'team_id' => $validated['team_id'] ?? null,
             'role' => $validated['role'] ?? null,
         ]);

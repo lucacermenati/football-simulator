@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Country;
 use App\Enums\Role;
 use App\Models\Player;
 use App\Models\Team;
@@ -24,23 +25,23 @@ class PlayerFactory extends Factory
         ];
     }
 
-    public function fromRandomLocale(?string $locale = null): static
+    public function country(string|Country|null $country = null): static
     {
-        return $this->state(function () use ($locale) {
-            $locales = config('locales.player_locales');
-            $fakerLocale = $locale ?? $locales[array_rand($locales)];
-            $faker = fake($fakerLocale);
-
-            $nationality = match ($fakerLocale) {
-                'en_GB' => collect(['EN', 'SC', 'WA'])->random(),
-                default => strtoupper(substr($fakerLocale, -2)),
+        return $this->state(function () use ($country) {
+            $country = match (true) {
+                $country instanceof Country => $country,
+                is_string($country) => Country::from($country),
+                default => Country::random(),
             };
+
+            $fakerLocales = $country->locales();
+            $faker = fake($fakerLocales[array_rand($fakerLocales)]);
 
             return [
                 'first_name' => Str::ascii($faker->firstName('male')),
                 'last_name' => Str::ascii($faker->lastName()),
                 'birth_date' => $faker->dateTimeBetween('-40 years', '-18 years'),
-                'nationality' => $nationality,
+                'nationality' => $country->value,
                 'role' => $this->randomRole(),
                 'number' => $faker->numberBetween(1, 99),
             ];

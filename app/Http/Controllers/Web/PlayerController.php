@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\Country;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class PlayerController extends Controller
@@ -63,7 +65,7 @@ class PlayerController extends Controller
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
-            'nationality' => 'nullable|string|max:5',
+            'nationality' => ['nullable', Rule::enum(Country::class)],
             'role' => 'nullable|string|max:255',
             'number' => 'nullable|integer|min:1|max:99',
         ]);
@@ -73,7 +75,7 @@ class PlayerController extends Controller
             'team_id' => null,
         ]);
 
-        Player::factory()->fromRandomLocale($request->input('nationality', null))
+        Player::factory()->country($request->input('nationality', null))
             ->create($playerData);
 
         return redirect()->back()->with('success', 'Player created successfully!');
@@ -85,7 +87,7 @@ class PlayerController extends Controller
             'size' => 'required|integer|min:1|max:500',
         ]);
 
-        Player::factory()->fromRandomLocale()->count($validated['size'])->create([
+        Player::factory()->country()->count($validated['size'])->create([
             'user_id' => $request->user()->id,
             'team_id' => null,
         ]);

@@ -11,6 +11,7 @@ import InputLabel from "@/Components/InputLabel";
 import PlayerCreate from "./Components/PlayerCreate";
 import PlayerDelete from "./Components/PlayerDelete";
 import PlayerAdd from "./Components/PlayerAdd";
+import Flag from "@/Components/Flag";
 
 export default function PlayersIndex({
     players,
@@ -222,20 +223,19 @@ export default function PlayersIndex({
                         <img
                             onClick={() => selectNationality(null)}
                             key={"No-flag"}
-                            className="w-6 h-6 rounded-full"
+                            className="w-8 h-8 rounded-full cursor-pointer"
                             src={`/images/flags/null.svg`}
                             alt="No filter"
                         />
                         {nationalities.map((nationality) => {
                             return (
-                                <img
+                                <Flag
+                                    className="cursor-pointer"
+                                    nationality={nationality}
+                                    size={8}
                                     onClick={() =>
                                         selectNationality(nationality)
                                     }
-                                    key={nationality}
-                                    className="w-6 h-6 rounded-full border border-lightGrey-600"
-                                    src={`/images/flags/${nationality}.svg`}
-                                    alt={nationality}
                                 />
                             );
                         })}

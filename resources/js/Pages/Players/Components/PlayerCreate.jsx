@@ -40,12 +40,12 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                     <InputLabel htmlFor="nationality">Nationality</InputLabel>
                     <TextInput
                         id="nationality"
-                        maxLength={5}
+                        maxLength={6}
                         value={form.data.nationality}
                         onChange={(e) =>
                             form.setData("nationality", e.target.value)
                         }
-                        placeholder="en_GB"
+                        placeholder="IT"
                     />
                     {form.errors.nationality && (
                         <div className="mt-1 text-sm text-red-600">

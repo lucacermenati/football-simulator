@@ -14,14 +14,14 @@ enum Country: string
     case Netherlands = 'NL';
     case Portugal = 'PT';
     case Spain = 'ES';
+    case Ireland = 'IE';
 
     // United Kingdom & Ireland
     case UnitedKingdom = 'GB';
-    case England = 'EN';
-    case Scotland = 'SC';
-    case Wales = 'WA';
-    case Ireland = 'IE';
-    case NorthernIreland = 'NI';
+    case England = 'GB_ENG';
+    case Scotland = 'GB_SCT';
+    case Wales = 'GB_WLS';
+    case NorthernIreland = 'GB_NIR';
 
     // Northern Europe
     case Denmark = 'DK';
@@ -103,7 +103,7 @@ enum Country: string
             ],
 
             self::UnitedKingdom,
-            self::England => ['en_GB'],
+            self::England,
             self::Scotland,
             self::Wales,
             self::Ireland,

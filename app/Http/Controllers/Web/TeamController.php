@@ -93,9 +93,13 @@ class TeamController extends Controller
 
     public function players(Team $team)
     {
+        $players = $team->players()
+            ->orderBy('number')
+            ->get();
+
         return Inertia::render('Teams/Players', [
             'team' => TeamResource::make($team),
-            'players' => PlayerResource::collection($team->players),
+            'players' => PlayerResource::collection($players),
         ]);
     }
 

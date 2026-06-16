@@ -14,11 +14,11 @@ export default function TeamInfo({ team }) {
                         </div>
                         <div className="flex gap-2">
                             <span
-                                className="w-4 h-4 rounded-full"
+                                className="w-4 h-4 rounded-full border border-lightGrey-600"
                                 style={{ backgroundColor: team.first_color }}
                             ></span>
                             <span
-                                className="w-4 h-4 rounded-full"
+                                className="w-4 h-4 rounded-full border border-lightGrey-600"
                                 style={{ backgroundColor: team.second_color }}
                             ></span>
                         </div>

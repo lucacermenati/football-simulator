@@ -18,11 +18,15 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
     return (
         <div className="p-6">
             <h3 className="text-lg font-medium text-primaryRed-600">
-                Assign {player.name} to a team
+                Add to team
             </h3>
+            <p>
+                Assign {player.first_name} {player.last_name} to a team
+            </p>
             <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>
                 <InputLabel>Select team</InputLabel>
                 <select
+                    className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
                     value={selectedTeamId}
                     onChange={(e) => setSelectedTeamId(e.target.value)}
                 >

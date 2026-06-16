@@ -127,25 +127,12 @@ export default function PlayersIndex({
                                     className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Forward ${filters.role === "Forward" ? "border-2 border-primaryRed-600" : ""}`}
                                 />
                             </div>
-                            {filters.nationality ? (
-                                <Flag
-                                    nationality={filters.nationality}
-                                    onClick={() =>
-                                        setIsNationalityModalOpen(true)
-                                    }
-                                    size={6}
-                                    className="cursor-pointer"
-                                ></Flag>
-                            ) : (
-                                <img
-                                    onClick={() =>
-                                        setIsNationalityModalOpen(true)
-                                    }
-                                    className="w-6 h-6 rounded-full cursor-pointer"
-                                    src={"images/flags/null.svg"}
-                                    alt="No flag"
-                                />
-                            )}
+                            <Flag
+                                nationality={filters.nationality}
+                                onClick={() => setIsNationalityModalOpen(true)}
+                                size={6}
+                                className="cursor-pointer"
+                            ></Flag>
                         </div>
                         {/* Buttons */}
                         <div className="grid grid-cols-2 gap-4">
@@ -229,14 +216,7 @@ export default function PlayersIndex({
                     </h3>
                     <InputLabel>Select a nationality</InputLabel>
                     <div className="grid grid-cols-4 gap-4 p-4">
-                        <img
-                            onClick={() => selectNationality(null)}
-                            key={"No-flag"}
-                            className="w-8 h-8 rounded-full cursor-pointer"
-                            src={`/images/flags/null.svg`}
-                            alt="No filter"
-                        />
-                        {nationalities.map((nationality) => {
+                        {[null, ...nationalities].map((nationality) => {
                             return (
                                 <Flag
                                     className="cursor-pointer"

@@ -9,8 +9,8 @@ export default function TeamPlayers({ team, players }) {
             <Head title={`${team.name} - Players`} />
             <TeamLayout team={team}>
                 <div className="p-6 text-gray-900">
-                    {players?.data?.length > 0 ? (
-                        <PlayerTable players={players.data} />
+                    {players?.length > 0 ? (
+                        <PlayerTable players={players} />
                     ) : (
                         <div>
                             <h1 className="mb-4 text-xl font-semibold">

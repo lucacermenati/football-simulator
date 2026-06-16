@@ -1,6 +1,5 @@
 import "../css/app.css";
 import "./bootstrap";
-import "flag-icons/css/flag-icons.min.css";
 
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";

@@ -38,8 +38,9 @@ class PlayerFactory extends Factory
             $faker = fake($fakerLocales[array_rand($fakerLocales)]);
 
             return [
-                'first_name' => Str::ascii($faker->firstName('male')),
-                'last_name' => Str::ascii($faker->lastName()),
+                // TODO: figure out which locale does not like conversion to ascii
+                'first_name' => Str::ucfirst(Str::ascii($faker->firstName('male'))),
+                'last_name' => Str::ucfirst(Str::ascii($faker->lastName())),
                 'birth_date' => $faker->dateTimeBetween('-40 years', '-18 years'),
                 'nationality' => $country->value,
                 'role' => $this->randomRole(),

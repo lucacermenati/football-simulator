@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
     if (!player) return <div></div>;
 
-    const [selectedTeamId, setSelectedTeamId] = useState("");
+    const [selectedTeamId, setSelectedTeamId] = useState(teams[0]?.id);
 
     const submit = () => {
         router.post(route("teams.players.add", selectedTeamId), {

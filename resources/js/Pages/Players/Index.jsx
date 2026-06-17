@@ -209,6 +209,7 @@ export default function PlayersIndex({
                         {[null, ...nationalities].map((nationality) => {
                             return (
                                 <Flag
+                                    key={nationality ?? "all"}
                                     className="cursor-pointer"
                                     nationality={nationality}
                                     size={8}

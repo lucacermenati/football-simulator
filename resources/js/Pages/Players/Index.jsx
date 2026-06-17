@@ -14,6 +14,7 @@ import PlayerAdd from "./Components/PlayerAdd";
 import Flag from "@/Components/Flag";
 import { ROLES, ROLE_COLOR_CLASSES } from "@/Enum/roles";
 import clsx from "clsx";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function PlayersIndex({
     players,
@@ -26,7 +27,6 @@ export default function PlayersIndex({
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     const [query, setQuery] = useState({
@@ -150,6 +150,7 @@ export default function PlayersIndex({
                         <div className="p-6 text-gray-900">
                             {players.data.length > 0 ? (
                                 <PlayerTable
+                                    teams={teams}
                                     players={players.data}
                                     actions={[
                                         {
@@ -168,13 +169,6 @@ export default function PlayersIndex({
                                             onClick: (player) => {
                                                 setSelectedPlayer(player);
                                                 setIsEditModalOpen(true);
-                                            },
-                                        },
-                                        {
-                                            icon: "add",
-                                            onClick: (player) => {
-                                                setSelectedPlayer(player);
-                                                setIsAddModalOpen(true);
                                             },
                                         },
                                         {
@@ -234,6 +228,13 @@ export default function PlayersIndex({
                             );
                         })}
                     </div>
+                    <div className="flex gap-2 justify-end mt-8">
+                        <SecondaryButton
+                            onClick={() => setIsNationalityModalOpen(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                    </div>
                 </div>
             </Modal>
             <Modal show={isCreateModalOpen}>
@@ -265,14 +266,6 @@ export default function PlayersIndex({
                 <div>
                     <h1>Edit Player</h1>
                 </div>
-            </Modal>
-            <Modal show={isAddModalOpen}>
-                <PlayerAdd
-                    player={selectedPlayer}
-                    teams={teams}
-                    onCancel={() => setIsAddModalOpen(false)}
-                    onSuccess={() => setIsAddModalOpen(false)}
-                />
             </Modal>
             <Modal show={isDeleteModalOpen}>
                 <PlayerDelete

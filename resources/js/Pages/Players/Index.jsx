@@ -12,6 +12,7 @@ import PlayerCreate from "./Components/PlayerCreate";
 import PlayerDelete from "./Components/PlayerDelete";
 import PlayerAdd from "./Components/PlayerAdd";
 import Flag from "@/Components/Flag";
+import { ROLES, ROLE_COLOR_CLASSES } from "@/Enum/roles";
 
 export default function PlayersIndex({
     players,
@@ -34,38 +35,6 @@ export default function PlayersIndex({
         nationality: filters.nationality,
         page: filters.page,
     });
-
-    const toggleFree = () => {
-        setQuery((query) => {
-            return {
-                ...query,
-                free: !query.free,
-                page: null,
-            };
-        });
-    };
-
-    const toggleRole = (role) => {
-        setQuery((query) => {
-            return {
-                ...query,
-                role: role === query.role ? null : role,
-                page: null,
-            };
-        });
-    };
-
-    const selectNationality = (nationality) => {
-        setQuery((query) => {
-            return {
-                ...query,
-                nationality: nationality,
-                page: null,
-            };
-        });
-
-        setIsNationalityModalOpen(false);
-    };
 
     useEffect(() => {
         router.get(
@@ -112,27 +81,42 @@ export default function PlayersIndex({
                                 }}
                             />
                             <div
-                                onClick={() => toggleFree()}
+                                onClick={() =>
+                                    setQuery((query) => {
+                                        return {
+                                            ...query,
+                                            free: !query.free,
+                                            page: null,
+                                        };
+                                    })
+                                }
                                 className={`w-6 h-6 rounded-full cursor-pointer bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
                             />
                             <div className="flex justify-start items-center space-x-2">
-                                <div
-                                    onClick={() => toggleRole("Goalkeeper")}
-                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Goalkeeper ${filters.role === "Goalkeeper" ? "border-2 border-primaryRed-600" : ""}`}
-                                />
-                                <div
-                                    onClick={() => toggleRole("Defender")}
-                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Defender ${filters.role === "Defender" ? "border-2 border-primaryRed-600" : ""}`}
-                                />
-                                <div
-                                    onClick={() => toggleRole("Midfielder")}
-                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Midfielder ${filters.role === "Midfielder" ? "border-2 border-primaryRed-600" : ""}`}
-                                />
-                                <div
-                                    onClick={() => toggleRole("Forward")}
-                                    className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-Forward ${filters.role === "Forward" ? "border-2 border-primaryRed-600" : ""}`}
-                                />
+                                {ROLES.map((role) => (
+                                    <div
+                                        key={role}
+                                        onClick={() =>
+                                            setQuery((query) => {
+                                                return {
+                                                    ...query,
+                                                    role:
+                                                        role === query.role
+                                                            ? null
+                                                            : role,
+                                                    page: null,
+                                                };
+                                            })
+                                        }
+                                        className={`w-6 h-6 rounded-full cursor-pointer ${ROLE_COLOR_CLASSES[role]} ${
+                                            filters.role === role
+                                                ? "border-2 border-primaryRed-600"
+                                                : ""
+                                        }`}
+                                    />
+                                ))}
                             </div>
+
                             <Flag
                                 nationality={filters.nationality}
                                 onClick={() => setIsNationalityModalOpen(true)}
@@ -228,9 +212,17 @@ export default function PlayersIndex({
                                     className="cursor-pointer"
                                     nationality={nationality}
                                     size={8}
-                                    onClick={() =>
-                                        selectNationality(nationality)
-                                    }
+                                    onClick={() => {
+                                        setQuery((query) => {
+                                            return {
+                                                ...query,
+                                                nationality: nationality,
+                                                page: null,
+                                            };
+                                        });
+
+                                        setIsNationalityModalOpen(false);
+                                    }}
                                 />
                             );
                         })}

@@ -17,7 +17,6 @@ enum Country: string
     case Ireland = 'IE';
 
     // United Kingdom & Ireland
-    case UnitedKingdom = 'GB';
     case England = 'GB_ENG';
     case Scotland = 'GB_SCT';
     case Wales = 'GB_WLS';
@@ -102,7 +101,6 @@ enum Country: string
                 'fr_CH',
             ],
 
-            self::UnitedKingdom,
             self::England,
             self::Scotland,
             self::Wales,

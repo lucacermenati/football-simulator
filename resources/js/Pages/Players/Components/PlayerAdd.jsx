@@ -40,7 +40,6 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
                     <SecondaryButton
                         type="button"
                         onClick={() => {
-                            form.reset();
                             onCancel?.();
                         }}
                     >

@@ -30,7 +30,20 @@ export default function TeamsIndex({ teams, availableCompetitions }) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center mt-2 mb-6">
-                        <Searchbar routeName={"teams.index"} />
+                        <Searchbar
+                            onSearch={(search) => {
+                                router.get(
+                                    route("teams.index"),
+                                    {
+                                        search: search,
+                                    },
+                                    {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                    },
+                                );
+                            }}
+                        />
                         <div className="grid grid-cols-2 gap-4">
                             <PrimaryButton
                                 className="self-start"

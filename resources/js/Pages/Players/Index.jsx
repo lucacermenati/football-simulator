@@ -100,10 +100,16 @@ export default function PlayersIndex({
                     <div className="flex justify-between items-center mt-2 mb-6">
                         {/* Filters */}
                         <div className="flex justify-start items-center space-x-6">
-                            {/* TODO: Update search bar to accept an onChange and update the bigger query in the outer component */}
                             <Searchbar
-                                routeName={"players.index"}
-                                query={query}
+                                onSearch={(search) => {
+                                    setQuery((query) => {
+                                        return {
+                                            ...query,
+                                            search: search,
+                                            page: null,
+                                        };
+                                    });
+                                }}
                             />
                             <div
                                 onClick={() => toggleFree()}
@@ -132,7 +138,7 @@ export default function PlayersIndex({
                                 onClick={() => setIsNationalityModalOpen(true)}
                                 size={6}
                                 className="cursor-pointer"
-                            ></Flag>
+                            />
                         </div>
                         {/* Buttons */}
                         <div className="grid grid-cols-2 gap-4">

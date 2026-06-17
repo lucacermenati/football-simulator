@@ -4,7 +4,6 @@ import TeamLogo from "@/Pages/Teams/Components/TeamLogo";
 
 export default function PlayerTable({ players, actions = [] }) {
     return (
-        // Can I put a vertical grey line between this two columns? and how?
         <div className="grid relative grid-cols-2">
             <div className="absolute top-0 bottom-0 left-1/2 w-px bg-lightGrey-600" />
             {players.map((player) => {

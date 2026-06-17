@@ -17,22 +17,17 @@ export default function Pagination({ links, meta }) {
                         )}
                     />
                 </Link>
-                {Array.from(
-                    {
-                        length: meta.last_page,
-                    },
-                    (_, i) => i + 1,
-                ).map((page) => (
-                    <Link key={page} href={meta.links[page].url}>
+                {meta.links.slice(1, -1).map((link) => (
+                    <Link key={link.label} href={link?.url || "#"}>
                         <div
                             className={clsx(
                                 "flex justify-center items-center w-6 h-6 rounded-full border border-primaryRed-600",
-                                page === meta.current_page
+                                link.active
                                     ? " bg-primaryRed-600 text-white"
                                     : "bg-white text-primaryRed-600",
                             )}
                         >
-                            {page}
+                            {link.label}
                         </div>
                     </Link>
                 ))}

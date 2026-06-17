@@ -13,6 +13,7 @@ import PlayerDelete from "./Components/PlayerDelete";
 import PlayerAdd from "./Components/PlayerAdd";
 import Flag from "@/Components/Flag";
 import { ROLES, ROLE_COLOR_CLASSES } from "@/Enum/roles";
+import clsx from "clsx";
 
 export default function PlayersIndex({
     players,
@@ -90,7 +91,11 @@ export default function PlayersIndex({
                                         };
                                     })
                                 }
-                                className={`w-6 h-6 rounded-full cursor-pointer bg-lightGrey-600 ${filters.free ? "border-2 border-primaryRed-600" : ""}`}
+                                className={clsx(
+                                    "w-6 h-6 rounded-full cursor-pointer bg-lightGrey-600",
+                                    filters.free &&
+                                        "border-2 border-primaryRed-600",
+                                )}
                             />
                             <div className="flex justify-start items-center space-x-2">
                                 {ROLES.map((role) => (
@@ -108,11 +113,12 @@ export default function PlayersIndex({
                                                 };
                                             })
                                         }
-                                        className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-${role} ${
-                                            filters.role === role
-                                                ? "border-2 border-primaryRed-600"
-                                                : ""
-                                        }`}
+                                        className={clsx(
+                                            "w-6 h-6 rounded-full cursor-pointer",
+                                            ROLE_COLOR_CLASSES[role],
+                                            filters.role === role &&
+                                                "border-2 border-primaryRed-600",
+                                        )}
                                     />
                                 ))}
                             </div>

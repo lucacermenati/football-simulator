@@ -108,7 +108,7 @@ export default function PlayersIndex({
                                                 };
                                             })
                                         }
-                                        className={`w-6 h-6 rounded-full cursor-pointer ${ROLE_COLOR_CLASSES[role]} ${
+                                        className={`w-6 h-6 rounded-full cursor-pointer bg-roleColors-${role} ${
                                             filters.role === role
                                                 ? "border-2 border-primaryRed-600"
                                                 : ""

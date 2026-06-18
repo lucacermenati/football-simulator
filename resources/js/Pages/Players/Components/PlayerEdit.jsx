@@ -4,19 +4,21 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 
-export default function PlayerCreate({ onSuccess, onCancel }) {
+export default function PlayerEdit({ player, onSuccess, onCancel }) {
     const form = useForm({
-        nationality: null,
-        first_name: null,
-        last_name: null,
-        birth_date: null,
-        role: null,
-        number: null,
+        nationality: player?.nationality || null,
+        first_name: player?.first_name || null,
+        last_name: player?.last_name || null,
+        birth_date: player?.birth_date
+            ? new Date(player?.birth_date).toISOString().split("T")[0]
+            : null,
+        role: player?.role || null,
+        number: player?.number || null,
     });
 
     const submit = (e) => {
         e.preventDefault();
-        form.post(route("players.store"), {
+        form.put(route("players.update", player.id), {
             onSuccess: () => {
                 onSuccess();
             },
@@ -29,11 +31,8 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
     return (
         <div className="p-6">
             <h3 className="text-lg font-medium text-primaryRed-600">
-                Create a player
+                Edit player
             </h3>
-            <p className="mt-1 text-sm text-darkGray-600">
-                Leave a field empty to generate the values via factory
-            </p>
             <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>
                 <div>
                     {/* TODO: Make this a better nationality selector component to re-use */}
@@ -108,6 +107,7 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                     <div>
                         <InputLabel htmlFor="role">Role</InputLabel>
                         <select
+                            value={form.data.role}
                             className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
                             onChange={(e) =>
                                 form.setData("role", e.target.value)
@@ -152,7 +152,7 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                     </SecondaryButton>
 
                     <PrimaryButton type="submit" disabled={form.processing}>
-                        Create
+                        Update
                     </PrimaryButton>
                 </div>
             </form>

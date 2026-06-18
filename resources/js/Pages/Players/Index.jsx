@@ -15,6 +15,7 @@ import Flag from "@/Components/Flag";
 import { ROLES, ROLE_COLOR_CLASSES } from "@/Enum/roles";
 import clsx from "clsx";
 import SecondaryButton from "@/Components/SecondaryButton";
+import PlayerEdit from "./Components/PlayerEdit";
 
 export default function PlayersIndex({
     players,
@@ -200,6 +201,7 @@ export default function PlayersIndex({
                 </div>
             </div>
             <Modal show={isNationalityModalOpen}>
+                {/* TODO: make it an input component */}
                 <div className="p-6">
                     <h3 className="text-lg font-medium text-primaryRed-600">
                         Nationality
@@ -263,9 +265,15 @@ export default function PlayersIndex({
                 />
             </Modal>
             <Modal show={isEditModalOpen}>
-                <div>
-                    <h1>Edit Player</h1>
-                </div>
+                <PlayerEdit
+                    player={selectedPlayer}
+                    onSuccess={() => {
+                        setIsEditModalOpen(false);
+                    }}
+                    onCancel={() => {
+                        setIsEditModalOpen(false);
+                    }}
+                />
             </Modal>
             <Modal show={isDeleteModalOpen}>
                 <PlayerDelete

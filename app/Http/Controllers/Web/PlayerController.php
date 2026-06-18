@@ -81,6 +81,22 @@ class PlayerController extends Controller
         return redirect()->back()->with('success', 'Player created successfully!');
     }
 
+    public function update(Request $request, Player $player)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'nationality' => ['required', Rule::enum(Country::class)],
+            'role' => 'required|string|max:255',
+            'number' => 'required|integer|min:1|max:99',
+        ]);
+
+        $player->update($validated);
+
+        return redirect()->back()->with('success', 'Player updated successfully!');
+    }
+
     public function generate(Request $request)
     {
         $validated = $request->validate([

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\Country;
 use App\Enums\Role;
+use App\Faker\FakerFactory;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -35,7 +36,9 @@ class PlayerFactory extends Factory
             };
 
             $fakerLocales = $country->locales();
-            $faker = fake($fakerLocales[array_rand($fakerLocales)]);
+            $locale = $fakerLocales[array_rand($fakerLocales)];
+
+            $faker = FakerFactory::create($locale);
 
             return [
                 // TODO: figure out which locale does not like conversion to ascii

@@ -54,6 +54,7 @@ enum Country: string
     case Argentina = 'AR';
     case Peru = 'PE';
     case Venezuela = 'VE';
+    case Mexico = 'MX';
 
     // North America & Oceania
     case UnitedStates = 'US';
@@ -144,6 +145,7 @@ enum Country: string
             self::Argentina => ['es_AR'],
             self::Peru => ['es_PE'],
             self::Venezuela => ['es_VE'],
+            self::Mexico => ['es_MX'],
 
             self::UnitedStates => ['en_US'],
             self::Canada => ['en_CA', 'fr_CA'],
@@ -174,6 +176,8 @@ enum Country: string
             self::Georgia => ['ka_GE'],
             self::Armenia => ['hy_AM'],
             self::Kazakhstan => ['kk_KZ'],
+
+            default => [config('app.locale')],
         };
     }
 

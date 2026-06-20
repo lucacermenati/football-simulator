@@ -56,6 +56,8 @@ enum Country: string
     case Venezuela = 'VE';
     case Mexico = 'MX';
     case Colombia = 'CO';
+    case Uruguay = 'UY';
+    case Ecuador = 'EC';
 
     // North America & Oceania
     case UnitedStates = 'US';
@@ -67,6 +69,11 @@ enum Country: string
     case Nigeria = 'NG';
     case Uganda = 'UG';
     case Egypt = 'EG';
+    case Ghana = 'GH';
+    case IvoryCoast = 'CI';
+    case Cameroon = 'CM';
+    case Senegal = 'SN';
+    case Morocco = 'MA';
 
     // Middle East
     case Jordan = 'JO';
@@ -148,6 +155,8 @@ enum Country: string
             self::Venezuela => ['es_VE'],
             self::Mexico => ['es_MX'],
             self::Colombia => ['es_CO'],
+            self::Uruguay => ['es_UY'],
+            self::Ecuador => ['es_EC'],
 
             self::UnitedStates => ['en_US'],
             self::Canada => ['en_CA', 'fr_CA'],
@@ -156,7 +165,12 @@ enum Country: string
 
             self::Nigeria => ['en_NG'],
             self::Uganda => ['en_UG'],
+            self::Ghana => ['en_GH'],
             self::Egypt => ['ar_EG'],
+            self::IvoryCoast => ['fr_CI'],
+            self::Cameroon => ['fr_CM'],
+            self::Senegal => ['fr_SN'],
+            self::Morocco => ['fr_MA'],
 
             self::Jordan => ['ar_JO'],
             self::SaudiArabia => ['ar_SA'],

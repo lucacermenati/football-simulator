@@ -84,7 +84,7 @@ class PlayerController extends Controller
     public function update(Request $request, Player $player)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'nationality' => ['required', Rule::enum(Country::class)],

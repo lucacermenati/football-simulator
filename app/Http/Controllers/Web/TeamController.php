@@ -103,6 +103,21 @@ class TeamController extends Controller
         ]);
     }
 
+    public function lineup(Team $team)
+    {
+        $players = $team->players()
+            ->orderBy('number')
+            ->limit(11)
+            ->get();
+
+        $players = $players->groupBy('role');
+
+        return Inertia::render('Teams/Lineup', [
+            'team' => TeamResource::make($team),
+            'players' => $players,
+        ]);
+    }
+
     public function addPlayer(Request $request, Team $team)
     {
         $validated = $request->validate([

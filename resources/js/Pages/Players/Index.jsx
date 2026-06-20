@@ -116,14 +116,21 @@ export default function PlayersIndex({
                                         }
                                         className={clsx(
                                             "w-6 h-6 rounded-full cursor-pointer",
-                                            ROLE_COLOR_CLASSES[role],
+                                            role === "Goalkeeper"
+                                                ? "bg-roleColors-Goalkeeper"
+                                                : role === "Defender"
+                                                  ? "bg-roleColors-Defender"
+                                                  : role === "Midfielder"
+                                                    ? "bg-roleColors-Midfielder"
+                                                    : role === "Forward"
+                                                      ? "bg-roleColors-Forward"
+                                                      : "",
                                             filters.role === role &&
                                                 "border-2 border-primaryRed-600",
                                         )}
                                     />
                                 ))}
                             </div>
-
                             <Flag
                                 nationality={filters.nationality}
                                 onClick={() => setIsNationalityModalOpen(true)}

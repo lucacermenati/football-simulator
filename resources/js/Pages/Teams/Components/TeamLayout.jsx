@@ -46,6 +46,14 @@ export default function TeamLayout({ children, team }) {
                                     >
                                         Players
                                     </Link>
+                                    <Link
+                                        className="hover:underline"
+                                        href={route("teams.lineup", {
+                                            team: team.id,
+                                        })}
+                                    >
+                                        Lineup
+                                    </Link>
                                 </div>
                             </div>
                         </div>

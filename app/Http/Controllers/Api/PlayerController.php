@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Role;
+use App\Enums\Position;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rules\Enum;
 
 class PlayerController extends Controller
 {
@@ -28,7 +28,7 @@ class PlayerController extends Controller
             'last_name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
             'nationality' => 'nullable|string|size:2',
-            'role' => ['required', 'string', Role::validationRule()],
+            'position' => ['required', 'string', new Enum(Position::class)],
             'number' => 'required|integer|min:1|max:99',
             'team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
@@ -46,12 +46,12 @@ class PlayerController extends Controller
             'players.*.last_name' => 'required|string|max:255',
             'players.*.birth_date' => 'nullable|date',
             'players.*.nationality' => 'nullable|string|size:2',
-            'players.*.role' => ['required', 'string', Role::validationRule()],
+            'players.*.position' => ['required', 'string', new Enum(Position::class)],
             'players.*.number' => 'required|integer|min:1|max:99',
             'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
         ]);
 
-        $user = $request->user() ?? User::first();
+        $user = $request->user();
 
         $createdPlayers = collect($validated['players'])->map(function ($playerData) use ($user) {
             return $user->players()->create($playerData);
@@ -74,7 +74,7 @@ class PlayerController extends Controller
             'last_name' => 'sometimes|required|string|max:255',
             'birth_date' => 'nullable|date',
             'nationality' => 'nullable|string|size:2',
-            'role' => ['sometimes', 'required', 'string', Role::validationRule()],
+            'position' => ['sometimes', 'required', 'string', new Enum(Position::class)],
             'number' => 'sometimes|required|integer|min:1|max:99',
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
         ]);
@@ -129,7 +129,7 @@ class PlayerController extends Controller
             'n' => 'sometimes|integer|min:1',
             'team_id' => 'sometimes|uuid|exists:teams,id',
             'locale' => 'sometimes|string',
-            'role' => 'sometimes|string|in:' . implode(',', Role::values()),
+            'position' => ['sometimes', 'string', new Enum(Position::class)],
         ]);
 
         $n = $validated['n'] ?? 1;
@@ -137,7 +137,7 @@ class PlayerController extends Controller
 
         $players = Player::factory()->country($locale)->count($n)->make([
             'team_id' => $validated['team_id'] ?? null,
-            'role' => $validated['role'] ?? null,
+            'position' => $validated['position'] ?? null,
         ]);
 
         return response()->json(PlayerResource::collection($players), 200);

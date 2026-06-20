@@ -1,13 +1,13 @@
 <?php
 
-use App\Enums\Role;
+use App\Enums\Position;
 
 return [
-    'role_weights' => [
-        Role::Goalkeeper->value => env('SCORER_GOALKEEPER_WEIGHT', 0),
-        Role::Defender->value => env('SCORER_DEFENDER_WEIGHT', 10),
-        Role::Midfielder->value => env('SCORER_MIDFIELDER_WEIGHT', 30),
-        Role::Forward->value => env('SCORER_FORWARD_WEIGHT', 65),
+    'position_weights' => [
+        Position::Goalkeeper->value => env('SCORER_GOALKEEPER_WEIGHT', 0),
+        Position::Defender->value => env('SCORER_DEFENDER_WEIGHT', 10),
+        Position::Midfielder->value => env('SCORER_MIDFIELDER_WEIGHT', 30),
+        Position::Forward->value => env('SCORER_FORWARD_WEIGHT', 65),
     ],
 
     'minute_periods' => [

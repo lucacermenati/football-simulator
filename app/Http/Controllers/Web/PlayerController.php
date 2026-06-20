@@ -25,8 +25,8 @@ class PlayerController extends Controller
             ->when($request->free, function ($query) {
                 $query->whereNull('team_id');
             })
-            ->when($request->input('role'), function ($query) use ($request) {
-                $query->where('role', $request->input('role'));
+            ->when($request->input('position'), function ($query) use ($request) {
+                $query->where('position', $request->input('position'));
             })
             ->when($request->input('nationality'), function ($query) use ($request) {
                 $query->where('nationality', $request->input('nationality'));
@@ -66,7 +66,7 @@ class PlayerController extends Controller
             'last_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'nationality' => ['nullable', Rule::enum(Country::class)],
-            'role' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
             'number' => 'nullable|integer|min:1|max:99',
         ]);
 
@@ -88,7 +88,7 @@ class PlayerController extends Controller
             'last_name' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'nationality' => ['required', Rule::enum(Country::class)],
-            'role' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
             'number' => 'required|integer|min:1|max:99',
         ]);
 

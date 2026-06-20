@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\Role;
+use App\Enums\Position;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class PlayersFilterRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class PlayersFilterRequest extends FormRequest
         return [
             'search' => 'sometimes|string',
             'free' => 'sometimes|integer',
-            'role' => ['sometimes', Rule::enum(Role::class)],
+            'position' => ['sometimes', new Enum(Position::class)],
             'nationality' => 'sometimes|string',
         ];
     }
@@ -28,7 +28,7 @@ class PlayersFilterRequest extends FormRequest
         return [
             'search' => $this->input('search'),
             'free' => $this->boolean('free'),
-            'role' => $this->input('role'),
+            'position' => $this->input('position'),
             'nationality' => $this->input('nationality'),
             'page' => $this->input('page')
         ];

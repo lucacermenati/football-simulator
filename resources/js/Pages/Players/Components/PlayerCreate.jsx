@@ -3,6 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
+import { POSITION } from "@/Enum/position";
 
 export default function PlayerCreate({ onSuccess, onCancel }) {
     const form = useForm({
@@ -10,7 +11,7 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
         first_name: null,
         last_name: null,
         birth_date: null,
-        role: null,
+        position: null,
         number: null,
     });
 
@@ -106,18 +107,19 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                 </div>
                 <div className="flex space-x-4">
                     <div>
-                        <InputLabel htmlFor="role">Role</InputLabel>
+                        <InputLabel htmlFor="position">Position</InputLabel>
                         <select
                             className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
                             onChange={(e) =>
-                                form.setData("role", e.target.value)
+                                form.setData("position", e.target.value)
                             }
                         >
                             <option value="">-</option>
-                            <option value="Goalkeeper">Goalkeeper</option>
-                            <option value="Defender">Defender</option>
-                            <option value="Midfielder">Midfielder</option>
-                            <option value="Forward">Forward</option>
+                            {POSITION.map((position) => (
+                                <option key={position} value={position}>
+                                    {position}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div>

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
+use App\Enums\Position;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ class Player extends Model
         'last_name',
         'birth_date',
         'nationality',
-        'role',
+        'position',
         'number',
         'team_id',
     ];
@@ -26,7 +26,7 @@ class Player extends Model
     protected $casts = [
         'birth_date' => 'date',
         'number' => 'integer',
-        'role' => Role::class,
+        'position' => Position::class,
     ];
 
     public function user(): BelongsTo

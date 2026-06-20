@@ -110,7 +110,7 @@ class TeamController extends Controller
             ->limit(11)
             ->get();
 
-        $players = $players->groupBy('role');
+        $players = $players->groupBy('position');
 
         return Inertia::render('Teams/Lineup', [
             'team' => TeamResource::make($team),

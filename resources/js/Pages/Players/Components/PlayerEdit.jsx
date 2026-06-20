@@ -3,6 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
+import { POSITION } from "@/Enum/position";
 
 export default function PlayerEdit({ player, onSuccess, onCancel }) {
     const form = useForm({
@@ -12,7 +13,7 @@ export default function PlayerEdit({ player, onSuccess, onCancel }) {
         birth_date: player?.birth_date
             ? new Date(player?.birth_date).toISOString().split("T")[0]
             : null,
-        role: player?.role || null,
+        position: player?.position || null,
         number: player?.number || null,
     });
 
@@ -105,19 +106,20 @@ export default function PlayerEdit({ player, onSuccess, onCancel }) {
                 </div>
                 <div className="flex space-x-4">
                     <div>
-                        <InputLabel htmlFor="role">Role</InputLabel>
+                        <InputLabel htmlFor="position">Position</InputLabel>
                         <select
-                            value={form.data.role}
+                            value={form.data.position}
                             className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
                             onChange={(e) =>
-                                form.setData("role", e.target.value)
+                                form.setData("position", e.target.value)
                             }
                         >
                             <option value="">-</option>
-                            <option value="Goalkeeper">Goalkeeper</option>
-                            <option value="Defender">Defender</option>
-                            <option value="Midfielder">Midfielder</option>
-                            <option value="Forward">Forward</option>
+                            {POSITION.map((position) => (
+                                <option key={position} value={position}>
+                                    {position}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div>

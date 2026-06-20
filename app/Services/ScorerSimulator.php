@@ -41,12 +41,12 @@ class ScorerSimulator
             return null;
         }
 
-        $roleWeights = config('scorer.role_weights');
+        $roleWeights = config('scorer.position_weights');
         $weightedPlayers = [];
         $totalWeight = 0;
 
         foreach ($players as $player) {
-            $weight = $roleWeights[$player->role->value] ?? 0;
+            $weight = $roleWeights[$player->position->value] ?? 0;
 
             if ($weight > 0) {
                 $totalWeight += $weight;

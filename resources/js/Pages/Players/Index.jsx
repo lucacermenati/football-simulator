@@ -10,9 +10,8 @@ import PlayerGenerate from "./Components/PlayerGenerate";
 import InputLabel from "@/Components/InputLabel";
 import PlayerCreate from "./Components/PlayerCreate";
 import PlayerDelete from "./Components/PlayerDelete";
-import PlayerAdd from "./Components/PlayerAdd";
 import Flag from "@/Components/Flag";
-import { ROLES, ROLE_COLOR_CLASSES } from "@/Enum/roles";
+import { POSITION } from "@/Enum/position";
 import clsx from "clsx";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PlayerEdit from "./Components/PlayerEdit";
@@ -33,7 +32,7 @@ export default function PlayersIndex({
     const [query, setQuery] = useState({
         search: filters.search,
         free: filters.free,
-        role: filters.role,
+        position: filters.position,
         nationality: filters.nationality,
         page: filters.page,
     });
@@ -44,7 +43,7 @@ export default function PlayersIndex({
             {
                 search: query.search || undefined,
                 free: query.free ? 1 : undefined,
-                role: query.role || undefined,
+                position: query.position || undefined,
                 nationality: query.nationality || undefined,
                 page: filters.page || undefined,
             },
@@ -99,33 +98,34 @@ export default function PlayersIndex({
                                 )}
                             />
                             <div className="flex justify-start items-center space-x-2">
-                                {ROLES.map((role) => (
+                                {POSITION.map((position) => (
                                     <div
-                                        key={role}
+                                        key={position}
                                         onClick={() =>
                                             setQuery((query) => {
                                                 return {
                                                     ...query,
-                                                    role:
-                                                        role === query.role
+                                                    position:
+                                                        position ===
+                                                        query.position
                                                             ? null
-                                                            : role,
+                                                            : position,
                                                     page: null,
                                                 };
                                             })
                                         }
                                         className={clsx(
                                             "w-6 h-6 rounded-full cursor-pointer",
-                                            role === "Goalkeeper"
-                                                ? "bg-roleColors-Goalkeeper"
-                                                : role === "Defender"
-                                                  ? "bg-roleColors-Defender"
-                                                  : role === "Midfielder"
-                                                    ? "bg-roleColors-Midfielder"
-                                                    : role === "Forward"
-                                                      ? "bg-roleColors-Forward"
+                                            position === "Goalkeeper"
+                                                ? "bg-position-Goalkeeper"
+                                                : position === "Defender"
+                                                  ? "bg-position-Defender"
+                                                  : position === "Midfielder"
+                                                    ? "bg-position-Midfielder"
+                                                    : position === "Forward"
+                                                      ? "bg-position-Forward"
                                                       : "",
-                                            filters.role === role &&
+                                            filters.position === position &&
                                                 "border-2 border-primaryRed-600",
                                         )}
                                     />

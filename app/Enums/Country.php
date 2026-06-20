@@ -55,6 +55,7 @@ enum Country: string
     case Peru = 'PE';
     case Venezuela = 'VE';
     case Mexico = 'MX';
+    case Colombia = 'CO';
 
     // North America & Oceania
     case UnitedStates = 'US';
@@ -146,6 +147,7 @@ enum Country: string
             self::Peru => ['es_PE'],
             self::Venezuela => ['es_VE'],
             self::Mexico => ['es_MX'],
+            self::Colombia => ['es_CO'],
 
             self::UnitedStates => ['en_US'],
             self::Canada => ['en_CA', 'fr_CA'],

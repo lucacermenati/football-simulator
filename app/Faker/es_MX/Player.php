@@ -5,30 +5,35 @@ namespace App\Faker\es_MX;
 class Player extends \Faker\Provider\es_ES\Person
 {
     protected static $firstNameMale = [
-    'Adrián', 'Alan', 'Alberto', 'Alejandro', 'Alonso', 'Ángel', 'Ángel Gabriel', 'Antonio', 'Armando', 'Arturo',
-    'Axel', 'Brayan', 'Bruno', 'Bryan', 'Carlos', 'Carlos Alberto', 'César', 'Christian', 'Cristian', 'Damián',
-    'Daniel', 'David', 'Diego', 'Dylan', 'Edgar', 'Eduardo', 'Elias', 'Emiliano', 'Emilio', 'Emmanuel',
-    'Enrique', 'Erick', 'Esteban', 'Felipe', 'Fernando', 'Francisco', 'Gael', 'Gabriel', 'Gerardo', 'Gilberto',
-    'Guillermo', 'Héctor', 'Hugo', 'Isaac', 'Iván', 'Javier', 'Jesús', 'Jesús Antonio', 'Joel', 'Jonathan',
-    'Jorge', 'José Ángel', 'José Antonio', 'José Luis', 'José Manuel', 'Juan Carlos', 'Juan Manuel', 'Juan Pablo',
-    'Julio', 'Kevin', 'Leonardo', 'Leonel', 'Luis', 'Luis Ángel', 'Luis Fernando', 'Manuel', 'Marco', 'Mario',
-    'Martín', 'Mateo', 'Matías', 'Mauricio', 'Maximiliano', 'Miguel', 'Miguel Ángel', 'Nicolás', 'Noé', 'Óscar',
-    'Omar', 'Pablo', 'Pedro', 'Rafael', 'Ramiro', 'Raúl', 'Renato', 'Ricardo', 'Roberto', 'Rodrigo',
-    'Rubén', 'Salvador', 'Samuel', 'Santiago', 'Saúl', 'Sebastián', 'Sergio', 'Tadeo', 'Tomás', 'Ulises',
-    'Víctor', 'Yahir',
-];
+        'Alexander', 'Andrés', 'Andrés Felipe', 'Antonio', 'Brayan', 'Camilo', 'Carlos', 'Carlos Alberto',
+        'Carlos Andrés', 'Cristian', 'Daniel', 'David', 'Diego', 'Diego Fernando', 'Edwin', 'Emiliano',
+        'Emmanuel', 'Esteban', 'Felipe', 'Gabriel', 'Germán', 'Gustavo', 'Harold', 'Henry',
+        'Hernán', 'Hugo', 'Iván', 'Jairo', 'Jhon', 'Jhon Jairo', 'Jhonatan', 'Jorge',
+        'José', 'Juan', 'Juan Camilo', 'Juan David', 'Juan José', 'Juan Pablo', 'Juan Sebastián',
+        'Kevin', 'Leonardo', 'Luis', 'Luis Fernando', 'Luis Miguel', 'Manuel', 'Marco',
+        'Martín', 'Mateo', 'Matías', 'Maximiliano', 'Miguel', 'Miguel Ángel', 'Nicolás',
+        'Óscar', 'Pablo', 'Pedro', 'Rafael', 'Raúl', 'Ricardo', 'Roberto', 'Rodrigo',
+        'Samuel', 'Samuel David', 'Santiago', 'Sebastián', 'Sergio', 'Steven', 'Thiago',
+        'Víctor', 'Wilmer', 'Yair', 'Yerson',
+    ];
 
-protected static $lastName = [
-    'Acosta', 'Aguilar', 'Aguirre', 'Álvarez', 'Arias', 'Bautista', 'Beltrán', 'Benítez', 'Bravo', 'Cabrera',
-    'Camacho', 'Campos', 'Cárdenas', 'Carrillo', 'Castillo', 'Castro', 'Cervantes', 'Chávez', 'Contreras', 'Correa',
-    'Cortés', 'Cruz', 'Cuevas', 'Delgado', 'Díaz', 'Domínguez', 'Escobar', 'Esquivel', 'Figueroa', 'Flores',
-    'Franco', 'Fuentes', 'Gallegos', 'Galván', 'García', 'Gómez', 'González', 'Guerrero', 'Gutiérrez', 'Hernández',
-    'Herrera', 'Ibarra', 'Jiménez', 'León', 'López', 'Luna', 'Macias', 'Maldonado', 'Márquez', 'Martínez',
-    'Medina', 'Mejía', 'Mendoza', 'Miranda', 'Montes', 'Montoya', 'Mora', 'Morales', 'Moreno', 'Nava',
-    'Navarro', 'Ortega', 'Orozco', 'Ortiz', 'Pacheco', 'Padilla', 'Palacios', 'Pérez', 'Pineda', 'Ramos',
-    'Ramírez', 'Reyes', 'Rentería', 'Rivera', 'Rodríguez', 'Rojas', 'Romero', 'Rosales', 'Ruiz', 'Salazar',
-    'Sánchez', 'Sandoval', 'Santana', 'Silva', 'Solís', 'Soto', 'Téllez', 'Torres', 'Trejo', 'Valdez',
-    'Valencia', 'Valenzuela', 'Vargas', 'Vásquez', 'Vega', 'Velázquez', 'Villalobos', 'Villanueva', 'Villarreal', 'Zamora',
-    'Zúñiga',
-];
+    protected static $lastName = [
+        'Acosta', 'Agudelo', 'Arango', 'Arias', 'Avila', 'Barrera', 'Beltrán', 'Benítez',
+        'Blanco', 'Bohórquez', 'Botero', 'Buitrago', 'Bustamante', 'Cabrera', 'Caicedo',
+        'Calderón', 'Camacho', 'Cano', 'Cardona', 'Carmona', 'Carrillo', 'Carvajal',
+        'Castañeda', 'Castillo', 'Castro', 'Correa', 'Cortés', 'Cruz', 'Cuellar',
+        'Díaz', 'Duarte', 'Escobar', 'Espinosa', 'Estrada', 'Fernández', 'Flórez',
+        'Fonseca', 'Franco', 'Gallego', 'García', 'Gaviria', 'Giraldo', 'Gómez',
+        'González', 'Guerrero', 'Gutiérrez', 'Henao', 'Hernández', 'Herrera',
+        'Hincapié', 'Hoyos', 'Jaramillo', 'Jiménez', 'León', 'López', 'Lozano',
+        'Marín', 'Márquez', 'Martínez', 'Medina', 'Mejía', 'Mendoza', 'Molina',
+        'Montoya', 'Morales', 'Moreno', 'Muñoz', 'Navarro', 'Núñez', 'Ocampo',
+        'Olaya', 'Ortega', 'Ortiz', 'Osorio', 'Ospina', 'Pacheco', 'Palacios',
+        'Parra', 'Patiño', 'Peña', 'Pérez', 'Pinzón', 'Quintero', 'Ramírez',
+        'Rangel', 'Restrepo', 'Reyes', 'Rincón', 'Ríos', 'Rivera', 'Rodríguez',
+        'Rojas', 'Romero', 'Ruiz', 'Salazar', 'Sánchez', 'Sandoval', 'Sarmiento',
+        'Silva', 'Soto', 'Suárez', 'Torres', 'Trujillo', 'Uribe', 'Valencia',
+        'Vallejo', 'Vargas', 'Vásquez', 'Velásquez', 'Vélez', 'Villamizar',
+        'Villanueva', 'Zambrano', 'Zapata',
+    ];
 }

@@ -105,16 +105,22 @@ class TeamController extends Controller
 
     public function lineup(Team $team)
     {
-        $players = $team->players()
-            ->orderBy('number')
-            ->limit(11)
-            ->get();
+        $lineupQuery = $team->players()
+            ->orderBy('position_on_field');
 
-        $players = $players->groupBy('position');
+        $startingEleven = $lineupQuery
+            ->limit(11)
+            ->get()
+            ->groupBy('position');
+
+        $substitutes = $lineupQuery
+            ->offset(11)
+            ->get();
 
         return Inertia::render('Teams/Lineup', [
             'team' => TeamResource::make($team),
-            'players' => $players,
+            'startingEleven' => $startingEleven,
+            'substitutes' => $substitutes,
         ]);
     }
 

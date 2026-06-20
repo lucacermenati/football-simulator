@@ -3,7 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
-import { POSITION } from "@/Enum/position";
+import { POSITION_ARRAY } from "@/Enum/position";
 
 export default function PlayerEdit({ player, onSuccess, onCancel }) {
     const form = useForm({
@@ -115,7 +115,7 @@ export default function PlayerEdit({ player, onSuccess, onCancel }) {
                             }
                         >
                             <option value="">-</option>
-                            {POSITION.map((position) => (
+                            {POSITION_ARRAY.map((position) => (
                                 <option key={position} value={position}>
                                     {position}
                                 </option>

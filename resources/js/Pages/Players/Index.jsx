@@ -11,10 +11,11 @@ import InputLabel from "@/Components/InputLabel";
 import PlayerCreate from "./Components/PlayerCreate";
 import PlayerDelete from "./Components/PlayerDelete";
 import Flag from "@/Components/Flag";
-import { POSITION } from "@/Enum/position";
+import { POSITION_ARRAY } from "@/Enum/position";
 import clsx from "clsx";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PlayerEdit from "./Components/PlayerEdit";
+import PositionIndicator from "@/Components/PositionIndicator";
 
 export default function PlayersIndex({
     players,
@@ -98,9 +99,11 @@ export default function PlayersIndex({
                                 )}
                             />
                             <div className="flex justify-start items-center space-x-2">
-                                {POSITION.map((position) => (
-                                    <div
+                                {POSITION_ARRAY.map((position) => (
+                                    <PositionIndicator
                                         key={position}
+                                        position={position}
+                                        className={`${filters.position === position ? "border-2 border-primaryRed-600" : ""}`}
                                         onClick={() =>
                                             setQuery((query) => {
                                                 return {
@@ -114,20 +117,6 @@ export default function PlayersIndex({
                                                 };
                                             })
                                         }
-                                        className={clsx(
-                                            "w-6 h-6 rounded-full cursor-pointer",
-                                            position === "Goalkeeper"
-                                                ? "bg-position-Goalkeeper"
-                                                : position === "Defender"
-                                                  ? "bg-position-Defender"
-                                                  : position === "Midfielder"
-                                                    ? "bg-position-Midfielder"
-                                                    : position === "Forward"
-                                                      ? "bg-position-Forward"
-                                                      : "",
-                                            filters.position === position &&
-                                                "border-2 border-primaryRed-600",
-                                        )}
                                     />
                                 ))}
                             </div>

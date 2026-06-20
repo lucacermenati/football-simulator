@@ -5,6 +5,7 @@ import Modal from "@/Components/Modal";
 import PlayerAdd from "@/Pages/Players/Components/PlayerAdd";
 import PlusCircle from "@/Icons/PlusCircle";
 import { useState } from "react";
+import PositionIndicator from "@/Components/PositionIndicator";
 
 export default function PlayerTable({ players, actions = [], teams = [] }) {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -24,9 +25,7 @@ export default function PlayerTable({ players, actions = [], teams = [] }) {
                                     nationality={player.nationality}
                                     size={8}
                                 />
-                                <div
-                                    className={`w-6 h-6 rounded-full bg-roleColors-${player.role}`}
-                                />
+                                <PositionIndicator position={player.position} />
                                 <span className="overflow-hidden min-w-0 font-medium">
                                     {`${player.first_name} ${player.last_name}`}
                                 </span>

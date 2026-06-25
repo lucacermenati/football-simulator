@@ -8,14 +8,44 @@ use Faker\Generator;
 class FakerFactory
 {
     protected static array $customLocales = [
+        'en_NIR' => [
+            'base' => 'en_GB',
+            'providers' => [
+                \App\Faker\en_NIR\Player::class,
+            ],
+        ],
+        'en_SCT' => [
+            'base' => 'en_GB',
+            'providers' => [
+                \App\Faker\en_SCT\Player::class,
+            ],
+        ],
+        'en_IE' => [
+            'base' => 'en_GB',
+            'providers' => [
+                \App\Faker\en_IE\Player::class,
+            ],
+        ],
+        'en_WLS' => [
+            'base' => 'en_GB',
+            'providers' => [
+                \App\Faker\en_WLS\Player::class,
+            ],
+        ],
         'es_CO' => [
-            'base' => 'es_CO',
+            'base' => 'es_ES',
             'providers' => [
                 \App\Faker\es_CO\Player::class,
             ],
         ],
+        'es_CL' => [
+            'base' => 'es_ES',
+            'providers' => [
+                \App\Faker\es_CL\Player::class,
+            ],
+        ],
         'es_EC' => [
-            'base' => 'es_EC',
+            'base' => 'es_ES',
             'providers' => [
                 \App\Faker\es_EC\Player::class,
             ],
@@ -62,10 +92,22 @@ class FakerFactory
                 \App\Faker\fr_MA\Player::class,
             ],
         ],
+        'fr_DZ' => [
+            'base' => 'fr_DZ',
+            'providers' => [
+                \App\Faker\fr_DZ\Player::class,
+            ],
+        ],
         'it_IT' => [
             'base' => 'it_IT',
             'providers' => [
                 \App\Faker\it_IT\Player::class,
+            ],
+        ],
+        'sq_AL' => [
+            'base' => 'sq_AL',
+            'providers' => [
+                \App\Faker\sq_AL\Player::class,
             ],
         ],
     ];

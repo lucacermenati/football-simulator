@@ -14,13 +14,13 @@ enum Country: string
     case Netherlands = 'NL';
     case Portugal = 'PT';
     case Spain = 'ES';
-    case Ireland = 'IE';
 
     // United Kingdom & Ireland
     case England = 'GB_ENG';
     case Scotland = 'GB_SCT';
     case Wales = 'GB_WLS';
     case NorthernIreland = 'GB_NIR';
+    case Ireland = 'IE';
 
     // Northern Europe
     case Denmark = 'DK';
@@ -48,6 +48,7 @@ enum Country: string
     case Greece = 'GR';
     case Turkey = 'TR';
     case Montenegro = 'ME';
+    case Albania = 'AL';
 
     // South America
     case Brazil = 'BR';
@@ -58,6 +59,7 @@ enum Country: string
     case Colombia = 'CO';
     case Uruguay = 'UY';
     case Ecuador = 'EC';
+    case Chile = 'CL';
 
     // North America & Oceania
     case UnitedStates = 'US';
@@ -74,6 +76,7 @@ enum Country: string
     case Cameroon = 'CM';
     case Senegal = 'SN';
     case Morocco = 'MA';
+    case Algeria = 'DZ';
 
     // Middle East
     case Jordan = 'JO';
@@ -110,11 +113,11 @@ enum Country: string
                 'fr_CH',
             ],
 
-            self::England,
-            self::Scotland,
-            self::Wales,
-            self::Ireland,
-            self::NorthernIreland => ['en_GB'],
+            self::England => ['en_GB'],
+            self::Wales => ['en_WLS'],
+            self::Ireland => ['en_IE'],
+            self::Scotland => ['en_SCT'],
+            self::NorthernIreland => ['en_NIR'],
 
             self::France => ['fr_FR'],
             self::Belgium => ['fr_BE', 'nl_BE'],
@@ -148,6 +151,7 @@ enum Country: string
             self::Greece => ['el_GR'],
             self::Turkey => ['tr_TR'],
             self::Montenegro => ['me_ME'],
+            self::Albania => ['sq_AL'],
 
             self::Brazil => ['pt_BR'],
             self::Argentina => ['es_AR'],
@@ -157,6 +161,7 @@ enum Country: string
             self::Colombia => ['es_CO'],
             self::Uruguay => ['es_UY'],
             self::Ecuador => ['es_EC'],
+            self::Chile => ['es_CL'],
 
             self::UnitedStates => ['en_US'],
             self::Canada => ['en_CA', 'fr_CA'],
@@ -171,6 +176,7 @@ enum Country: string
             self::Cameroon => ['fr_CM'],
             self::Senegal => ['fr_SN'],
             self::Morocco => ['fr_MA'],
+            self::Algeria => ['fr_DZ'],
 
             self::Jordan => ['ar_JO'],
             self::SaudiArabia => ['ar_SA'],

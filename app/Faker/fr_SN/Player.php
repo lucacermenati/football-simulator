@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Faker\fr_MA;
+namespace App\Faker\fr_SN;
 
 class Player extends \Faker\Provider\fr_FR\Person
 {

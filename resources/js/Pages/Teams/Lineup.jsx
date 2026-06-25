@@ -83,6 +83,10 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                     </div>
                                 </div>
                             ))}
+                            <div className="flex justify-items-start items-center space-x-2">
+                                <PositionIndicator>HC</PositionIndicator>
+                                <div key="HC">{team.head_coach_name ?? ""}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

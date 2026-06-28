@@ -69,6 +69,7 @@ enum Country: string
 
     // Africa
     case Nigeria = 'NG';
+    case Congo = 'CD';
     case Uganda = 'UG';
     case Egypt = 'EG';
     case Ghana = 'GH';
@@ -77,6 +78,7 @@ enum Country: string
     case Senegal = 'SN';
     case Morocco = 'MA';
     case Algeria = 'DZ';
+    case Zambia = 'ZM';
 
     // Middle East
     case Jordan = 'JO';
@@ -169,6 +171,7 @@ enum Country: string
             self::NewZealand => ['en_NZ'],
 
             self::Nigeria => ['en_NG'],
+            self::Congo => ['fr_CD'],
             self::Uganda => ['en_UG'],
             self::Ghana => ['en_GH'],
             self::Egypt => ['ar_EG'],
@@ -177,6 +180,7 @@ enum Country: string
             self::Senegal => ['fr_SN'],
             self::Morocco => ['fr_MA'],
             self::Algeria => ['fr_DZ'],
+            self::Zambia => ['en_ZM'],
 
             self::Jordan => ['ar_JO'],
             self::SaudiArabia => ['ar_SA'],

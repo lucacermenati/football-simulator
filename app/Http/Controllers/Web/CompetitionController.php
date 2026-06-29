@@ -95,7 +95,7 @@ class CompetitionController extends Controller
     public function standings(Competition $competition)
     {
         // TODO: Make the standing calculation a service
-        $standings = Team::select('id', 'name')
+        $standings = Team::query()
                     ->whereHas('competitions', function ($query) use ($competition) {
                         $query->where('competitions.id', $competition->id);
                     })->addSelect([
@@ -116,7 +116,7 @@ class CompetitionController extends Controller
                             ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
                             ->where('matches.competition_id', $competition->id)
                             ->where('matches.played', true),
-                        'gol' => FootballMatch::selectRaw('
+                        'goals' => FootballMatch::selectRaw('
                             COALESCE(SUM(
                                 CASE
                                     WHEN home_team_id = teams.id THEN goal_home
@@ -129,7 +129,7 @@ class CompetitionController extends Controller
                             ->where('matches.played', true),
                     ])
                     ->orderBy('points', 'desc')
-                    ->orderBy('gol', 'desc')
+                    ->orderBy('goals', 'desc')
                     ->get();
 
         return Inertia::render('Competitions/Standings', [
@@ -141,7 +141,7 @@ class CompetitionController extends Controller
     public function scorers(Competition $competition)
     {
         // TODO: Make the top scorers calculation a service
-        $scorers = Player::select('id', 'first_name', 'last_name')
+        $scorers = Player::with('team')
                     ->whereHas('matches', function ($query) use ($competition) {
                         $query->where('matches.competition_id', $competition->id);
                     })

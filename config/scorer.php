@@ -10,6 +10,10 @@ return [
         Position::Forward->value => env('SCORER_FORWARD_WEIGHT', 65),
     ],
 
+    'starter_multiplier' => env('SCORER_STARTER_MULTIPLIER', 1.0),
+
+    'substitute_multiplier' => env('SCORER_SUBSTITUTE_MULTIPLIER', 0.35),
+
     'minute_periods' => [
         ['min' => 1, 'max' => 45, 'weight' => 0.45],
         ['min' => 46, 'max' => 90, 'weight' => 0.45],

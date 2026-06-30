@@ -8,96 +8,125 @@ use Illuminate\Support\Collection;
 
 class ScorerSimulator
 {
-    public static function assignScorers(FootballMatch $match): void
+    public function assignScorers(FootballMatch $match): void
     {
         $match->scorers()->detach();
 
-        $homePlayers = $match->homeTeam->players;
-        $awayPlayers = $match->awayTeam->players;
+        $homeStarters = $match->homeTeam->startingPlayers()->get();
+        $homeSubstitutes = $match->homeTeam->substitutePlayers()->get();
 
-        $totalGoals = $match->goal_home + $match->goal_away;
-        $minutes = self::generateUniqueMinutes($totalGoals);
+        $awayStarters = $match->awayTeam->startingPlayers()->get();
+        $awaySubstitutes = $match->awayTeam->substitutePlayers()->get();
+
+        $minutes = $this->generateUniqueMinutes(
+            $match->goal_home + $match->goal_away
+        );
 
         $minuteIndex = 0;
 
         for ($i = 0; $i < $match->goal_home; $i++) {
-            $scorer = self::selectScorer($homePlayers);
+            $scorer = $this->selectScorer($homeStarters, $homeSubstitutes);
+
             if ($scorer) {
-                $match->scorers()->attach($scorer->id, ['minute' => $minutes[$minuteIndex++]]);
+                $match->scorers()->attach($scorer->id, [
+                    'minute' => $minutes[$minuteIndex++],
+                ]);
             }
         }
 
         for ($i = 0; $i < $match->goal_away; $i++) {
-            $scorer = self::selectScorer($awayPlayers);
+            $scorer = $this->selectScorer($awayStarters, $awaySubstitutes);
+
             if ($scorer) {
-                $match->scorers()->attach($scorer->id, ['minute' => $minutes[$minuteIndex++]]);
+                $match->scorers()->attach($scorer->id, [
+                    'minute' => $minutes[$minuteIndex++],
+                ]);
             }
         }
     }
 
-    protected static function selectScorer(Collection $players): ?Player
+    protected function selectScorer(Collection $starters, Collection $substitutes): ?Player
     {
-        if ($players->isEmpty()) {
+        $weightedPlayers = collect()
+            ->merge(
+                $this->weightedPlayers(
+                    $starters,
+                    config('scorer.starter_multiplier')
+                )
+            )
+            ->merge(
+                $this->weightedPlayers(
+                    $substitutes,
+                    config('scorer.substitute_multiplier')
+                )
+            )
+            ->filter(fn (array $item) => $item['weight'] > 0)
+            ->values();
+
+        if ($weightedPlayers->isEmpty()) {
             return null;
         }
 
-        $roleWeights = config('scorer.position_weights');
-        $weightedPlayers = [];
-        $totalWeight = 0;
+        return $this->weightedRandom($weightedPlayers);
+    }
 
-        foreach ($players as $player) {
-            $weight = $roleWeights[$player->position->value] ?? 0;
+    protected function weightedPlayers(Collection $players, float $multiplier): Collection
+    {
+        return $players->map(fn (Player $player) => [
+            'player' => $player,
+            'weight' => $this->positionWeight($player) * $multiplier,
+        ]);
+    }
 
-            if ($weight > 0) {
-                $totalWeight += $weight;
-                $weightedPlayers[] = [
-                    'player' => $player,
-                    'weight' => $weight,
-                    'cumulative' => $totalWeight,
-                ];
-            }
-        }
+    protected function positionWeight(Player $player): float
+    {
+        return config('scorer.position_weights')[$player->position->value] ?? 0;
+    }
 
-        if (empty($weightedPlayers) || $totalWeight <= 0) {
-            return null;
-        }
+    protected function weightedRandom(Collection $weightedPlayers): Player
+    {
+        $totalWeight = $weightedPlayers->sum('weight');
 
         $random = mt_rand() / mt_getrandmax() * $totalWeight;
 
+        $cumulative = 0;
+
         foreach ($weightedPlayers as $item) {
-            if ($random <= $item['cumulative']) {
+            $cumulative += $item['weight'];
+
+            if ($random <= $cumulative) {
                 return $item['player'];
             }
         }
 
-        return $weightedPlayers[count($weightedPlayers) - 1]['player'];
+        return $weightedPlayers->last()['player'];
     }
 
-    protected static function generateUniqueMinutes(int $count): array
+    protected function generateUniqueMinutes(int $count): array
     {
         $minutes = [];
 
         while (count($minutes) < $count) {
-            $minute = self::randomMinute();
-            if (!in_array($minute, $minutes)) {
+            $minute = $this->randomMinute();
+
+            if (! in_array($minute, $minutes, true)) {
                 $minutes[] = $minute;
             }
         }
 
-        sort($minutes);
-
         return $minutes;
     }
 
-    protected static function randomMinute(): int
+    protected function randomMinute(): int
     {
         $periods = config('scorer.minute_periods');
 
         $rand = mt_rand() / mt_getrandmax();
-        $cumulative = 0.0;
+        $cumulative = 0;
 
         foreach ($periods as $period) {
             $cumulative += $period['weight'];
+
             if ($rand <= $cumulative) {
                 return random_int($period['min'], $period['max']);
             }

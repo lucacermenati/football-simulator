@@ -47,6 +47,16 @@ class Team extends Model
         return $this->hasMany(Player::class);
     }
 
+    public function startingPlayers(): HasMany
+    {
+        return $this->hasMany(Player::class)->orderBy('position_on_field')->limit(11);
+    }
+
+    public function substitutePlayers(): HasMany
+    {
+        return $this->hasMany(Player::class)->orderBy('position_on_field')->skip(11)->limit(PHP_INT_MAX);
+    }
+
     public function homeMatches(): HasMany
     {
         return $this->hasMany(FootballMatch::class, 'home_team_id');

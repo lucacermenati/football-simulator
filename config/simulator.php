@@ -18,5 +18,5 @@ return [
             'min' => env('SIMULATOR_POISSON_EXPECTED_GOALS_MIN', 0.15),
             'max' => env('SIMULATOR_POISSON_EXPECTED_GOALS_MAX', 2.5),
         ],
-    ],1
+    ],
 ];

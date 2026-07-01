@@ -74,6 +74,18 @@ class FakerFactory
                 \App\Faker\en_ZM\Player::class,
             ],
         ],
+        'en_SL' => [
+            'base' => 'en_SL',
+            'providers' => [
+                \App\Faker\en_SL\Player::class,
+            ],
+        ],
+        'en_ZA' => [
+            'base' => 'en_ZA',
+            'providers' => [
+                \App\Faker\en_ZA\Player::class,
+            ],
+        ],
         'fr_CD' => [
             'base' => 'fr_FR',
             'providers' => [

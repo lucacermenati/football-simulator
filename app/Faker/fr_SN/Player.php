@@ -5,24 +5,19 @@ namespace App\Faker\fr_SN;
 class Player extends \Faker\Provider\fr_FR\Person
 {
     protected static $firstNameMale = [
-        'Abdelaziz', 'Abdelhak', 'Abdelilah', 'Abdellah', 'Abderrahim', 'Abderrazak', 'Abdou', 'Abdoul', 'Achraf', 'Adil',
-        'Ahmed', 'Amin', 'Amine', 'Anas', 'Ayoub', 'Aymane', 'Aziz', 'Badreddine', 'Badr', 'Bilal',
-        'Chakir', 'Driss', 'Hamza', 'Hassan', 'Hicham', 'Ibrahim', 'Idriss', 'Ilham', 'Imad', 'Ismail',
-        'Jamal', 'Jawad', 'Kamal', 'Karim', 'Khalid', 'Khalil', 'Mehdi', 'Mohamed', 'Mohammed', 'Mouad',
-        'Mounir', 'Moussa', 'Mustapha', 'Nabil', 'Nadir', 'Najib', 'Nasser', 'Nordine', 'Omar', 'Othmane',
-        'Rachid', 'Reda', 'Said', 'Salim', 'Samir', 'Soufiane', 'Tarik', 'Walid', 'Yassine', 'Youssef',
-        'Younes', 'Zakaria', 'Zakariya', 'Zinedine',
+        'Ababacar', 'Abdou', 'Abdoulaye', 'Abib', 'Adama', 'Ahmed', 'Alioune', 'Amadou', 'Babacar', 'Bamba',
+        'Cheikh', 'Daouda', 'Demba', 'Djibril', 'El Hadji', 'Fallou', 'Ibrahima', 'Idrissa', 'Issa', 'Khadim',
+        'Lamine', 'Landing', 'Mamadou', 'Mame', 'Matar', 'Modou', 'Mohamed', 'Mor', 'Moussa', 'Moustapha',
+        'Naby', 'Omar', 'Oumar', 'Pape', 'Pathé', 'Saliou', 'Samba', 'Serigne', 'Sidy', 'Souleymane',
+        'Tidiane', 'Yaya', 'Youssou', 'Youssouf',
     ];
 
     protected static $lastName = [
-        'Aarab', 'Ait Benasser', 'Ait El Haj', 'Ait Lahcen', 'Alaoui', 'Amallah', 'Amrabat', 'Bakkali', 'Belhanda', 'Bennani',
-        'Bennasser', 'Benyahia', 'Boufal', 'Bouhaddouz', 'Boulahroud', 'Bounou', 'Chafik', 'Daoudi', 'El Azzouzi', 'El Ghazi',
-        'El Haddad', 'El Hamdaoui', 'El Idrissi', 'El Kaabi', 'El Khannouss', 'El Ouahdi', 'En-Nesyri', 'Ezzalzouli', 'Fajr', 'Hakimi',
-        'Hamdallah', 'Harit', 'Kadouri', 'Labyad', 'Mazraoui', 'Mendyl', 'Mokhtari', 'Ounahi', 'Saiss', 'Tagnaouti',
-        'Taarabt', 'Tahiri', 'Talbi', 'Yamiq', 'Zerhouni', 'Ziyech',
-
-        'Abid', 'Ait Ahmed', 'Ait Brahim', 'Ait Taleb', 'Allali', 'Azzouzi', 'Belkacem', 'Belmokhtar', 'Benali', 'Bensaid',
-        'Berrada', 'Bouchra', 'Chaouch', 'El Fassi', 'El Mansouri', 'El Mokadem', 'El Yousfi', 'Haddadi', 'Jebbour', 'Khattabi',
-        'Lahmadi', 'Mernissi', 'Ouazzani', 'Oukili', 'Rafik', 'Sbai', 'Touil', 'Yahyaoui',
+        'Aidara', 'Ba', 'Badiane', 'Baldé', 'Barry', 'Beye', 'Boye', 'Camara', 'Cissé', 'Coly',
+        'Dabo', 'Diallo', 'Diatta', 'Diédhiou', 'Diagne', 'Diakhaté', 'Diouf', 'Diop', 'Fall', 'Faye',
+        'Gassama', 'Gomis', 'Gueye', 'Guèye', 'Ka', 'Kane', 'Keita', 'Koulibaly', 'Lô', 'Mané',
+        'M\'Baye', 'Mbengue', 'Mbodji', 'Mboup', 'Mendy', 'Ndao', 'Ndaw', 'Ndiaye', 'Ndione', 'Ndiour',
+        'Ndiouf', 'Niang', 'Niane', 'Sagna', 'Sakho', 'Samb', 'Sané', 'Sarr', 'Seck', 'Senghor',
+        'Seye', 'Sonko', 'Sow', 'Sy', 'Tall', 'Tandia', 'Thiam', 'Touré', 'Wade', 'Wagué',
     ];
 }

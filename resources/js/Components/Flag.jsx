@@ -19,7 +19,7 @@ export default function Flag({
                 <CountryFlag className="h-full scale-150" />
             ) : (
                 <img
-                    src={"images/flags/null.svg"}
+                    src={"images/null-flag.svg"}
                     alt="No flag"
                     className="h-full scale-150"
                 />

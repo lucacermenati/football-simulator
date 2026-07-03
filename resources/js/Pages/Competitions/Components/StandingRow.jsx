@@ -1,7 +1,7 @@
 import TeamLogo from "@/Pages/Teams/Components/TeamLogo";
 import clsx from "clsx";
 
-export default function StandingRow({ team, position }) {
+export default function StandingRow({ team, position, onTeamClick }) {
     return (
         <div
             //TODO: make this a configurable in competition settings
@@ -19,7 +19,12 @@ export default function StandingRow({ team, position }) {
             <div className="flex justify-start items-center space-x-2">
                 <span>{position}</span>
                 <TeamLogo team={team} size={6} />
-                <span>{team.name}</span>
+                <span
+                    className="cursor-pointer hover:underline"
+                    onClick={() => onTeamClick(team.id)}
+                >
+                    {team.name}
+                </span>
             </div>
             <div className="px-4">{team.matches}</div>
             <div className="px-4">{team.win}</div>

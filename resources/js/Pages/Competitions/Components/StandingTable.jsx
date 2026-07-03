@@ -8,9 +8,9 @@ export default function StandingTable({ competition, standings, onTeamClick }) {
                 <StandingHeader />
                 {standings.map((team, index) => (
                     <StandingRow
+                        key={team.id}
                         team={team}
                         position={index + 1}
-                        key={team.id}
                         onTeamClick={onTeamClick}
                     />
                 ))}

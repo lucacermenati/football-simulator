@@ -4,7 +4,7 @@ import StandingRow from "./StandingRow";
 export default function StandingTable({ competition, standings, onTeamClick }) {
     return (
         <div>
-            <div className="grid gap-x-2 items-center grid-cols-[1fr_auto_auto_auto_auto_auto_auto_auto_auto]">
+            <div className="grid items-center grid-cols-[1fr_auto_auto_auto_auto_auto_auto_auto_auto]">
                 <StandingHeader />
                 {standings.map((team, index) => (
                     <StandingRow

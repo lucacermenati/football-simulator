@@ -8,7 +8,7 @@ export default function TopScorerTable({
     onPlayerClick,
 }) {
     return (
-        <div className="grid grid-cols-[1fr_1fr_auto] gap-y-4 gap-x-2 px-8 py-4">
+        <div className="grid items-center grid-cols-[1fr_1fr_auto]">
             <TopScorerHeader />
             {scorers.map((player, index) => (
                 <TopScorerRow player={player} index={index} key={player.id} />

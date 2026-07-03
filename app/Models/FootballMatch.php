@@ -56,6 +56,7 @@ class FootballMatch extends Model
         return $this->belongsToMany(Player::class, 'matches_players', 'match_id', 'player_id')
             ->using(MatchPlayer::class)
             ->withPivot('minute')
+            ->orderBy('minute')
             ->withTimestamps();
     }
 }

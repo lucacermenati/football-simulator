@@ -1,3 +1,4 @@
+import PositionIndicator from "@/Components/PositionIndicator";
 import TeamLogo from "@/Pages/Teams/Components/TeamLogo";
 
 export default function TopScorerRow({
@@ -10,6 +11,7 @@ export default function TopScorerRow({
         <div className="grid col-span-3 py-4 pl-4 border-b border-gray-200 grid-cols-subgrid last:border-b-0">
             <div className="flex justify-start items-center space-x-2">
                 <span>{index + 1}</span>
+                <PositionIndicator size={6} position={player.position} />
                 <span
                     className="cursor-pointer hover:underline"
                     onClick={() => onPlayerClick(player.id)}

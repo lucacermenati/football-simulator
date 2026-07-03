@@ -30,7 +30,7 @@ class CompetitionMatchController extends Controller
 
     public function show(Competition $competition, FootballMatch $match)
     {
-        $match->load(['homeTeam', 'awayTeam']);
+        $match->load(['homeTeam', 'awayTeam', 'scorers']);
 
         return Inertia::render('Competitions/Match', [
             'competition' => $competition,

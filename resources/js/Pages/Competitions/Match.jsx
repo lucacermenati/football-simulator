@@ -29,6 +29,34 @@ export default function CompetitionMatch({ competition, match }) {
                         <div>{new Date(match.date).toLocaleDateString()}</div>
                         <div>{match.home_team.stadium}</div>
                     </div>
+                    <div className="pt-4 mt-4 border-t border-lightGrey-600">
+                        {match.scorers.map((player) => (
+                            <div
+                                key={player.id + "-" + player.pivot.minute}
+                                className="flex justify-between"
+                            >
+                                {player.team_id === match.home_team.id ? (
+                                    <>
+                                        <span>
+                                            {player.pivot.minute}'{" "}
+                                            {player.first_name}{" "}
+                                            {player.last_name}
+                                        </span>
+                                        <span />
+                                    </>
+                                ) : (
+                                    <>
+                                        <span />
+                                        <span>
+                                            {player.first_name}{" "}
+                                            {player.last_name}{" "}
+                                            {player.pivot.minute}'
+                                        </span>
+                                    </>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </CompetitionLayout>
         </AuthenticatedLayout>

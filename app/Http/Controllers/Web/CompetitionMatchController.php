@@ -14,7 +14,23 @@ class CompetitionMatchController extends Controller
 {
     public function index(Request $request, Competition $competition)
     {
-        $day = $request->input('day', 1);
+        $day = $request->input('day', null);
+        $maxDay = $competition->matches()->max('day');
+
+        // Fallback to first unplayed match if no day is specified
+        if (!$day) {
+            $day = $competition->matches()
+                ->where('played', false)
+                ->min('day');
+        }
+
+        // Fallback to last day if the day is greater than the max day
+        if ($day > $maxDay) {
+            return redirect()->route('competitions.matches.index', [
+                'competition' => $competition->id,
+                'day' => $maxDay
+            ]);
+        }
 
         $matches = $competition->matches()
             ->with(['homeTeam', 'awayTeam'])
@@ -25,6 +41,7 @@ class CompetitionMatchController extends Controller
             'competition' => $competition,
             'matches' => $matches,
             'day' => $day,
+            'maxDay' => $maxDay
         ]);
     }
 
@@ -41,7 +58,8 @@ class CompetitionMatchController extends Controller
     public function generate(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
         $validated = $request->validate([
-            'start_date' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
+            'start_date' => 'required|date',
+            // 'start_date' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
         ]);
 
         // TODO: Add error handling: the user does not own the competition, the matches are already generated

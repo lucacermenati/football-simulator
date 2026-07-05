@@ -1,8 +1,11 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import TeamLogo from "@/Pages/Teams/Components/TeamLogo";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 export default function MatchCard({ match }) {
+    const dateOfToday = new Date();
+    const matchDate = new Date(match.date);
+
     return (
         <div className="grid grid-cols-[1fr_auto_1fr] items-center border-b border-lightGrey-600">
             {/* Teams + scores */}
@@ -37,14 +40,25 @@ export default function MatchCard({ match }) {
             {/* Info */}
             <div className="pl-4">
                 {match.played ? (
-                    <span className="font-semibold">DONE</span>
-                ) : (
                     <Link
-                        method="post"
-                        href={route("matches.simulate", match.id)}
+                        href={route("competitions.matches.show", [
+                            match.competition_id,
+                            match.id,
+                        ])}
                     >
-                        <PrimaryButton>PLAY</PrimaryButton>
+                        <PrimaryButton>VIEW</PrimaryButton>
                     </Link>
+                ) : dateOfToday < matchDate ? (
+                    <div>{new Date(match.date).toLocaleDateString()}</div>
+                ) : (
+                    <PrimaryButton
+                        disabled={dateOfToday < matchDate}
+                        onClick={() =>
+                            router.post(route("matches.simulate", match.id))
+                        }
+                    >
+                        PLAY
+                    </PrimaryButton>
                 )}
             </div>
         </div>

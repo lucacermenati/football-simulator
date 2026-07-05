@@ -1,10 +1,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CompetitionLayout from "./Components/CompetitionLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import TeamLogo from "../Teams/Components/TeamLogo";
 import { Fragment } from "react";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function CompetitionMatch({ competition, match }) {
+    const dateOfToday = new Date();
+    const matchDate = new Date(match.date);
+
     return (
         <AuthenticatedLayout>
             <Head title="Competition Details" />
@@ -32,54 +36,70 @@ export default function CompetitionMatch({ competition, match }) {
                         <div>{match.home_team.stadium}</div>
                     </div>
                     <div className="pt-4 mt-4 border-t border-lightGrey-600">
-                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-4 gap-y-1 p-4">
-                            {match.scorers.map((player) => {
-                                const isHomeScorer =
-                                    player.team_id === match.home_team.id;
+                        {match.played && (
+                            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-4 gap-y-1 p-4">
+                                {match.scorers.map((player) => {
+                                    const isHomeScorer =
+                                        player.team_id === match.home_team.id;
 
-                                return (
-                                    <Fragment
-                                        key={`${player.id}-${player.pivot.minute}`}
-                                    >
-                                        <div className="flex gap-2 justify-self-start items-center">
-                                            {isHomeScorer && (
-                                                <>
-                                                    <img
-                                                        src="/images/gol.svg"
-                                                        alt="Goal"
-                                                        className="w-4 h-4 shrink-0"
-                                                    />
-                                                    <span className="truncate">
-                                                        {player.first_name}{" "}
-                                                        {player.last_name}
-                                                    </span>
-                                                </>
-                                            )}
-                                        </div>
+                                    return (
+                                        <Fragment
+                                            key={`${player.id}-${player.pivot.minute}`}
+                                        >
+                                            <div className="flex gap-2 justify-self-start items-center">
+                                                {isHomeScorer && (
+                                                    <>
+                                                        <img
+                                                            src="/images/gol.svg"
+                                                            alt="Goal"
+                                                            className="w-4 h-4 shrink-0"
+                                                        />
+                                                        <span className="truncate">
+                                                            {player.first_name}{" "}
+                                                            {player.last_name}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
 
-                                        <span className="font-semibold text-center whitespace-nowrap">
-                                            {player.pivot.minute}'
-                                        </span>
+                                            <span className="font-semibold text-center whitespace-nowrap">
+                                                {player.pivot.minute}'
+                                            </span>
 
-                                        <div className="flex gap-2 justify-self-end items-center">
-                                            {!isHomeScorer && (
-                                                <>
-                                                    <span className="text-right truncate">
-                                                        {player.first_name}{" "}
-                                                        {player.last_name}
-                                                    </span>
-                                                    <img
-                                                        src="/images/gol.svg"
-                                                        alt="Goal"
-                                                        className="w-4 h-4 shrink-0"
-                                                    />
-                                                </>
-                                            )}
-                                        </div>
-                                    </Fragment>
-                                );
-                            })}
-                        </div>
+                                            <div className="flex gap-2 justify-self-end items-center">
+                                                {!isHomeScorer && (
+                                                    <>
+                                                        <span className="text-right truncate">
+                                                            {player.first_name}{" "}
+                                                            {player.last_name}
+                                                        </span>
+                                                        <img
+                                                            src="/images/gol.svg"
+                                                            alt="Goal"
+                                                            className="w-4 h-4 shrink-0"
+                                                        />
+                                                    </>
+                                                )}
+                                            </div>
+                                        </Fragment>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {!match.played && (
+                            <div className="flex justify-center">
+                                <PrimaryButton
+                                    disabled={dateOfToday < matchDate}
+                                    onClick={() =>
+                                        router.post(
+                                            route("matches.simulate", match.id),
+                                        )
+                                    }
+                                >
+                                    PLAY
+                                </PrimaryButton>
+                            </div>
+                        )}
                     </div>
                 </div>
             </CompetitionLayout>

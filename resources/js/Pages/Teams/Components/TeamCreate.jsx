@@ -6,47 +6,39 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 
-export default function TeamEdit({ team, onSuccess, onCancel }) {
-    if (!team) return <div></div>;
-
+export default function TeamCreate({ onSuccess, onCancel }) {
     const form = useForm({
-        name: team.name ?? "",
-        history: team.history ?? "",
-        first_color: team.first_color ?? "",
-        second_color: team.second_color ?? "",
-        stadium: team.stadium ?? "",
-        year_of_foundation: team.year_of_foundation ?? 0,
-        rating: team.rating ?? 30,
-        remove_logo: false,
+        name: null,
+        history: null,
+        first_color: null,
+        second_color: null,
+        stadium: null,
+        year_of_foundation: null,
+        rating: 30,
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        form.post(
-            route("teams.update", {
-                team: team.id,
-            }),
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    form.reset();
-                    onSuccess?.();
-                },
-                onError: (error) => {
-                    console.log({ error });
-                },
+        form.post(route("teams.store"), {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                onSuccess?.();
             },
-        );
+            onError: (error) => {
+                console.log({ error });
+            },
+        });
     };
 
     return (
         <div className="p-6">
             <h3 className="text-lg font-medium text-primaryRed-600">
-                Edit {team.name}
+                Create Team
             </h3>
             <p className="mt-1 text-sm text-darkGray-600">
-                Update the team information below.
+                Fill in all the required fields
             </p>
             <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>
                 <div className="flex gap-12 items-center mt-8">
@@ -174,11 +166,9 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         id="logo"
                         name="logo"
                         accept="image/*"
-                        existingUrl={team?.logo ?? null}
                         buttonLabel="Upload logo"
-                        onChange={({ file, remove }) => {
+                        onChange={({ file }) => {
                             form.setData("logo", file);
-                            form.setData("remove_logo", remove);
                         }}
                     />
                 </div>
@@ -194,7 +184,7 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                     </SecondaryButton>
 
                     <PrimaryButton type="submit" disabled={form.processing}>
-                        Save
+                        Create
                     </PrimaryButton>
                 </div>
             </form>

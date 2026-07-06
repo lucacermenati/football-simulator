@@ -47,6 +47,28 @@ class TeamController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'history' => 'nullable|string',
+            'stadium' => 'nullable|string',
+            'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'rating' => 'required|integer|min:30|max:100',
+            'first_color' => 'required|string',
+            'second_color' => 'required|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $team = $request->user()->teams()->create($validated);
+
+        if ($request->hasFile('logo')) {
+            $team->storeLogo($request->file('logo'));
+        }
+
+        return redirect()->back()->with('message', 'Team created successfully!');
+    }
+
     public function update(Request $request, Team $team)
     {
         $validated = $request->validate([

@@ -10,8 +10,10 @@ import Modal from "@/Components/Modal";
 import TeamEdit from "./Components/TeamEdit";
 import TeamDelete from "./Components/TeamDelete";
 import TeamAdd from "./Components/TeamAdd";
+import TeamCreate from "./Components/TeamCreate";
 
 export default function TeamsIndex({ teams, availableCompetitions }) {
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -47,13 +49,12 @@ export default function TeamsIndex({ teams, availableCompetitions }) {
                         <div className="grid grid-cols-2 gap-4">
                             <PrimaryButton
                                 className="self-start"
-                                onClick={() => {
-                                    console.log("Create team clicked");
-                                }}
+                                onClick={() => setIsCreateModalOpen(true)}
                             >
                                 Create Team
                             </PrimaryButton>
                             <PrimaryButton
+                                disabled={true}
                                 className="self-start"
                                 onClick={() => {
                                     console.log("Generate teams clicked");
@@ -130,6 +131,17 @@ export default function TeamsIndex({ teams, availableCompetitions }) {
                     <Pagination links={teams.links} meta={teams.meta} />
                 </div>
             </div>
+            <Modal
+                show={isCreateModalOpen}
+                onClose={() => {
+                    setIsCreateModalOpen(false);
+                }}
+            >
+                <TeamCreate
+                    onCancel={() => setIsCreateModalOpen(false)}
+                    onSuccess={() => setIsCreateModalOpen(false)}
+                />
+            </Modal>
             <Modal
                 show={isEditModalOpen}
                 onClose={() => {

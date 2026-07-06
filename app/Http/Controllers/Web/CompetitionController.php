@@ -35,7 +35,6 @@ class CompetitionController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // ------ TODO: This can become an action: CreateCompetition that accepts a CompetitionRequest
         $competition = $request->user()->competitions()->create([
             'name' => $request->name,
             'description' => $request->description,
@@ -44,7 +43,6 @@ class CompetitionController extends Controller
         if ($request->hasFile('logo')) {
             $competition->storeLogo($request->file('logo'));
         }
-        // ------- END TODO
 
         return redirect()->back()
             ->with('message', 'Competition created successfully!');

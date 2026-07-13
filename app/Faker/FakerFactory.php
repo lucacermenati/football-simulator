@@ -122,6 +122,12 @@ class FakerFactory
                 \App\Faker\fr_DZ\Player::class,
             ],
         ],
+        'fr_TN' => [
+            'base' => 'fr_TN',
+            'providers' => [
+                \App\Faker\fr_TN\Player::class,
+            ],
+        ],
         'it_IT' => [
             'base' => 'it_IT',
             'providers' => [

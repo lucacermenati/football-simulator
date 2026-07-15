@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\FootballMatchController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TeamLogoController;
+use App\Http\Controllers\Api\TokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register API routes for your application.
 |
 */
+
+Route::post('/login', [TokenController::class, 'store']);
 
 // Competition routes
 Route::apiResource('competitions', CompetitionController::class);

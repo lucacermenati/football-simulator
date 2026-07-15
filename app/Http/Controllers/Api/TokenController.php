@@ -27,4 +27,11 @@ class TokenController extends Controller
 
         return new BearerTokenResource($user->createToken('auth-token'));
     }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->noContent(200);
+    }
 }

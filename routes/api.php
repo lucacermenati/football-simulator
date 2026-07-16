@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [TokenController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/logout', [TokenController::class, 'destroy']);

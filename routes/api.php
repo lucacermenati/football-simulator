@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TeamLogoController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +24,8 @@ Route::post('/register', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/logout', [TokenController::class, 'destroy']);
     Route::get('/user', [UserController::class, 'show']);
+
+    Route::get('/competitions', [CompetitionController::class, 'index']);
 });
 
 Route::get('competitions/{competition}/matches', [FootballMatchController::class, 'byCompetition']);

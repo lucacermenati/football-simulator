@@ -82,6 +82,7 @@ enum Country: string
     case SierraLeone = 'SL';
     case SouthAfrica = 'ZA';
     case Tunisia = 'TN';
+    case Mali = 'ML';
 
     // Middle East
     case Jordan = 'JO';
@@ -182,6 +183,7 @@ enum Country: string
             self::Cameroon => ['fr_CM'],
             self::Senegal => ['fr_SN'],
             self::Morocco => ['fr_MA'],
+            self::Mali => ['fr_ML'],
             self::Algeria => ['fr_DZ'],
             self::Zambia => ['en_ZM'],
             self::SierraLeone => ['en_SL'],

@@ -111,9 +111,15 @@ class FakerFactory
             ],
         ],
         'fr_MA' => [
-            'base' => 'fr_MA',
+            'base' => 'fr_FR',
             'providers' => [
                 \App\Faker\fr_MA\Player::class,
+            ],
+        ],
+        'fr_ML' => [
+            'base' => 'fr_FR',
+            'providers' => [
+                \App\Faker\fr_ML\Player::class,
             ],
         ],
         'fr_DZ' => [

@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [TokenController::class, 'store']);
+Route::post('/token', [TokenController::class, 'store']);
 Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::delete('/logout', [TokenController::class, 'destroy']);
+    Route::delete('/token', [TokenController::class, 'destroy']);
     Route::get('/user', [UserController::class, 'show']);
 
     Route::get('/competitions', [CompetitionController::class, 'index']);

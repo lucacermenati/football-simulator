@@ -1,9 +1,21 @@
+import clsx from "clsx";
+
 export default function TeamLogo({ team, size = 8, className = "" }) {
-    const boxSize = `w-${size} h-${size}`;
+    const sizes = {
+        6: "w-6 h-6",
+        8: "w-8 h-8",
+        10: "w-10 h-10",
+        12: "w-12 h-12",
+        16: "w-16 h-16",
+    };
 
     return (
         <div
-            className={`flex justify-center items-center ${boxSize} shrink-0 ${className}`}
+            className={clsx(
+                "flex justify-center items-center",
+                sizes[size],
+                className,
+            )}
         >
             {team.logo ? (
                 <img

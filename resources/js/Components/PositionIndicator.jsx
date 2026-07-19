@@ -8,12 +8,19 @@ export default function PositionIndicator({
     className,
     ...props
 }) {
-    const boxSize = `w-${size} h-${size}`;
+    const sizes = {
+        6: "w-6 h-6",
+        8: "w-8 h-8",
+        10: "w-10 h-10",
+        12: "w-12 h-12",
+        16: "w-16 h-16",
+    };
+
     return (
         <div
             className={clsx(
                 "rounded-full flex justify-center items-center text-white",
-                boxSize,
+                sizes[size],
                 className,
                 position === POSITION.GOALKEEPER
                     ? "bg-position-Goalkeeper"

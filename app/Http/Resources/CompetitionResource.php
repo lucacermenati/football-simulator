@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CompetitionResource extends JsonResource
 {
@@ -13,7 +15,11 @@ class CompetitionResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'logo' => $this->logo,
+
+            'logo' => Str::contains($request->getUri(), 'api')
+                ? Storage::disk('public')->url($this->logo)
+                : $this->logo,
+
             'teams' => TeamResource::collection($this->whenLoaded('teams')),
             'matches' => FootballMatchResource::collection($this->whenLoaded('matches')),
         ];

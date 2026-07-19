@@ -16,9 +16,19 @@ use Illuminate\Support\Facades\Cache;
 
 class CompetitionController extends Controller
 {
-    public function index(): ResourceCollection
+    public function index(Request $request): ResourceCollection
     {
-        $competitions = Competition::query()->get();
+        $request->validate([
+            'page' => 'sometimes|integer|min:1',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+        ]);
+
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 10);
+
+        $competitions = $request->user()->competitions()
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, '*', 'page', $page);
 
         return CompetitionResource::collection($competitions);
     }

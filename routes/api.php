@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\FootballMatchController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TeamLogoController;
+use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Competition routes
-Route::apiResource('competitions', CompetitionController::class);
-Route::post('competitions/{competition}/teams', [CompetitionController::class, 'addTeam']);
-Route::delete('competitions/{competition}/teams', [CompetitionController::class, 'removeTeam']);
+Route::post('/token', [TokenController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('/token', [TokenController::class, 'destroy']);
+    Route::get('/user', [UserController::class, 'show']);
+
+    Route::get('/competitions', [CompetitionController::class, 'index']);
+});
 
 Route::get('competitions/{competition}/matches', [FootballMatchController::class, 'byCompetition']);
 Route::post('competitions/{competition}/matches', [FootballMatchController::class, 'generateMatches']);

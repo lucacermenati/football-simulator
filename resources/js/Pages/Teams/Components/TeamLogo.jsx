@@ -7,6 +7,7 @@ export default function TeamLogo({ team, size = 8, className = "" }) {
         10: "w-10 h-10",
         12: "w-12 h-12",
         16: "w-16 h-16",
+        32: "w-32 h-32",
     };
 
     return (

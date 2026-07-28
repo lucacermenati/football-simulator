@@ -40,7 +40,7 @@ class CompetitionController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $competition = Competition::create($validated);
+        $competition = $request->user()->competitions()->create($validated);
 
         return response()->json(new CompetitionResource($competition), 201);
     }

@@ -23,9 +23,8 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/token', [TokenController::class, 'destroy']);
-    Route::get('/user', [UserController::class, 'show']);
-
-    Route::get('/competitions', [CompetitionController::class, 'index']);
+    Route::apiResource('/user', UserController::class)->only('show');
+    Route::apiResource('/competitions', CompetitionController::class)->only('index', 'store');
 });
 
 Route::get('competitions/{competition}/matches', [FootballMatchController::class, 'byCompetition']);

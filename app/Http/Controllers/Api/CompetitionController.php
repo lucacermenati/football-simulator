@@ -38,9 +38,14 @@ class CompetitionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:competitions,name',
             'description' => 'nullable|string',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $competition = $request->user()->competitions()->create($validated);
+
+        if($request->hasFile('logo')) {
+            $competition->storeLogo($request->file('logo'));
+        }
 
         return response()->json(new CompetitionResource($competition), 201);
     }

@@ -44,7 +44,11 @@ class CompetitionController extends Controller
         $competition = $request->user()->competitions()->create($validated);
 
         if($request->hasFile('logo')) {
-            $competition->storeLogo($request->file('logo'));
+            $competition->uploadFile(
+                $request->file('logo'),
+                'competitions',
+                'logo',
+            );
         }
 
         return response()->json(new CompetitionResource($competition), 201);

@@ -15,6 +15,7 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
+        "lucacermenati/common-traits": "@dev",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -78,6 +79,15 @@
             "php-http/discovery": true
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../common-traits",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true
 }

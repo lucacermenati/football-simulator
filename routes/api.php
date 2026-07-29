@@ -23,7 +23,8 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/token', [TokenController::class, 'destroy']);
-    Route::apiResource('/user', UserController::class)->only('show');
+    Route::get('/user', [UserController::class, 'show']);
+
     Route::apiResource('/competitions', CompetitionController::class)->only('index', 'store');
 });
 

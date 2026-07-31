@@ -18,14 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/token', [TokenController::class, 'store']);
-Route::post('/register', [UserController::class, 'store']);
+Route::name('api.')->group(function () {
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::delete('/token', [TokenController::class, 'destroy']);
-    Route::get('/user', [UserController::class, 'show']);
+    Route::post('/token', [TokenController::class, 'store'])->name('token.store');
+    Route::post('/register', [UserController::class, 'store'])->name('register');
 
-    Route::apiResource('/competitions', CompetitionController::class)->only('index', 'store');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('/token', [TokenController::class, 'destroy'])->name('token.destroy');
+        Route::get('/user', [UserController::class, 'show'])->name('user.show');
+
+        Route::apiResource('/competitions', CompetitionController::class)->only('index', 'store');
+    });
 });
 
 // Route::get('competitions/{competition}/matches', [FootballMatchController::class, 'byCompetition']);

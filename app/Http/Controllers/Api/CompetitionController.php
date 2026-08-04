@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
-use App\Models\FootballMatch;
 use App\Models\MatchPlayer;
 use App\Models\Player;
-use App\Models\Team;
+use App\Queries\CompetitionStandings;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class CompetitionController extends Controller
 {
-    public function index(Request $request): ResourceCollection
+    public function index(Request $request): JsonResponse
     {
         $request->validate([
             'page' => 'sometimes|integer|min:1',
@@ -32,7 +32,7 @@ class CompetitionController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($perPage, '*', 'page', $page);
 
-        return CompetitionResource::collection($competitions);
+        return CompetitionResource::collection($competitions)->response();
     }
 
     public function store(Request $request): JsonResponse
@@ -53,14 +53,16 @@ class CompetitionController extends Controller
             );
         }
 
-        return response()->json(new CompetitionResource($competition), 201);
+        return CompetitionResource::make($competition)
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Competition $competition): JsonResponse
     {
         Gate::authorize('view', $competition);
 
-        return response()->json(new CompetitionResource($competition));
+        return CompetitionResource::make($competition)->response();
     }
 
     public function update(Request $request, Competition $competition): JsonResponse
@@ -74,7 +76,7 @@ class CompetitionController extends Controller
 
         $competition->update($validated);
 
-        return response()->json(new CompetitionResource($competition));
+        return CompetitionResource::make($competition)->response();
     }
 
     public function destroy(Competition $competition): JsonResponse
@@ -83,7 +85,16 @@ class CompetitionController extends Controller
 
         $competition->delete();
 
-        return response()->json(null, 204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function standings(Competition $competition, CompetitionStandings $standings): JsonResponse
+    {
+        Gate::authorize('view', $competition);
+
+        return TeamStandingsResource::collection(
+            $standings->for($competition)
+        )->response();
     }
 
     public function addTeam(Request $request, Competition $competition): JsonResponse
@@ -96,7 +107,7 @@ class CompetitionController extends Controller
 
         $competition->load(['teams']);
 
-        return response()->json(new CompetitionResource($competition));
+        return CompetitionResource::make($competition)->response();
     }
 
     public function removeTeam(Request $request, Competition $competition): JsonResponse
@@ -110,54 +121,6 @@ class CompetitionController extends Controller
         $competition->load(['teams']);
 
         return response()->json(new CompetitionResource($competition));
-    }
-
-    public function standings(Competition $competition): JsonResponse
-    {
-        $cacheKey = "competition.{$competition->id}.standings";
-        $isCached = Cache::has($cacheKey);
-
-        $standings = Cache::remember($cacheKey, now()->addHours(24), function () use ($competition) {
-                return Team::select('id', 'name')
-                    ->whereHas('competitions', function ($query) use ($competition) {
-                        $query->where('competitions.id', $competition->id);
-                    })->addSelect([
-                        'points' => FootballMatch::selectRaw('
-                            COALESCE(SUM(
-                                CASE
-                                    WHEN home_team_id = teams.id AND goal_home > goal_away THEN 3
-                                    WHEN home_team_id = teams.id AND goal_home = goal_away THEN 1
-                                    WHEN away_team_id = teams.id AND goal_away > goal_home THEN 3
-                                    WHEN away_team_id = teams.id AND goal_away = goal_home THEN 1
-                                    ELSE 0
-                                END
-                            ), 0)')
-                            ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                            ->where('matches.competition_id', $competition->id)
-                            ->where('matches.played', true),
-                        'matches' => FootballMatch::selectRaw('COUNT(*)')
-                            ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                            ->where('matches.competition_id', $competition->id)
-                            ->where('matches.played', true),
-                        'gol' => FootballMatch::selectRaw('
-                            COALESCE(SUM(
-                                CASE
-                                    WHEN home_team_id = teams.id THEN goal_home
-                                    WHEN away_team_id = teams.id THEN goal_away
-                                    ELSE 0
-                                END
-                            ), 0)')
-                            ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                            ->where('matches.competition_id', $competition->id)
-                            ->where('matches.played', true),
-                    ])
-                    ->orderBy('points', 'desc')
-                    ->orderBy('gol', 'desc')
-                    ->get();
-            });
-
-        return response()->json($standings)
-            ->header('X-Cache', $isCached ? 'HIT' : 'MISS');
     }
 
     public function scorers(Competition $competition): JsonResponse

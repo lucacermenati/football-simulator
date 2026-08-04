@@ -9,6 +9,7 @@ use App\Models\FootballMatch;
 use App\Models\MatchPlayer;
 use App\Models\Player;
 use App\Models\Team;
+use App\Queries\CompetitionStandings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -90,103 +91,11 @@ class CompetitionController extends Controller
             ->with('message', 'Competition deleted successfully!');
     }
 
-    public function standings(Competition $competition)
+    public function standings(Competition $competition, CompetitionStandings $standings)
     {
-        // TODO: Make the standing calculation a service
-        $standings = Team::query()
-            ->whereHas('competitions', function ($query) use ($competition) {
-                $query->where('competitions.id', $competition->id);
-            })
-            ->addSelect([
-                'points' => FootballMatch::selectRaw('
-                    COALESCE(SUM(
-                        CASE
-                            WHEN matches.home_team_id = teams.id AND matches.goal_home > matches.goal_away THEN 3
-                            WHEN matches.home_team_id = teams.id AND matches.goal_home = matches.goal_away THEN 1
-                            WHEN matches.away_team_id = teams.id AND matches.goal_away > matches.goal_home THEN 3
-                            WHEN matches.away_team_id = teams.id AND matches.goal_away = matches.goal_home THEN 1
-                            ELSE 0
-                        END
-                    ), 0)
-                ')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'matches' => FootballMatch::selectRaw('COUNT(*)')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'goals' => FootballMatch::selectRaw('
-                    COALESCE(SUM(
-                        CASE
-                            WHEN matches.home_team_id = teams.id THEN matches.goal_home
-                            WHEN matches.away_team_id = teams.id THEN matches.goal_away
-                            ELSE 0
-                        END
-                    ), 0)
-                ')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'goals_against' => FootballMatch::selectRaw('
-                    COALESCE(SUM(
-                        CASE
-                            WHEN matches.home_team_id = teams.id THEN matches.goal_away
-                            WHEN matches.away_team_id = teams.id THEN matches.goal_home
-                            ELSE 0
-                        END
-                    ), 0)
-                ')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'goal_difference' => FootballMatch::selectRaw('
-                    COALESCE(SUM(
-                        CASE
-                            WHEN matches.home_team_id = teams.id THEN matches.goal_home - matches.goal_away
-                            WHEN matches.away_team_id = teams.id THEN matches.goal_away - matches.goal_home
-                            ELSE 0
-                        END
-                    ), 0)
-                ')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'win' => FootballMatch::selectRaw('COUNT(*)')
-                    ->where(function ($query) {
-                        $query->whereRaw('matches.home_team_id = teams.id AND matches.goal_home > matches.goal_away')
-                            ->orWhereRaw('matches.away_team_id = teams.id AND matches.goal_away > matches.goal_home');
-                    })
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'loss' => FootballMatch::selectRaw('COUNT(*)')
-                    ->where(function ($query) {
-                        $query->whereRaw('matches.home_team_id = teams.id AND matches.goal_home < matches.goal_away')
-                            ->orWhereRaw('matches.away_team_id = teams.id AND matches.goal_away < matches.goal_home');
-                    })
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-
-                'draw' => FootballMatch::selectRaw('COUNT(*)')
-                    ->whereRaw('(matches.home_team_id = teams.id OR matches.away_team_id = teams.id)')
-                    ->whereColumn('matches.goal_home', 'matches.goal_away')
-                    ->where('matches.competition_id', $competition->id)
-                    ->where('matches.played', true),
-            ])
-            ->orderBy('points', 'desc')
-            ->orderBy('goal_difference', 'desc')
-            ->orderBy('goals', 'desc')
-            ->get();
-
         return Inertia::render('Competitions/Standings', [
             'competition' => $competition,
-            'standings' => $standings,
+            'standings' => $standings->for($competition),
         ]);
     }
 

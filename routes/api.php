@@ -28,6 +28,7 @@ Route::name('api.')->group(function () {
         Route::get('/user', [UserController::class, 'show'])->name('user.show');
 
         Route::apiResource('/competitions', CompetitionController::class);
+        Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings']);
     });
 });
 

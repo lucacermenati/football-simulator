@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class CompetitionController extends Controller
@@ -57,13 +58,15 @@ class CompetitionController extends Controller
 
     public function show(Competition $competition): JsonResponse
     {
-        $competition->load(['teams']);
+        Gate::authorize('view', $competition);
 
         return response()->json(new CompetitionResource($competition));
     }
 
     public function update(Request $request, Competition $competition): JsonResponse
     {
+        Gate::authorize('update', $competition);
+
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
@@ -76,6 +79,8 @@ class CompetitionController extends Controller
 
     public function destroy(Competition $competition): JsonResponse
     {
+        Gate::authorize('delete', $competition);
+
         $competition->delete();
 
         return response()->json(null, 204);

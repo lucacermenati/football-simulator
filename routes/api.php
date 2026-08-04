@@ -27,7 +27,7 @@ Route::name('api.')->group(function () {
         Route::delete('/token', [TokenController::class, 'destroy'])->name('token.destroy');
         Route::get('/user', [UserController::class, 'show'])->name('user.show');
 
-        Route::apiResource('/competitions', CompetitionController::class)->only('index', 'store');
+        Route::apiResource('/competitions', CompetitionController::class);
     });
 });
 

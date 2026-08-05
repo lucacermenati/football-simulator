@@ -4,6 +4,10 @@ import TeamLayout from "./Components/TeamLayout";
 import PositionIndicator from "@/Components/PositionIndicator";
 
 export default function TeamLineup({ team, startingEleven, substitutes }) {
+    const displayName = (player) => {
+        return `${player.first_name ? player.first_name.substring(0, 1).toUpperCase() + "." : ""} ${player.last_name}`.trim();
+    };
+
     return (
         <AuthenticatedLayout>
             <Head title={`${team.name} - Lineup`} />
@@ -20,7 +24,7 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                         {player.number}
                                     </PositionIndicator>
                                     <div key={player.id}>
-                                        {player.last_name}
+                                        {displayName(player)}
                                     </div>
                                 </div>
                             ))}
@@ -34,7 +38,7 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                         {player.number}
                                     </PositionIndicator>
                                     <div key={player.id}>
-                                        {player.last_name}
+                                        {displayName(player)}
                                     </div>
                                 </div>
                             ))}
@@ -48,7 +52,7 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                         {player.number}
                                     </PositionIndicator>
                                     <div key={player.id}>
-                                        {player.last_name}
+                                        {displayName(player)}
                                     </div>
                                 </div>
                             ))}
@@ -62,7 +66,7 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                         {player.number}
                                     </PositionIndicator>
                                     <div key={player.id}>
-                                        {player.last_name}
+                                        {displayName(player)}
                                     </div>
                                 </div>
                             ))}
@@ -79,7 +83,7 @@ export default function TeamLineup({ team, startingEleven, substitutes }) {
                                         {player.number}
                                     </PositionIndicator>
                                     <div key={player.id}>
-                                        {player.last_name}
+                                        {displayName(player)}
                                     </div>
                                 </div>
                             ))}

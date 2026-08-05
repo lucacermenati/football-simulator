@@ -67,12 +67,12 @@ class CompetitionController extends Controller
 
     public function update(Request $request, Competition $competition): JsonResponse
     {
-        Gate::authorize('update', $competition);
-
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
         ]);
+
+        Gate::authorize('update', $competition);
 
         $competition->update($validated);
 

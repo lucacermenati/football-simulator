@@ -18,6 +18,8 @@ class PlayerResource extends JsonResource
             'nationality' => $this->nationality,
             'position' => $this->position,
             'number' => $this->number,
+            'position_on_field' => $this->position_on_field,
+            'rating' => $this->rating,
             'team_id' => $this->team_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

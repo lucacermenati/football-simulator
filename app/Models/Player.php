@@ -21,12 +21,16 @@ class Player extends Model
         'position',
         'number',
         'team_id',
+        'position_on_field',
+        'rating',
     ];
 
     protected $casts = [
         'birth_date' => 'date',
         'number' => 'integer',
         'position' => Position::class,
+        'position_on_field' => 'integer',
+        'rating' => 'integer',
     ];
 
     public function user(): BelongsTo

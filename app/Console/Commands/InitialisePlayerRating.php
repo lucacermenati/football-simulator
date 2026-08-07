@@ -25,9 +25,9 @@ class InitialisePlayerRating extends Command
                     $teamRating = $player->team->rating;
 
                     if ($positionOnField > 0 && $positionOnField <= 11) {
-                        $player->rating = rand($teamRating - 3, $teamRating + 3);
+                        $player->rating = rand($teamRating - 5, $teamRating + 3);
                     } else {
-                        $player->rating = rand($teamRating - 5, $teamRating);
+                        $player->rating = rand($teamRating - 7, $teamRating);
                     }
 
                     $player->save();

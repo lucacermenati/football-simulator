@@ -12,11 +12,21 @@ class ScorerSimulator
     {
         $match->scorers()->detach();
 
-        $homeStarters = $match->homeTeam->startingPlayers()->get();
-        $homeSubstitutes = $match->homeTeam->substitutePlayers()->get();
+        $homeStarters = $match->homeTeam
+            ->startingPlayers()
+            ->get();
 
-        $awayStarters = $match->awayTeam->startingPlayers()->get();
-        $awaySubstitutes = $match->awayTeam->substitutePlayers()->get();
+        $homeSubstitutes = $match->homeTeam
+            ->substitutePlayers()
+            ->get();
+
+        $awayStarters = $match->awayTeam
+            ->startingPlayers()
+            ->get();
+
+        $awaySubstitutes = $match->awayTeam
+            ->substitutePlayers()
+            ->get();
 
         $minutes = $this->generateUniqueMinutes(
             $match->goal_home + $match->goal_away
@@ -25,7 +35,10 @@ class ScorerSimulator
         $minuteIndex = 0;
 
         for ($i = 0; $i < $match->goal_home; $i++) {
-            $scorer = $this->selectScorer($homeStarters, $homeSubstitutes);
+            $scorer = $this->selectScorer(
+                $homeStarters,
+                $homeSubstitutes
+            );
 
             if ($scorer) {
                 $match->scorers()->attach($scorer->id, [
@@ -35,7 +48,10 @@ class ScorerSimulator
         }
 
         for ($i = 0; $i < $match->goal_away; $i++) {
-            $scorer = $this->selectScorer($awayStarters, $awaySubstitutes);
+            $scorer = $this->selectScorer(
+                $awayStarters,
+                $awaySubstitutes
+            );
 
             if ($scorer) {
                 $match->scorers()->attach($scorer->id, [
@@ -45,8 +61,10 @@ class ScorerSimulator
         }
     }
 
-    protected function selectScorer(Collection $starters, Collection $substitutes): ?Player
-    {
+    protected function selectScorer(
+        Collection $starters,
+        Collection $substitutes
+    ): ?Player {
         $weightedPlayers = collect()
             ->merge(
                 $this->weightedPlayers(
@@ -60,7 +78,9 @@ class ScorerSimulator
                     config('scorer.substitute_multiplier')
                 )
             )
-            ->filter(fn (array $item) => $item['weight'] > 0)
+            ->filter(
+                fn (array $item) => $item['weight'] > 0
+            )
             ->values();
 
         if ($weightedPlayers->isEmpty()) {
@@ -70,24 +90,83 @@ class ScorerSimulator
         return $this->weightedRandom($weightedPlayers);
     }
 
-    protected function weightedPlayers(Collection $players, float $multiplier): Collection
+    protected function weightedPlayers(
+        Collection $players,
+        float $appearanceMultiplier
+    ): Collection {
+        return $players->map(
+            fn (Player $player) => [
+                'player' => $player,
+
+                'weight' => $this->scorerWeight($player)
+                    * $appearanceMultiplier,
+            ]
+        );
+    }
+
+    protected function scorerWeight(Player $player): float
     {
-        return $players->map(fn (Player $player) => [
-            'player' => $player,
-            'weight' => $this->positionWeight($player) * $multiplier,
-        ]);
+        return $this->positionWeight($player)
+            * $this->scoringMultiplier($player);
     }
 
     protected function positionWeight(Player $player): float
     {
-        return config('scorer.position_weights')[$player->position->value] ?? 0;
+        return config(
+            'scorer.position_weights.' . $player->position->value,
+            0
+        );
     }
 
-    protected function weightedRandom(Collection $weightedPlayers): Player
+    protected function scoringMultiplier(Player $player): float
     {
+        $minRating = config(
+            'scorer.scoring.min_rating',
+            50
+        );
+
+        $maxRating = config(
+            'scorer.scoring.max_rating',
+            100
+        );
+
+        $minMultiplier = config(
+            'scorer.scoring.min_multiplier',
+            0.75
+        );
+
+        $maxMultiplier = config(
+            'scorer.scoring.max_multiplier',
+            1.50
+        );
+
+        $rating = max(
+            $minRating,
+            min($maxRating, $player->scoring)
+        );
+
+        $normalized = (
+            $rating - $minRating
+        ) / (
+            $maxRating - $minRating
+        );
+
+        return $minMultiplier
+            + (
+                $normalized
+                * ($maxMultiplier - $minMultiplier)
+            );
+    }
+
+    protected function weightedRandom(
+        Collection $weightedPlayers
+    ): Player {
         $totalWeight = $weightedPlayers->sum('weight');
 
-        $random = mt_rand() / mt_getrandmax() * $totalWeight;
+        $random = (
+            mt_rand()
+            / mt_getrandmax()
+        ) * $totalWeight;
 
         $cumulative = 0;
 
@@ -122,13 +201,17 @@ class ScorerSimulator
         $periods = config('scorer.minute_periods');
 
         $rand = mt_rand() / mt_getrandmax();
+
         $cumulative = 0;
 
         foreach ($periods as $period) {
             $cumulative += $period['weight'];
 
             if ($rand <= $cumulative) {
-                return random_int($period['min'], $period['max']);
+                return random_int(
+                    $period['min'],
+                    $period['max']
+                );
             }
         }
 

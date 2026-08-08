@@ -106,7 +106,7 @@ class CompetitionController extends Controller
     {
         return Inertia::render('Competitions/Scorers', [
             'competition' => $competition,
-            'scorers' => $statistics->for($competition),
+            'scorers' => $statistics->for($competition)->load('team')->take(15),
         ]);
     }
 }

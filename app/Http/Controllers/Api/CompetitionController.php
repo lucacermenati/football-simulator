@@ -95,12 +95,18 @@ class CompetitionController extends Controller
         )->response();
     }
 
-    public function statistics(Competition $competition, CompetitionStatistics $statistics): JsonResponse
+    public function statistics(Request $request, Competition $competition, CompetitionStatistics $statistics): JsonResponse
     {
+        $request->validate([
+            'limit' => 'nullable|integer|min:15|max:100',
+        ]);
+
         Gate::authorize('view', $competition);
 
+        $limit = $request->input('limit', 15);
+
         return PlayerStatisticResource::collection(
-            $statistics->for($competition)
+            $statistics->for($competition)->load('team')->take($limit)
         )->response();
     }
 

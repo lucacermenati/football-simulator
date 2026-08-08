@@ -70,8 +70,8 @@ class CompetitionController extends Controller
 
         $competition->update($data);
 
-        if ($request->input('remove_logo', false) && Storage::disk('public')->exists($competition->logo)) {
-            Storage::disk('public')->delete($competition->logo);
+        if ($request->input('remove_logo', false)) {
+            $competition->removeFile('logo');
         }
 
         if ($request->hasFile('logo')) {

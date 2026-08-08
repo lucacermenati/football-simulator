@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
-use App\Models\FootballMatch;
-use App\Models\MatchPlayer;
-use App\Models\Player;
-use App\Models\Team;
 use App\Queries\CompetitionStandings;
+use App\Queries\CompetitionStatistics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CompetitionController extends Controller
@@ -42,7 +39,11 @@ class CompetitionController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $competition->storeLogo($request->file('logo'));
+            $competition->uploadFile(
+                $request->file('logo'),
+                'competitions',
+                'logo',
+            );
         }
 
         return redirect()->back()
@@ -65,19 +66,21 @@ class CompetitionController extends Controller
             'remove_logo' => 'boolean',
         ]);
 
-        // ------ TODO: This can become an action: UpdateCompetition
         $data = Arr::except($validated, ['logo', 'remove_logo']);
 
         $competition->update($data);
 
-        if ($request->input('remove_logo', false)) {
-            $competition->removeLogo();
+        if ($request->input('remove_logo', false) && Storage::disk('public')->exists($competition->logo)) {
+            Storage::disk('public')->delete($competition->logo);
         }
 
         if ($request->hasFile('logo')) {
-            $competition->storeLogo($request->file('logo'));
+            $competition->uploadFile(
+                $request->file('logo'),
+                'competitions',
+                'logo',
+            );
         }
-        // ------- END TODO
 
         return redirect()->back()
             ->with('message', 'Competition updated successfully!');
@@ -99,28 +102,11 @@ class CompetitionController extends Controller
         ]);
     }
 
-    public function scorers(Competition $competition)
+    public function scorers(Competition $competition, CompetitionStatistics $statistics)
     {
-        // TODO: Make the top scorers calculation a service
-        $scorers = Player::with('team')
-                    ->whereHas('matches', function ($query) use ($competition) {
-                        $query->where('matches.competition_id', $competition->id);
-                    })
-                    ->addSelect([
-                        'goals' => MatchPlayer::query()
-                            ->selectRaw('COUNT(*)')
-                            ->whereHas('match', function ($query) use ($competition) {
-                                $query->where('competition_id', $competition->id);
-                            })
-                            ->whereColumn('player_id', 'players.id')
-                    ])
-                    ->orderBy('goals', 'desc')
-                    ->limit(15)
-                    ->get();
-
         return Inertia::render('Competitions/Scorers', [
             'competition' => $competition,
-            'scorers' => $scorers,
+            'scorers' => $statistics->for($competition),
         ]);
     }
 }

@@ -29,6 +29,7 @@ Route::name('api.')->group(function () {
 
         Route::apiResource('/competitions', CompetitionController::class);
         Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings']);
+        Route::get('/competitions/{competition}/statistics', [CompetitionController::class, 'statistics']);
     });
 });
 

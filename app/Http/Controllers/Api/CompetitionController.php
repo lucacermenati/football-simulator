@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\PlayerStatisticResource;
 use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
-use App\Models\MatchPlayer;
-use App\Models\Player;
 use App\Queries\CompetitionStandings;
+use App\Queries\CompetitionStatistics;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -97,6 +95,15 @@ class CompetitionController extends Controller
         )->response();
     }
 
+    public function statistics(Competition $competition, CompetitionStatistics $statistics): JsonResponse
+    {
+        Gate::authorize('view', $competition);
+
+        return PlayerStatisticResource::collection(
+            $statistics->for($competition)
+        )->response();
+    }
+
     public function addTeam(Request $request, Competition $competition): JsonResponse
     {
         $validated = $request->validate([
@@ -121,31 +128,5 @@ class CompetitionController extends Controller
         $competition->load(['teams']);
 
         return response()->json(new CompetitionResource($competition));
-    }
-
-    public function scorers(Competition $competition): JsonResponse
-    {
-        $cacheKey = "competition.{$competition->id}.scorers";
-        $isCached = Cache::has($cacheKey);
-
-        $scorers = Cache::remember($cacheKey, now()->addHours(24), function () use ($competition) {
-                return Player::select('id', 'first_name', 'last_name')
-                    ->whereHas('matches', function ($query) use ($competition) {
-                        $query->where('matches.competition_id', $competition->id);
-                    })
-                    ->addSelect([
-                        'goals' => MatchPlayer::query()
-                            ->selectRaw('COUNT(*)')
-                            ->whereHas('match', function ($query) use ($competition) {
-                                $query->where('competition_id', $competition->id);
-                            })
-                            ->whereColumn('player_id', 'players.id')
-                    ])
-                    ->orderBy('goals', 'desc')
-                    ->get();
-            });
-
-        return response()->json($scorers)
-            ->header('X-Cache', $isCached ? 'HIT' : 'MISS');
     }
 }

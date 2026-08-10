@@ -111,29 +111,29 @@ class CompetitionController extends Controller
         )->response();
     }
 
-    public function addTeam(Request $request, Competition $competition): JsonResponse
-    {
-        $validated = $request->validate([
-            'team_id' => 'required|uuid|exists:teams,id',
-        ]);
+    // public function addTeam(Request $request, Competition $competition): JsonResponse
+    // {
+    //     $validated = $request->validate([
+    //         'team_id' => 'required|uuid|exists:teams,id',
+    //     ]);
 
-        $competition->teams()->syncWithoutDetaching($validated['team_id']);
+    //     $competition->teams()->syncWithoutDetaching($validated['team_id']);
 
-        $competition->load(['teams']);
+    //     $competition->load(['teams']);
 
-        return CompetitionResource::make($competition)->response();
-    }
+    //     return CompetitionResource::make($competition)->response();
+    // }
 
-    public function removeTeam(Request $request, Competition $competition): JsonResponse
-    {
-        $validated = $request->validate([
-            'team_id' => 'required|uuid|exists:teams,id',
-        ]);
+    // public function removeTeam(Request $request, Competition $competition): JsonResponse
+    // {
+    //     $validated = $request->validate([
+    //         'team_id' => 'required|uuid|exists:teams,id',
+    //     ]);
 
-        $competition->teams()->detach($validated['team_id']);
+    //     $competition->teams()->detach($validated['team_id']);
 
-        $competition->load(['teams']);
+    //     $competition->load(['teams']);
 
-        return response()->json(new CompetitionResource($competition));
-    }
+    //     return response()->json(new CompetitionResource($competition));
+    // }
 }

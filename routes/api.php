@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CompetitionController;
-use App\Http\Controllers\Api\FootballMatchController;
-use App\Http\Controllers\Api\PlayerController;
-use App\Http\Controllers\Api\TeamController;
-use App\Http\Controllers\Api\TeamLogoController;
+use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,9 +24,11 @@ Route::name('api.')->group(function () {
         Route::delete('/token', [TokenController::class, 'destroy'])->name('token.destroy');
         Route::get('/user', [UserController::class, 'show'])->name('user.show');
 
-        Route::apiResource('/competitions', CompetitionController::class);
+        Route::apiResource('competitions', CompetitionController::class);
         Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings']);
         Route::get('/competitions/{competition}/statistics', [CompetitionController::class, 'statistics']);
+
+        Route::apiResource('competitions.teams', CompetitionTeamController::class)->only('index');
     });
 });
 

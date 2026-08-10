@@ -9,6 +9,7 @@ use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
@@ -58,7 +59,7 @@ class CompetitionController extends Controller
 
     public function show(Competition $competition): JsonResponse
     {
-        Gate::authorize('view', $competition);
+        Gate::authorize('owns', $competition);
 
         return CompetitionResource::make($competition)->response();
     }
@@ -70,7 +71,7 @@ class CompetitionController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Gate::authorize('update', $competition);
+        Gate::authorize('owns', $competition);
 
         $competition->update($validated);
 
@@ -79,7 +80,7 @@ class CompetitionController extends Controller
 
     public function destroy(Competition $competition): JsonResponse
     {
-        Gate::authorize('delete', $competition);
+        Gate::authorize('owns', $competition);
 
         $competition->delete();
 
@@ -88,7 +89,7 @@ class CompetitionController extends Controller
 
     public function standings(Competition $competition, CompetitionStandings $standings): JsonResponse
     {
-        Gate::authorize('view', $competition);
+        Gate::authorize('owns', $competition);
 
         return TeamStandingsResource::collection(
             $standings->for($competition)
@@ -101,7 +102,7 @@ class CompetitionController extends Controller
             'limit' => 'nullable|integer|min:15|max:100',
         ]);
 
-        Gate::authorize('view', $competition);
+        Gate::authorize('owns', $competition);
 
         $limit = $request->input('limit', 15);
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CompetitionController;
+use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->group(function () {
-
     Route::post('/token', [TokenController::class, 'store'])->name('token.store');
     Route::post('/register', [UserController::class, 'store'])->name('register');
 
@@ -27,6 +27,9 @@ Route::name('api.')->group(function () {
         Route::apiResource('competitions', CompetitionController::class);
         Route::get('/competitions/{competition}/standings', [CompetitionController::class, 'standings']);
         Route::get('/competitions/{competition}/statistics', [CompetitionController::class, 'statistics']);
+
+        Route::post('/competitions/{competition}/logo', [CompetitionLogoController::class, 'upload']);
+        Route::delete('/competitions/{competition}/logo', [CompetitionLogoController::class, 'destroy']);
 
         Route::apiResource('competitions.teams', CompetitionTeamController::class)->only('index');
     });

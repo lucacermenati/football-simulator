@@ -17,7 +17,7 @@ class CompetitionResource extends JsonResource
             'description' => $this->description,
 
             'logo' => Str::contains($request->getUri(), 'api')
-                ? Storage::disk('public')->url($this->logo)
+                ? ($this->logo && Storage::disk('public')->exists($this->logo) ? Storage::disk('public')->url($this->logo) : null)
                 : $this->logo,
 
             'teams' => TeamResource::collection($this->whenLoaded('teams')),

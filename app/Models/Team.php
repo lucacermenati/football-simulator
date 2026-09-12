@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Collection;
 use App\Models\Concerns\HasLogo;
+use LucaCermenati\CommonTraits\Traits\Searchable;
 
 class Team extends Model
 {
-    use HasFactory, HasUuids, HasLogo;
+    use HasFactory, HasUuids, HasLogo, Searchable;
 
     protected $fillable = [
         'name',
@@ -70,5 +71,12 @@ class Team extends Model
     public function matches(): Collection
     {
         return $this->homeMatches->merge($this->awayMatches);
+    }
+
+    public function searchables(): array
+    {
+        return [
+            'name',
+        ];
     }
 }

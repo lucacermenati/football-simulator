@@ -21,10 +21,7 @@ class TeamController extends Controller
         ]);
 
         $teams = $request->user()->teams()
-            ->when($request->input('search'), function ($query) use ($request) {
-                // TODO: Implement with a searchable trait
-                $query->where('name', 'like', '%' . $request->input('search') . '%');
-            })
+            ->search($request->search)
             ->orderBy('created_at', 'desc')
             ->paginate(16);
 

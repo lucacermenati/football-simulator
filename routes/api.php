@@ -31,7 +31,8 @@ Route::name('api.')->group(function () {
         Route::post('/competitions/{competition}/logo', [CompetitionLogoController::class, 'upload']);
         Route::delete('/competitions/{competition}/logo', [CompetitionLogoController::class, 'destroy']);
 
-        Route::apiResource('competitions.teams', CompetitionTeamController::class)->only('index');
+        Route::apiResource('competitions.teams', CompetitionTeamController::class)->only('index', 'store');
+        Route::get('/competitions/{competition}/available-teams', [CompetitionTeamController::class, 'available']);
     });
 });
 

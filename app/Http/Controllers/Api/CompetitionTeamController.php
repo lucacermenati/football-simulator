@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
 use App\Models\Team;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class CompetitionTeamController extends Controller
 {
@@ -35,7 +36,25 @@ class CompetitionTeamController extends Controller
 
         $competition->teams()->syncWithoutDetaching($teams->pluck('id'));
 
-        return response()->json(['message' => 'Teams added to competition successfully']);
+        return response()->json(null, Response::HTTP_CREATED);
+    }
+
+    public function destroy(Request $request, Competition $competition): JsonResponse
+    {
+        $request->validate([
+            'teams' => 'array',
+            'teams.*' => 'exists:teams,id',
+        ]);
+
+        Gate::authorize('owns', $competition);
+
+        $teams = Team::where('user_id', $request->user()->id)
+            ->whereIn('id', $request->teams)
+            ->get();
+
+        $competition->teams()->detach($teams->pluck('id'));
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
     public function available(Request $request, Competition $competition): JsonResponse

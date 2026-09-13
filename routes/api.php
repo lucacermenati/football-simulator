@@ -5,17 +5,7 @@ use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application.
-|
-*/
 
 Route::name('api.')->group(function () {
     Route::post('/token', [TokenController::class, 'store'])->name('token.store');

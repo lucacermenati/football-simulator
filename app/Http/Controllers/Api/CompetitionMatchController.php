@@ -91,4 +91,13 @@ class CompetitionMatchController extends Controller
 
         return response()->json(null, Response::HTTP_OK);
     }
+
+    public function destroy(Competition $competition)
+    {
+        Gate::authorize('owns', $competition);
+
+        $competition->matches()->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
 }

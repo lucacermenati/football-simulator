@@ -27,7 +27,7 @@ Route::name('api.')->group(function () {
         Route::delete('/competitions/{competition}/teams', [CompetitionTeamController::class, 'destroy']);
         Route::get('/competitions/{competition}/available-teams', [CompetitionTeamController::class, 'available']);
 
-        Route::apiResource('competitions.matches', CompetitionMatchController::class)->only('index', 'store', 'show');
+        Route::apiResource('competitions.matches', CompetitionMatchController::class)->only('index', 'store', 'show', 'destroy');
         Route::post('/competitions/{competition}/play', [CompetitionMatchController::class, 'play']);
     });
 });

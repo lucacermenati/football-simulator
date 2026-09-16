@@ -8,6 +8,7 @@ use App\Models\Competition;
 use App\Models\FootballMatch;
 use App\Services\CalendarGenerator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class CompetitionMatchController extends Controller
@@ -55,14 +56,13 @@ class CompetitionMatchController extends Controller
         ]);
     }
 
-    public function generate(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
+    public function store(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
         $validated = $request->validate([
             'start_date' => 'required|date',
-            // 'start_date' => 'required|date|after_or_equal:' . Carbon::now()->format('Y-m-d'),
         ]);
 
-        // TODO: Add error handling: the user does not own the competition, the matches are already generated
+        Gate::authorize('owns', $competition);
 
         $calendarGenerator->generateMatches($competition, $validated['start_date']);
 

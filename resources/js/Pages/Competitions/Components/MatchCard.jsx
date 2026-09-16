@@ -35,7 +35,7 @@ export default function MatchCard({ match }) {
             </Link>
 
             {/* Vertical separator */}
-            <div className="h-14 border-l border-gray-300" />
+            <div className="border-l border-gray-300 h-14" />
 
             {/* Info */}
             <div className="pl-4">

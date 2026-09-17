@@ -18,6 +18,10 @@ class CompetitionMatchController extends Controller
 {
     public function index(Request $request, Competition $competition): JsonResponse
     {
+        $request->validate([
+            'day' => 'nullable|integer|min:1',
+        ]);
+
         $page = $request->input('day', null);
         $perPage = $competition->teams()->count() / 2;
         $lastPage = $competition->matches()->max('day');

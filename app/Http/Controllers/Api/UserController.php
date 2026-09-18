@@ -35,6 +35,21 @@ class UserController extends Controller
         return new UserResource($request->user());
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
+
+        $user = $request->user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return new UserResource($user);
+    }
+
     public function nextToPlay(Request $request): JsonResponse
     {
         $competitions = $request->user()

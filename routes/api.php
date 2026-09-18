@@ -15,6 +15,7 @@ Route::name('api.')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/token', [TokenController::class, 'destroy'])->name('token.destroy');
         Route::get('/user', [UserController::class, 'show'])->name('user.show');
+        Route::put('/user', [UserController::class, 'update'])->name('user.update');
         Route::get('/user/next-to-play', [UserController::class, 'nextToPlay'])->name('user.nextToPlay');
 
         Route::apiResource('competitions', CompetitionController::class);

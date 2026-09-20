@@ -15,18 +15,18 @@ export default function CompetitionMatch({ competition, match }) {
             <CompetitionLayout competition={competition}>
                 <div className="px-6 py-4">
                     <div className="grid grid-cols-[1fr_auto_1fr] items-center">
-                        <div className="flex gap-3 justify-self-start items-center">
+                        <div className="flex items-center gap-3 justify-self-start">
                             <TeamLogo team={match.home_team} size={16} />
                             <span>{match.home_team.name}</span>
                         </div>
 
-                        <div className="flex gap-2 justify-self-center items-center text-2xl font-bold">
+                        <div className="flex items-center gap-2 text-2xl font-bold justify-self-center">
                             <span>{match.goal_home}</span>
                             <span>-</span>
                             <span>{match.goal_away}</span>
                         </div>
 
-                        <div className="flex gap-3 justify-self-end items-center">
+                        <div className="flex items-center gap-3 justify-self-end">
                             <span>{match.away_team.name}</span>
                             <TeamLogo team={match.away_team} size={16} />
                         </div>
@@ -46,7 +46,7 @@ export default function CompetitionMatch({ competition, match }) {
                                         <Fragment
                                             key={`${player.id}-${player.pivot.minute}`}
                                         >
-                                            <div className="flex gap-2 justify-self-start items-center">
+                                            <div className="flex items-center gap-2 justify-self-start">
                                                 {isHomeScorer && (
                                                     <>
                                                         <img
@@ -66,7 +66,7 @@ export default function CompetitionMatch({ competition, match }) {
                                                 {player.pivot.minute}'
                                             </span>
 
-                                            <div className="flex gap-2 justify-self-end items-center">
+                                            <div className="flex items-center gap-2 justify-self-end">
                                                 {!isHomeScorer && (
                                                     <>
                                                         <span className="text-right truncate">

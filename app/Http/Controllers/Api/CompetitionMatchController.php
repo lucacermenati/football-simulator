@@ -59,13 +59,13 @@ class CompetitionMatchController extends Controller
         return response()->json(null, Response::HTTP_CREATED);
     }
 
-    public function show(FootballMatch $footballMatch): JsonResponse
+    public function show(Competition $competition, FootballMatch $match)
     {
-        Gate::authorize('owns', $footballMatch->competition);
+        Gate::authorize('owns', $competition);
 
-        $footballMatch->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
+        $match->load(['competition', 'homeTeam', 'awayTeam', 'scorers']);
 
-        return response()->json(new FootballMatchResource($footballMatch));
+        return response()->json(new FootballMatchResource($match));
     }
 
     public function play(Request $request, Competition $competition, PoissonMatchSimulator $simulator, ScorerSimulator $scorerSimulator)
@@ -96,7 +96,7 @@ class CompetitionMatchController extends Controller
         return response()->json(null, Response::HTTP_OK);
     }
 
-    public function destroy(Competition $competition)
+    public function reset(Competition $competition)
     {
         Gate::authorize('owns', $competition);
 

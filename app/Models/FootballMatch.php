@@ -12,11 +12,6 @@ class FootballMatch extends Model
 {
     use HasFactory, HasUuids;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'matches';
 
     protected $fillable = [

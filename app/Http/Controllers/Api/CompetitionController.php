@@ -9,7 +9,6 @@ use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;

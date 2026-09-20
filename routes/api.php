@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CompetitionController;
 use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\CompetitionMatchController;
+use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +30,11 @@ Route::name('api.')->group(function () {
         Route::delete('/competitions/{competition}/teams', [CompetitionTeamController::class, 'destroy']);
         Route::get('/competitions/{competition}/available-teams', [CompetitionTeamController::class, 'available']);
 
-        Route::apiResource('competitions.matches', CompetitionMatchController::class)->only('index', 'store', 'show', 'destroy');
-        Route::post('/competitions/{competition}/play', [CompetitionMatchController::class, 'play']);
+        Route::apiResource('competitions.matches', CompetitionMatchController::class)->only('index', 'store', 'show')->scoped();
+        Route::post('/competitions/{competition}/matches/play', [CompetitionMatchController::class, 'play']);
+        Route::delete('/competitions/{competition}/matches/reset', [CompetitionMatchController::class, 'reset']);
+
+        Route::apiResource('teams', TeamController::class)->only('index');
     });
 });
 

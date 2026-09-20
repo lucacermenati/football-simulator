@@ -7,16 +7,27 @@ use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
 
 class TeamController extends Controller
 {
-    public function index(): ResourceCollection
+    public function index(Request $request): JsonResponse
     {
-        $teams = Team::query()->paginate(15);
+        $request->validate([
+            'search' => 'string|nullable',
+            'page' => 'integer|min:1',
+            'per_page' => 'integer|min:1',
+        ]);
 
-        return TeamResource::collection($teams);
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 15);
+
+        $teams = Team::query()
+            ->search($request->input('search', null))
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return TeamResource::collection($teams)->response();
     }
 
     public function store(Request $request): JsonResponse

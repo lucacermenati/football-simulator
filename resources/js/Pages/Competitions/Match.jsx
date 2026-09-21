@@ -32,7 +32,7 @@ export default function CompetitionMatch({ competition, match }) {
                         </div>
                     </div>
                     <div className="flex flex-col items-center">
-                        <div>{new Date(match.date).toLocaleDateString()}</div>
+                        <div>{matchDate.toLocaleDateString()}</div>
                         <div>{match.home_team.stadium}</div>
                     </div>
                     <div className="pt-4 mt-4 border-t border-lightGrey-600">

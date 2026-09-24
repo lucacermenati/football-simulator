@@ -34,7 +34,7 @@ Route::name('api.')->group(function () {
         Route::post('/competitions/{competition}/matches/play', [CompetitionMatchController::class, 'play']);
         Route::delete('/competitions/{competition}/matches/reset', [CompetitionMatchController::class, 'reset']);
 
-        Route::apiResource('teams', TeamController::class)->only('index');
+        Route::apiResource('teams', TeamController::class)->only('index', 'show');
     });
 });
 

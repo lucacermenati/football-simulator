@@ -30,6 +30,11 @@ class TeamController extends Controller
         return TeamResource::collection($teams)->response();
     }
 
+    public function show(Team $team): JsonResponse
+    {
+        return response()->json(new TeamResource($team));
+    }
+
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -81,13 +86,6 @@ class TeamController extends Controller
         });
 
         return response()->json(TeamResource::collection($createdTeams), 201);
-    }
-
-    public function show(Team $team): JsonResponse
-    {
-        $team->load(['players', 'competitions']);
-
-        return response()->json(new TeamResource($team));
     }
 
     public function update(Request $request, Team $team): JsonResponse

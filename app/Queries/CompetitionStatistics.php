@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CompetitionStatistics
 {
-    /**
-     * @return Collection<int, Player>
-     */
     public function for(Competition $competition): Collection
     {
         return Player::query()

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CompetitionController;
 use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\CompetitionMatchController;
+use App\Http\Controllers\Api\TeamCompetitionController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
@@ -35,6 +36,8 @@ Route::name('api.')->group(function () {
         Route::delete('/competitions/{competition}/matches/reset', [CompetitionMatchController::class, 'reset']);
 
         Route::apiResource('teams', TeamController::class)->only('index', 'show');
+
+        Route::apiResource('teams.competitions', TeamCompetitionController::class)->only('index');
     });
 });
 

@@ -65,7 +65,7 @@ class TeamPositions extends TeamStatistics
                 'competitions.logo',
             ])
             ->addSelect([
-                'team_position' => $position,
+                'position' => $position,
             ])
             ->get();
     }

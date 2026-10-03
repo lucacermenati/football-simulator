@@ -3,39 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TeamResource;
+use App\Http\Requests\UploadLogoRequest;
 use App\Models\Team;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class TeamLogoController extends Controller
 {
-    public function upload(Request $request, Team $team): JsonResponse
+    public function upload(UploadLogoRequest $request, Team $team)
     {
-        $request->validate([
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        Gate::authorize('owns', $team);
 
-        if ($team->logo && Storage::disk('public')->exists($team->logo)) {
-            Storage::disk('public')->delete($team->logo);
-        }
+        $team->uploadFile(
+            $request->file('logo'),
+            'teams',
+            'logo',
+        );
 
-        $path = $request->file('logo')->store('logos', 'public');
-
-        $team->update(['logo' => $path]);
-
-        return response()->json(new TeamResource($team));
+        return response()->noContent();
     }
 
-    public function delete(Team $team): JsonResponse
+    public function delete(Team $team)
     {
-        if ($team->logo && Storage::disk('public')->exists($team->logo)) {
-            Storage::disk('public')->delete($team->logo);
-        }
+        Gate::authorize('owns', $team);
 
-        $team->update(['logo' => null]);
+        $team->removeFile('logo');
 
-        return response()->json(new TeamResource($team));
+        return response()->noContent();
     }
 }

@@ -35,7 +35,10 @@ Route::name('api.')->group(function () {
         Route::post('/competitions/{competition}/matches/play', [CompetitionMatchController::class, 'play']);
         Route::delete('/competitions/{competition}/matches/reset', [CompetitionMatchController::class, 'reset']);
 
-        Route::apiResource('teams', TeamController::class)->only('index', 'show', 'store', 'update', 'destroy');
+        Route::apiResource('teams', TeamController::class);
+
+        Route::post('/teams/{team}/logo', [TeamLogoController::class, 'upload']);
+        Route::delete('/teams/{team}/logo', [TeamLogoController::class, 'destroy']);
 
         Route::apiResource('teams.competitions', TeamCompetitionController::class)->only('index');
     });

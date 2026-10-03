@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UploadLogoRequest;
 use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class CompetitionLogoController extends Controller
 {
-    public function upload(Request $request, Competition $competition)
+    public function upload(UploadLogoRequest $request, Competition $competition)
     {
-        $request->validate([
-            'logo' => 'required|image|max:2048',
-        ]);
-
         Gate::authorize('owns', $competition);
 
         $competition->uploadFile(

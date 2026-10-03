@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\CompetitionMatchController;
 use App\Http\Controllers\Api\TeamCompetitionController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\TeamLogoController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,7 @@ Route::name('api.')->group(function () {
         Route::delete('/teams/{team}/logo', [TeamLogoController::class, 'destroy']);
 
         Route::apiResource('teams.competitions', TeamCompetitionController::class)->only('index');
+        Route::get('/teams/{team}/available-competitions', [TeamCompetitionController::class, 'available']);
     });
 });
 

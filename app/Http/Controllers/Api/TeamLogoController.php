@@ -22,7 +22,7 @@ class TeamLogoController extends Controller
         return response()->noContent();
     }
 
-    public function delete(Team $team)
+    public function destroy(Team $team)
     {
         Gate::authorize('owns', $team);
 

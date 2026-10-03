@@ -10,6 +10,8 @@ use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class TeamController extends Controller
@@ -37,8 +39,10 @@ class TeamController extends Controller
         ]);
     }
 
-    public function show(Request $request, Team $team)
+    public function show(Team $team)
     {
+        Gate::authorize('owns', $team);
+
         return Inertia::render('Teams/Show', [
             'team' => TeamResource::make($team),
         ]);
@@ -60,7 +64,11 @@ class TeamController extends Controller
         $team = $request->user()->teams()->create($validated);
 
         if ($request->hasFile('logo')) {
-            $team->storeLogo($request->file('logo'));
+            $team->uploadFile(
+                $request->file('logo'),
+                'teams',
+                'logo',
+            );
         }
 
         return redirect()->back()->with('message', 'Team created successfully!');
@@ -82,14 +90,16 @@ class TeamController extends Controller
 
         $data = Arr::except($validated, ['logo', 'remove_logo']);
 
+        Gate::authorize('owns', $team);
+
         $team->update($data);
 
-        if ($request->input('remove_logo')){
-            $team->removeLogo();
-        }
-
         if ($request->hasFile('logo')) {
-            $team->storeLogo($request->file('logo'));
+            $team->uploadFile(
+                $request->file('logo'),
+                'teams',
+                'logo',
+            );
         }
 
         return redirect()->back()
@@ -98,6 +108,8 @@ class TeamController extends Controller
 
     public function destroy(Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $team->delete();
 
         return redirect()->route('teams.index');
@@ -105,6 +117,8 @@ class TeamController extends Controller
 
     public function info(Team $team)
     {
+        Gate::authorize('owns', $team);
+
         return Inertia::render('Teams/Info', [
             'team' => TeamResource::make($team),
         ]);
@@ -112,6 +126,8 @@ class TeamController extends Controller
 
     public function players(Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $players = $team->players()
             ->orderBy('number')
             ->get();
@@ -124,6 +140,8 @@ class TeamController extends Controller
 
     public function lineup(Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $lineupQuery = $team->players()
             ->orderBy('position_on_field');
 
@@ -146,8 +164,14 @@ class TeamController extends Controller
     public function addPlayer(Request $request, Team $team)
     {
         $validated = $request->validate([
-            'player_id' => 'required|exists:players,id',
+            'player_id' => [
+                'required',
+                Rule::exists('players', 'id')
+                    ->where('user_id', $request->user()->id),
+            ],
         ]);
+
+        Gate::authorize('owns', $team);
 
         Player::find($validated['player_id'])->update([
             'team_id' => $team->id,

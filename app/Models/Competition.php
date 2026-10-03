@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use App\Models\Concerns\HasLogo;
 use LucaCermenati\CommonTraits\Traits\HasImages;
+use LucaCermenati\CommonTraits\Traits\Searchable;
 
 class Competition extends Model
 {
-    use HasFactory, HasUuids, HasLogo, HasImages;
+    use HasFactory, HasUuids, HasImages, Searchable;
 
     protected $fillable = [
         'name',
@@ -36,5 +36,12 @@ class Competition extends Model
     public function matches(): HasMany
     {
         return $this->hasMany(FootballMatch::class);
+    }
+
+    public function searchables(): array
+    {
+        return [
+            'name'
+        ];
     }
 }

@@ -75,7 +75,7 @@ class TeamController extends Controller
             'history' => 'nullable|string',
             'first_color' => 'nullable|string|max:7',
             'second_color' => 'nullable|string|max:7',
-            'year_of_foundation' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
             'stadium' => 'nullable|string|max:255',
             'rating' => 'sometimes|integer|min:30|max:100',
         ]);
@@ -96,48 +96,48 @@ class TeamController extends Controller
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function bulkStore(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'teams' => 'required|array|min:1',
-            'teams.*.name' => 'required|string|max:255|unique:teams,name',
-            'teams.*.logo' => 'sometimes|string|url',
-            'teams.*.first_color' => 'required|string|max:7',
-            'teams.*.second_color' => 'required|string|max:7',
-            'teams.*.year_of_foundation' => 'required|integer|min:1800|max:' . date('Y'),
-            'teams.*.stadium' => 'required|string|max:255',
-            'teams.*.rating' => 'sometimes|integer|min:30|max:100',
-            'teams.*.history' => 'nullable|string',
-            'teams.*.competition_id' => 'sometimes|exists:competitions,id',
-        ]);
+    // public function bulkStore(Request $request): JsonResponse
+    // {
+    //     $validated = $request->validate([
+    //         'teams' => 'required|array|min:1',
+    //         'teams.*.name' => 'required|string|max:255|unique:teams,name',
+    //         'teams.*.logo' => 'sometimes|string|url',
+    //         'teams.*.first_color' => 'required|string|max:7',
+    //         'teams.*.second_color' => 'required|string|max:7',
+    //         'teams.*.year_of_foundation' => 'required|integer|min:1800|max:' . date('Y'),
+    //         'teams.*.stadium' => 'required|string|max:255',
+    //         'teams.*.rating' => 'sometimes|integer|min:30|max:100',
+    //         'teams.*.history' => 'nullable|string',
+    //         'teams.*.competition_id' => 'sometimes|exists:competitions,id',
+    //     ]);
 
-        $user = $request->user() ?? User::first();
+    //     $user = $request->user() ?? User::first();
 
-        $createdTeams = collect($validated['teams'])->map(function ($teamData) use ($user) {
-            $team = $user->teams()->create($teamData);
+    //     $createdTeams = collect($validated['teams'])->map(function ($teamData) use ($user) {
+    //         $team = $user->teams()->create($teamData);
 
-            if (isset($teamData['competition_id'])) {
-                $team->competitions()->attach($teamData['competition_id']);
-            }
+    //         if (isset($teamData['competition_id'])) {
+    //             $team->competitions()->attach($teamData['competition_id']);
+    //         }
 
-            return $team;
-        });
+    //         return $team;
+    //     });
 
-        return response()->json(TeamResource::collection($createdTeams), 201);
-    }
+    //     return response()->json(TeamResource::collection($createdTeams), 201);
+    // }
 
-    public function factory(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'locale' => 'sometimes|string',
-            'n' => 'sometimes|integer|min:1',
-        ]);
+    // public function factory(Request $request): JsonResponse
+    // {
+    //     $validated = $request->validate([
+    //         'locale' => 'sometimes|string',
+    //         'n' => 'sometimes|integer|min:1',
+    //     ]);
 
-        $locale = $validated['locale'] ?? config('app.faker_locale');
-        $n = $validated['n'] ?? 1;
+    //     $locale = $validated['locale'] ?? config('app.faker_locale');
+    //     $n = $validated['n'] ?? 1;
 
-        $teams = Team::factory()->fromLocale($locale)->count($n)->make();
+    //     $teams = Team::factory()->fromLocale($locale)->count($n)->make();
 
-        return response()->json(TeamResource::collection($teams), 200);
-    }
+    //     return response()->json(TeamResource::collection($teams), 200);
+    // }
 }

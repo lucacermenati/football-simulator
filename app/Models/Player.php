@@ -64,6 +64,7 @@ class Player extends Model
         return [
             'first_name',
             'last_name',
+            'team.name',
         ];
     }
 }

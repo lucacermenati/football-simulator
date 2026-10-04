@@ -16,12 +16,7 @@ class PlayerController extends Controller
     public function index(PlayersFilterRequest $request)
     {
         $players = $request->user()->players()->with('team')
-            ->when($request->input('search'), function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('first_name', 'like', '%' . $request->input('search') . '%')
-                        ->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
-                });
-            })
+            ->search($request->input('search'))
             ->when($request->free, function ($query) {
                 $query->whereNull('team_id');
             })

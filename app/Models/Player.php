@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use LucaCermenati\CommonTraits\Traits\Searchable;
+use Override;
 
 class Player extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
 
     protected $fillable = [
         'first_name',
@@ -54,5 +56,14 @@ class Player extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    #[Override]
+    public function searchables(): array
+    {
+        return [
+            'first_name',
+            'last_name',
+        ];
     }
 }

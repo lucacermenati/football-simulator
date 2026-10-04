@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CompetitionController;
 use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\CompetitionMatchController;
+use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamCompetitionController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TeamLogoController;
@@ -43,6 +44,8 @@ Route::name('api.')->group(function () {
 
         Route::apiResource('teams.competitions', TeamCompetitionController::class)->only('index');
         Route::get('/teams/{team}/available-competitions', [TeamCompetitionController::class, 'available']);
+
+        Route::apiResource('players', PlayerController::class)->only('index');
     });
 });
 

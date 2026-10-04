@@ -4,21 +4,37 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\Position;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 
 class PlayerController extends Controller
 {
-    public function index(): ResourceCollection
+    public function index(PlayersFilterRequest $request)
     {
-        $players = Player::query()->get();
+        // TODO: use filter from common to filter
+        $players = $request->user()->players()->with('team')
+            ->search($request->input('search'))
+            ->when($request->free, function ($query) {
+                Log::info('Filtering free players');
+                $query->whereNull('team_id');
+            })
+            ->when($request->input('position'), function ($query) use ($request) {
+                $query->where('position', $request->input('position'));
+            })
+            ->when($request->input('nationality'), function ($query) use ($request) {
+                $query->where('nationality', $request->input('nationality'));
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(16);
 
-        return PlayerResource::collection($players);
+        return PlayerResource::collection($players)->response();
     }
 
     public function store(Request $request): JsonResponse

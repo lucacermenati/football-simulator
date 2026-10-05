@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use LucaCermenati\CommonTraits\Traits\Searchable;
+use Illuminate\Database\Eloquent\Builder;
 use Override;
 
 class Player extends Model
@@ -51,6 +52,19 @@ class Player extends Model
             ->using(MatchPlayer::class)
             ->withPivot('minute')
             ->withTimestamps();
+    }
+
+    public function scopeOrderByPosition(Builder $query)
+    {
+        return $query->orderByRaw("
+            CASE position
+                WHEN 'Goalkeeper' THEN 1
+                WHEN 'Defender' THEN 2
+                WHEN 'Midfielder' THEN 3
+                WHEN 'Forward' THEN 4
+                ELSE 5
+            END
+        ")->orderBy('position_on_field');
     }
 
     public function getFullNameAttribute(): string

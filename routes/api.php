@@ -45,6 +45,8 @@ Route::name('api.')->group(function () {
         Route::apiResource('teams.competitions', TeamCompetitionController::class)->only('index');
         Route::get('/teams/{team}/available-competitions', [TeamCompetitionController::class, 'available']);
 
+        Route::apiResource('teams.players', TeamPlayerController::class)->only('index');
+
         Route::apiResource('players', PlayerController::class)->only('index');
     });
 });

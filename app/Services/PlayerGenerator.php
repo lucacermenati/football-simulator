@@ -11,15 +11,7 @@ use Illuminate\Support\Str;
 
 class PlayerGenerator
 {
-    /**
-     * Generate a realistic, nationality-aware player attribute set.
-     *
-     * Non-empty overrides win over generated values. The `nationality`
-     * override (string code or Country) also selects the faker locale.
-     *
-     * @param  array<string, mixed>  $overrides
-     * @return array<string, mixed>
-     */
+    /** Generate a realistic, nationality-aware player attribute set. */
     public function attributes(array $overrides = []): array
     {
         $overrides = array_filter($overrides, fn ($value) => $value !== null && $value !== '');
@@ -39,12 +31,7 @@ class PlayerGenerator
         ];
     }
 
-    /**
-     * Generate several players; each one gets its own random country unless overridden.
-     *
-     * @param  array<string, mixed>  $overrides
-     * @return array<int, array<string, mixed>>
-     */
+    /** Generate several players; each one gets its own random country unless overridden. */
     public function many(int $count, array $overrides = []): array
     {
         return array_map(fn () => $this->attributes($overrides), range(1, $count));
@@ -69,19 +56,18 @@ class PlayerGenerator
         ]);
     }
 
-    /**
-     * Names transliterated to ASCII. Non-Latin scripts (he, ja, ko, zh, th) have no
-     * transliteration and come back empty, so those fall back to the default locale.
-     *
-     * @return array{string, string}
-     */
     private function latinNames(Generator $faker): array
     {
-        $names = [
-            Str::ucfirst(Str::ascii($faker->firstName('male'))),
-            Str::ucfirst(Str::ascii($faker->lastName())),
+        return [
+            $this->latinName($faker->firstName('male')),
+            $this->latinName($faker->lastName()),
         ];
+    }
 
-        return $names;
+    private function latinName(string $name): string
+    {
+        $ascii = Str::ascii($name);
+
+        return Str::ucfirst($ascii === '' ? $name : $ascii);
     }
 }

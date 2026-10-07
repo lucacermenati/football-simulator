@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Str;
+
 enum Country: string
 {
     // Western Europe
@@ -213,6 +215,11 @@ enum Country: string
 
             default => [config('app.locale')],
         };
+    }
+
+    public function name(): string
+    {
+        return Str::headline($this->name);
     }
 
     public static function random(): Country

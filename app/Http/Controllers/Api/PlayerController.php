@@ -12,7 +12,9 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\HttpFoundation\Response;
 
 class PlayerController extends Controller
 {
@@ -85,6 +87,8 @@ class PlayerController extends Controller
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
         ]);
 
+        Gate::authorize('owns', $player);
+
         $player->update($validated);
 
         return response()->json(new PlayerResource($player));
@@ -92,9 +96,11 @@ class PlayerController extends Controller
 
     public function destroy(Player $player): JsonResponse
     {
+        Gate::authorize('owns', $player);
+
         $player->delete();
 
-        return response()->json(null, 204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
     public function byTeam(Team $team): ResourceCollection

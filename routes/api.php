@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CompetitionController;
 use App\Http\Controllers\Api\CompetitionLogoController;
 use App\Http\Controllers\Api\CompetitionTeamController;
 use App\Http\Controllers\Api\CompetitionMatchController;
+use App\Http\Controllers\Api\NationalityController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamCompetitionController;
 use App\Http\Controllers\Api\TeamController;
@@ -47,7 +48,9 @@ Route::name('api.')->group(function () {
 
         Route::apiResource('teams.players', TeamPlayerController::class)->only('index');
 
-        Route::apiResource('players', PlayerController::class)->only('index');
+        Route::apiResource('players', PlayerController::class)->only('index', 'destroy');
+
+        Route::get('/nationalities', [NationalityController::class, 'index'])->name('nationalities.index');
     });
 });
 

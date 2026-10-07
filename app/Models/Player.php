@@ -27,6 +27,7 @@ class Player extends Model
         'team_id',
         'position_on_field',
         'rating',
+        'user_id'
     ];
 
     protected $casts = [

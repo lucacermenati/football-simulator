@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Country;
 use App\Enums\Position;
 use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
@@ -32,18 +33,21 @@ class PlayerController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
-            'nationality' => 'nullable|string|size:2',
-            'position' => ['required', 'string', new Enum(Position::class)],
-            'number' => 'required|integer|min:1|max:99',
-            'team_id' => 'sometimes|uuid|exists:teams,id',
+            'nationality' => ['nullable', 'string', new Enum(Country::class)],
+            'position' => ['nullable', 'string', new Enum(Position::class)],
+            'number' => 'nullable|integer|min:0|max:99',
         ]);
 
-        $player = Player::create($validated);
+        $player = Player::factory()->country($validated['nationality'])
+            ->create(array_merge([
+                'user_id' => $request->user()->id,
+                $validated
+            ]));
 
-        return response()->json(new PlayerResource($player), 201);
+        return PlayerResource::make($player)->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function bulkStore(Request $request): JsonResponse

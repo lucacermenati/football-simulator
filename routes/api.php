@@ -48,7 +48,7 @@ Route::name('api.')->group(function () {
 
         Route::apiResource('teams.players', TeamPlayerController::class)->only('index');
 
-        Route::apiResource('players', PlayerController::class)->only('index', 'destroy');
+        Route::apiResource('players', PlayerController::class)->only('index', 'destroy', 'store');
 
         Route::get('/nationalities', [NationalityController::class, 'index'])->name('nationalities.index');
     });

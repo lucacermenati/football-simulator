@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use LucaCermenati\CommonTraits\Traits\Searchable;
 use Illuminate\Database\Eloquent\Builder;
+use LucaCermenati\CommonTraits\Traits\Filterable;
 use Override;
 
 class Player extends Model
 {
-    use HasFactory, HasUuids, Searchable;
+    use HasFactory, HasUuids, Searchable, Filterable;
 
     protected $fillable = [
         'first_name',

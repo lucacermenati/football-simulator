@@ -10,9 +10,10 @@ use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Models\Team;
+use App\Services\PlayerGenerator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,22 +31,18 @@ class PlayerController extends Controller
         return PlayerResource::collection($players)->response();
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, PlayerGenerator $generator): JsonResponse
     {
         $validated = $request->validate([
-            'first_name' => 'nullable|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'nationality' => ['nullable', 'string', new Enum(Country::class)],
-            'position' => ['nullable', 'string', new Enum(Position::class)],
-            'number' => 'nullable|integer|min:0|max:99',
+            'first_name' => 'sometimes|string|max:255',
+            'last_name' => 'sometimes|string|max:255',
+            'birth_date' => 'sometimes|date',
+            'nationality' => ['sometimes', 'string', new Enum(Country::class)],
+            'position' => ['sometimes', 'string', new Enum(Position::class)],
+            'number' => 'sometimes|integer|min:0|max:99',
         ]);
 
-        $player = Player::factory()->country($validated['nationality'])
-            ->create(array_merge([
-                'user_id' => $request->user()->id,
-                $validated
-            ]));
+        $player = $request->user()->players()->create($generator->attributes($validated));
 
         return PlayerResource::make($player)->response()->setStatusCode(Response::HTTP_CREATED);
     }
@@ -57,7 +54,7 @@ class PlayerController extends Controller
             'players.*.first_name' => 'required|string|max:255',
             'players.*.last_name' => 'required|string|max:255',
             'players.*.birth_date' => 'nullable|date',
-            'players.*.nationality' => 'nullable|string|size:2',
+            'players.*.nationality' => ['nullable', 'string', new Enum(Country::class)],
             'players.*.position' => ['required', 'string', new Enum(Position::class)],
             'players.*.number' => 'required|integer|min:1|max:99',
             'players.*.team_id' => 'sometimes|uuid|exists:teams,id',
@@ -85,7 +82,7 @@ class PlayerController extends Controller
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
             'birth_date' => 'nullable|date',
-            'nationality' => 'nullable|string|size:2',
+            'nationality' => ['nullable', 'string', new Enum(Country::class)],
             'position' => ['sometimes', 'required', 'string', new Enum(Position::class)],
             'number' => 'sometimes|required|integer|min:1|max:99',
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
@@ -121,7 +118,7 @@ class PlayerController extends Controller
         // Check if player already has a team
         if ($player->team_id !== null) {
             return response()->json([
-                'message' => 'Player already belongs to a team'
+                'message' => 'Player already belongs to a team',
             ], 409);
         }
 
@@ -137,25 +134,5 @@ class PlayerController extends Controller
         $player->load(['team']);
 
         return response()->json(new PlayerResource($player));
-    }
-
-    public function factory(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'n' => 'sometimes|integer|min:1',
-            'team_id' => 'sometimes|uuid|exists:teams,id',
-            'locale' => 'sometimes|string',
-            'position' => ['sometimes', 'string', new Enum(Position::class)],
-        ]);
-
-        $n = $validated['n'] ?? 1;
-        $locale = $validated['locale'] ?? null;
-
-        $players = Player::factory()->country($locale)->count($n)->make([
-            'team_id' => $validated['team_id'] ?? null,
-            'position' => $validated['position'] ?? null,
-        ]);
-
-        return response()->json(PlayerResource::collection($players), 200);
     }
 }

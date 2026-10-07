@@ -2,8 +2,10 @@
 
 namespace App\Faker;
 
+use App\Enums\Country;
 use Faker\Factory;
 use Faker\Generator;
+use Illuminate\Support\Arr;
 
 class FakerFactory
 {
@@ -147,6 +149,11 @@ class FakerFactory
             ],
         ],
     ];
+
+    public static function forCountry(Country $country): Generator
+    {
+        return static::create(Arr::random($country->locales()));
+    }
 
     public static function create(string $locale): Generator
     {

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
+use App\Services\PlayerGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -47,9 +48,9 @@ class PlayerController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, PlayerGenerator $generator)
     {
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
@@ -58,13 +59,7 @@ class PlayerController extends Controller
             'number' => 'nullable|integer|min:1|max:99',
         ]);
 
-        $playerData = array_merge(array_filter($request->except('nationality')), [
-            'user_id' => $request->user()->id,
-            'team_id' => null,
-        ]);
-
-        Player::factory()->country($request->input('nationality', null))
-            ->create($playerData);
+        $request->user()->players()->create($generator->attributes($validated));
 
         return redirect()->back()->with('success', 'Player created successfully!');
     }
@@ -85,16 +80,13 @@ class PlayerController extends Controller
         return redirect()->back()->with('success', 'Player updated successfully!');
     }
 
-    public function generate(Request $request)
+    public function generate(Request $request, PlayerGenerator $generator)
     {
         $validated = $request->validate([
             'size' => 'required|integer|min:1|max:500',
         ]);
 
-        Player::factory()->country()->count($validated['size'])->create([
-            'user_id' => $request->user()->id,
-            'team_id' => null,
-        ]);
+        $request->user()->players()->createMany($generator->many($validated['size']));
 
         return redirect()->back()->with('success', 'Players generated successfully!');
     }

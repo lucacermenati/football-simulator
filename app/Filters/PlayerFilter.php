@@ -12,4 +12,14 @@ class PlayerFilter extends QueryFilter
             $query->whereNull('team_id');
         });
     }
+
+    public function position($value)
+    {
+        $this->builder->where('position', $value);
+    }
+
+    public function nationality($value)
+    {
+        $this->builder->where('nationality', $value);
+    }
 }

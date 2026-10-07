@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\Country;
+use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
@@ -13,19 +14,11 @@ use Inertia\Inertia;
 
 class PlayerController extends Controller
 {
-    public function index(PlayersFilterRequest $request)
+    public function index(PlayersFilterRequest $request, PlayerFilter $filter)
     {
         $players = $request->user()->players()->with('team')
             ->search($request->input('search'))
-            ->when($request->free, function ($query) {
-                $query->whereNull('team_id');
-            })
-            ->when($request->input('position'), function ($query) use ($request) {
-                $query->where('position', $request->input('position'));
-            })
-            ->when($request->input('nationality'), function ($query) use ($request) {
-                $query->where('nationality', $request->input('nationality'));
-            })
+            ->filter($filter, $request)
             ->orderBy('created_at', 'desc')
             ->paginate(16)
             ->withQueryString();

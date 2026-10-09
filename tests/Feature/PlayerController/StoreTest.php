@@ -63,29 +63,29 @@ class StoreTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson(route('api.players.store'), [
-            'first_name' => 'Zlatan',
-            'last_name' => 'Ibrahimovic',
-            'birth_date' => '1981-10-03',
-            'nationality' => 'SE',
+            'first_name' => 'Ronaldo Luis',
+            'last_name' => 'Nazario da Lima',
+            'birth_date' => '1976-09-18',
+            'nationality' => 'BR',
             'position' => Position::Forward->value,
             'number' => 10,
         ]);
 
         $response
             ->assertCreated()
-            ->assertJsonPath('first_name', 'Zlatan')
-            ->assertJsonPath('last_name', 'Ibrahimovic')
-            ->assertJsonPath('nationality', 'SE')
+            ->assertJsonPath('first_name', 'Ronaldo Luis')
+            ->assertJsonPath('last_name', 'Nazario da Lima')
+            ->assertJsonPath('nationality', 'BR')
             ->assertJsonPath('position', Position::Forward->value)
             ->assertJsonPath('number', 10);
 
         $this->assertDatabaseHas('players', [
             'id' => $response->json('id'),
             'user_id' => $user->id,
-            'first_name' => 'Zlatan',
-            'last_name' => 'Ibrahimovic',
-            'birth_date' => '1981-10-03 00:00:00',
-            'nationality' => 'SE',
+            'first_name' => 'Ronaldo Luis',
+            'last_name' => 'Nazario da Lima',
+            'birth_date' => '1976-09-18 00:00:00',
+            'nationality' => 'BR',
             'position' => Position::Forward->value,
             'number' => 10,
             'team_id' => null,

@@ -59,11 +59,11 @@ class IndexTest extends TestCase
     public function test_a_user_can_search_their_players_by_name(): void
     {
         $user = User::factory()->create();
-        $byFirstName = Player::factory()->for($user)->create(['first_name' => 'Zlatan', 'last_name' => 'Smith', 'team_id' => null]);
-        $byLastName = Player::factory()->for($user)->create(['first_name' => 'John', 'last_name' => 'Zlatanovic', 'team_id' => null]);
+        $byFirstName = Player::factory()->for($user)->create(['first_name' => 'Ronaldo', 'last_name' => 'Smith', 'team_id' => null]);
+        $byLastName = Player::factory()->for($user)->create(['first_name' => 'Cristiano', 'last_name' => 'Ronaldo', 'team_id' => null]);
         $noMatch = Player::factory()->for($user)->create(['first_name' => 'John', 'last_name' => 'Smith', 'team_id' => null]);
 
-        $response = $this->actingAs($user)->getJson(route('api.players.index', ['search' => 'zlatan']));
+        $response = $this->actingAs($user)->getJson(route('api.players.index', ['search' => 'ronaldo']));
 
         $response
             ->assertOk()

@@ -7,6 +7,7 @@ use App\Enums\Position;
 use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayersFilterRequest;
+use App\Http\Resources\PlayerNationalityCountResource;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Services\PlayerGenerator;
@@ -82,14 +83,16 @@ class PlayerController extends Controller
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function nationalities(Request $request, PlayerFilter $filter)
+    public function nationalities(Request $request, PlayerFilter $filter): JsonResponse
     {
-        return Player::where('user_id', $request->user()->id)
+        $nationalities = Player::where('user_id', $request->user()->id)
             ->selectRaw('nationality as code, COUNT(*) AS count')
             ->search($request->input('search'))
             ->filter($filter, $request)
             ->groupBy('nationality')
             ->orderBy('count', 'desc')
             ->get();
+
+        return PlayerNationalityCountResource::collection($nationalities)->response();
     }
 }

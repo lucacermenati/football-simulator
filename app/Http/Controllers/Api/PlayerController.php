@@ -14,6 +14,7 @@ use App\Services\PlayerGenerator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,6 +45,19 @@ class PlayerController extends Controller
         $player = $request->user()->players()->create($generator->attributes($validated));
 
         return PlayerResource::make($player)->response()->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    public function generate(Request $request, PlayerGenerator $generator)
+    {
+        $request->validate([
+            'n' => 'sometimes|integer|min:1|max:100',
+        ]);
+
+        $players = $request->user()->players()->createMany(
+            $generator->many($request->input('n', 1))
+        );
+
+        return PlayerResource::collection($players)->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Player $player): JsonResponse

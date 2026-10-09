@@ -49,6 +49,7 @@ Route::name('api.')->group(function () {
         Route::apiResource('teams.players', TeamPlayerController::class)->only('index');
 
         Route::get('players/nationalities', [PlayerController::class, 'nationalities']);
+        Route::post('players/generate', [PlayerController::class, 'generate']);
         Route::apiResource('players', PlayerController::class);
 
         Route::get('/nationalities', [NationalityController::class, 'index'])->name('nationalities.index');

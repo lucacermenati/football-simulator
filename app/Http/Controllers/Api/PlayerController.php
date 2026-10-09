@@ -81,4 +81,15 @@ class PlayerController extends Controller
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function nationalities(Request $request, PlayerFilter $filter)
+    {
+        return Player::where('user_id', $request->user()->id)
+            ->selectRaw('nationality as code, COUNT(*) AS count')
+            ->search($request->input('search'))
+            ->filter($filter, $request)
+            ->groupBy('nationality')
+            ->orderBy('count', 'desc')
+            ->get();
+    }
 }

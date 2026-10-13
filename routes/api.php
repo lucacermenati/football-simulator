@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamCompetitionController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TeamLogoController;
+use App\Http\Controllers\Api\TeamPlayerController;
 use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;

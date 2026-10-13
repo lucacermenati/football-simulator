@@ -64,7 +64,7 @@ class PlayerController extends Controller
     {
         Gate::authorize('owns', $player);
 
-        $player->load(['team']);
+        $player->load(['team', 'matches']);
 
         return PlayerResource::make($player)->response();
     }
@@ -97,7 +97,7 @@ class PlayerController extends Controller
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function nationalities(Request $request, PlayerFilter $filter): JsonResponse
+    public function nationalities(PlayersFilterRequest $request, PlayerFilter $filter): JsonResponse
     {
         $nationalities = Player::where('user_id', $request->user()->id)
             ->selectRaw('nationality as code, COUNT(*) AS count')

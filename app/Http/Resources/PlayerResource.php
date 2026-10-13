@@ -24,7 +24,7 @@ class PlayerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'team' => new TeamResource($this->whenLoaded('team')),
-            'scored_matches' => FootballMatchResource::collection($this->whenLoaded('scoredMatches')),
+            'matches' => FootballMatchResource::collection($this->whenLoaded('matches')),
         ];
     }
 }

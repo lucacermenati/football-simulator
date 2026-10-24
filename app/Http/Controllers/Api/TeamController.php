@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Sorters\TeamSorter;
@@ -40,20 +41,9 @@ class TeamController extends Controller
         return TeamResource::make($team)->response();
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreTeamRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:teams,name',
-            'logo' => 'sometimes|file|image|max:2048',
-            'first_color' => 'required|string|max:7',
-            'second_color' => 'required|string|max:7',
-            'year_of_foundation' => 'required|integer|min:1800|max:'.date('Y'),
-            'stadium' => 'required|string|max:255',
-            'rating' => 'sometimes|integer|min:30|max:100',
-            'history' => 'nullable|string',
-        ]);
-
-        $team = $request->user()->teams()->create($validated);
+        $team = $request->user()->teams()->create($request->safe()->except('logo'));
 
         if ($request->hasFile('logo')) {
             $team->uploadFile(

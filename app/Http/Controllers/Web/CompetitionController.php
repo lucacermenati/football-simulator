@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
@@ -24,18 +25,9 @@ class CompetitionController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreCompetitionRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $competition = $request->user()->competitions()->create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        $competition = $request->user()->competitions()->create($request->safe()->except('logo'));
 
         if ($request->hasFile('logo')) {
             $competition->uploadFile(

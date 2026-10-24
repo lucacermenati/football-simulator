@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTeamRequest;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
@@ -50,20 +51,9 @@ class TeamController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'history' => 'nullable|string',
-            'stadium' => 'nullable|string',
-            'year_of_foundation' => 'nullable|integer|min:1800|max:'.date('Y'),
-            'rating' => 'required|integer|min:30|max:100',
-            'first_color' => 'required|string',
-            'second_color' => 'required|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $team = $request->user()->teams()->create($validated);
+        $team = $request->user()->teams()->create($request->safe()->except('logo'));
 
         if ($request->hasFile('logo')) {
             $team->uploadFile(

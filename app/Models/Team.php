@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Collection;
-use LucaCermenati\CommonTraits\Traits\HasImages;
+use LucaCermenati\CommonTraits\Traits\HasAttachments;
 use LucaCermenati\CommonTraits\Traits\Searchable;
 
 class Team extends Model
 {
-    use HasFactory, HasUuids, HasImages, Searchable;
+    use HasFactory, HasUuids, HasAttachments, Searchable;
 
     protected $fillable = [
         'name',

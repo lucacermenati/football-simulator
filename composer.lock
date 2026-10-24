@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cf9a02f9c6e7e3cac2a9a9194acd5cc",
+    "content-hash": "f85d550a7453b3df87c110c176715255",
     "packages": [
         {
             "name": "brick/math",
@@ -2228,31 +2228,35 @@
         },
         {
             "name": "lucacermenati/common-traits",
-            "version": "dev-master",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucacermenati/common-traits.git",
+                "reference": "4c8fbba4940ca5095fb44b864e3cbaa4cf6284e4"
+            },
             "dist": {
-                "type": "path",
-                "url": "../common-traits",
-                "reference": "f67507b03a994c8084350fc953dca636c191edfa"
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucacermenati/common-traits/zipball/4c8fbba4940ca5095fb44b864e3cbaa4cf6284e4",
+                "reference": "4c8fbba4940ca5095fb44b864e3cbaa4cf6284e4",
+                "shasum": ""
             },
             "require": {
-                "illuminate/database": "^11.0 || ^12.0",
+                "illuminate/database": "^11.17 || ^12.0",
                 "illuminate/http": "^11.0 || ^12.0",
                 "illuminate/support": "^11.0 || ^12.0 || ^13.0",
                 "php": "^8.2"
             },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "LucaCermenati\\CommonTraits\\Providers\\CommonTraitsServiceProvider"
-                    ]
-                }
+            "require-dev": {
+                "orchestra/testbench": "^9.0 || ^10.0",
+                "phpunit/phpunit": "^11.0"
             },
+            "type": "library",
             "autoload": {
                 "psr-4": {
                     "LucaCermenati\\CommonTraits\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2262,10 +2266,21 @@
                 }
             ],
             "description": "Reusable traits and interfaces for Laravel applications.",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "homepage": "https://github.com/lucacermenati/common-traits",
+            "keywords": [
+                "eloquent",
+                "filter",
+                "laravel",
+                "search",
+                "sort",
+                "traits",
+                "upload"
+            ],
+            "support": {
+                "issues": "https://github.com/lucacermenati/common-traits/issues",
+                "source": "https://github.com/lucacermenati/common-traits/tree/v0.1.0"
+            },
+            "time": "2026-10-24T12:06:49+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -8690,9 +8705,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "lucacermenati/common-traits": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

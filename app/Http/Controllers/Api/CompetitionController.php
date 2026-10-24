@@ -9,8 +9,8 @@ use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -43,7 +43,7 @@ class CompetitionController extends Controller
 
         $competition = $request->user()->competitions()->create($validated);
 
-        if($request->hasFile('logo')) {
+        if ($request->hasFile('logo')) {
             $competition->uploadFile(
                 $request->file('logo'),
                 'competitions',
@@ -109,30 +109,4 @@ class CompetitionController extends Controller
             $statistics->for($competition)->load('team')->take($limit)
         )->response();
     }
-
-    // public function addTeam(Request $request, Competition $competition): JsonResponse
-    // {
-    //     $validated = $request->validate([
-    //         'team_id' => 'required|uuid|exists:teams,id',
-    //     ]);
-
-    //     $competition->teams()->syncWithoutDetaching($validated['team_id']);
-
-    //     $competition->load(['teams']);
-
-    //     return CompetitionResource::make($competition)->response();
-    // }
-
-    // public function removeTeam(Request $request, Competition $competition): JsonResponse
-    // {
-    //     $validated = $request->validate([
-    //         'team_id' => 'required|uuid|exists:teams,id',
-    //     ]);
-
-    //     $competition->teams()->detach($validated['team_id']);
-
-    //     $competition->load(['teams']);
-
-    //     return response()->json(new CompetitionResource($competition));
-    // }
 }

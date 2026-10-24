@@ -8,6 +8,7 @@ use App\Http\Resources\TeamResource;
 use App\Models\Competition;
 use App\Models\Player;
 use App\Models\Team;
+use App\Sorters\TeamSorter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
@@ -16,15 +17,16 @@ use Inertia\Inertia;
 
 class TeamController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, TeamSorter $sorter)
     {
         $request->validate([
-            'search' => 'string|nullable'
+            'search' => 'string|nullable',
+            'sort' => 'sometimes|nullable|string',
         ]);
 
         $teams = $request->user()->teams()
             ->search($request->search)
-            ->orderBy('created_at', 'desc')
+            ->sort($sorter, $request)
             ->paginate(16);
 
         return Inertia::render('Teams/Index', [
@@ -54,7 +56,7 @@ class TeamController extends Controller
             'name' => 'required|string|max:255',
             'history' => 'nullable|string',
             'stadium' => 'nullable|string',
-            'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'year_of_foundation' => 'nullable|integer|min:1800|max:'.date('Y'),
             'rating' => 'required|integer|min:30|max:100',
             'first_color' => 'required|string',
             'second_color' => 'required|string',
@@ -80,12 +82,12 @@ class TeamController extends Controller
             'name' => 'required|string|max:255',
             'history' => 'nullable|string',
             'stadium' => 'nullable|string',
-            'year_of_foundation' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'year_of_foundation' => 'nullable|integer|min:1800|max:'.date('Y'),
             'rating' => 'required|integer|min:30|max:100',
             'first_color' => 'required|string',
             'second_color' => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'remove_logo' => ''
+            'remove_logo' => 'boolean',
         ]);
 
         $data = Arr::except($validated, ['logo', 'remove_logo']);
@@ -93,6 +95,10 @@ class TeamController extends Controller
         Gate::authorize('owns', $team);
 
         $team->update($data);
+
+        if ($request->input('remove_logo', false)) {
+            $team->removeFile('logo');
+        }
 
         if ($request->hasFile('logo')) {
             $team->uploadFile(
@@ -103,7 +109,7 @@ class TeamController extends Controller
         }
 
         return redirect()->back()
-            ->with('message', $team->name . ' updated successfully!');
+            ->with('message', $team->name.' updated successfully!');
     }
 
     public function destroy(Team $team)

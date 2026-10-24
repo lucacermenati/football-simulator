@@ -11,21 +11,21 @@ use App\Http\Resources\PlayerNationalityCountResource;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Services\PlayerGenerator;
+use App\Sorters\PlayerSorter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpFoundation\Response;
 
 class PlayerController extends Controller
 {
-    public function index(PlayersFilterRequest $request, PlayerFilter $filter)
+    public function index(PlayersFilterRequest $request, PlayerFilter $filter, PlayerSorter $sorter)
     {
         $players = $request->user()->players()->with('team')
             ->search($request->input('search'))
             ->filter($filter, $request)
-            ->orderBy('created_at', 'desc')
+            ->sort($sorter, $request)
             ->paginate(16);
 
         return PlayerResource::collection($players)->response();

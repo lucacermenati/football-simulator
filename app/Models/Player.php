@@ -3,19 +3,20 @@
 namespace App\Models;
 
 use App\Enums\Position;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use LucaCermenati\CommonTraits\Traits\Searchable;
-use Illuminate\Database\Eloquent\Builder;
 use LucaCermenati\CommonTraits\Traits\Filterable;
+use LucaCermenati\CommonTraits\Traits\Searchable;
+use LucaCermenati\CommonTraits\Traits\Sortable;
 use Override;
 
 class Player extends Model
 {
-    use HasFactory, HasUuids, Searchable, Filterable;
+    use Filterable, HasFactory, HasUuids, Searchable, Sortable;
 
     protected $fillable = [
         'first_name',
@@ -27,7 +28,7 @@ class Player extends Model
         'team_id',
         'position_on_field',
         'rating',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
@@ -56,8 +57,10 @@ class Player extends Model
             ->withTimestamps();
     }
 
-    public function scopeOrderByPosition(Builder $query)
+    public function scopeOrderByPosition(Builder $query, string $direction = 'asc'): Builder
     {
+        $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+
         return $query->orderByRaw("
             CASE position
                 WHEN 'Goalkeeper' THEN 1
@@ -65,8 +68,8 @@ class Player extends Model
                 WHEN 'Midfielder' THEN 3
                 WHEN 'Forward' THEN 4
                 ELSE 5
-            END
-        ")->orderBy('position_on_field');
+            END {$direction}
+        ")->orderBy('position_on_field', $direction);
     }
 
     public function getFullNameAttribute(): string

@@ -9,7 +9,6 @@ use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CompetitionController extends Controller

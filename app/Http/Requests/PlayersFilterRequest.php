@@ -20,6 +20,7 @@ class PlayersFilterRequest extends FormRequest
             'free' => 'sometimes|integer',
             'position' => ['sometimes', new Enum(Position::class)],
             'nationality' => 'sometimes|string',
+            'sort' => 'sometimes|nullable|string',
         ];
     }
 
@@ -30,7 +31,8 @@ class PlayersFilterRequest extends FormRequest
             'free' => $this->boolean('free'),
             'position' => $this->input('position'),
             'nationality' => $this->input('nationality'),
-            'page' => $this->input('page')
+            'sort' => $this->input('sort'),
+            'page' => $this->input('page'),
         ];
     }
 }

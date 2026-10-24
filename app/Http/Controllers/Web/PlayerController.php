@@ -9,18 +9,19 @@ use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
 use App\Services\PlayerGenerator;
+use App\Sorters\PlayerSorter;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class PlayerController extends Controller
 {
-    public function index(PlayersFilterRequest $request, PlayerFilter $filter)
+    public function index(PlayersFilterRequest $request, PlayerFilter $filter, PlayerSorter $sorter)
     {
         $players = $request->user()->players()->with('team')
             ->search($request->input('search'))
             ->filter($filter, $request)
-            ->orderBy('created_at', 'desc')
+            ->sort($sorter, $request)
             ->paginate(16)
             ->withQueryString();
 

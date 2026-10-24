@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Collection;
 use LucaCermenati\CommonTraits\Traits\HasAttachments;
 use LucaCermenati\CommonTraits\Traits\Searchable;
+use LucaCermenati\CommonTraits\Traits\Sortable;
 
 class Team extends Model
 {
-    use HasFactory, HasUuids, HasAttachments, Searchable;
+    use HasAttachments, HasFactory, HasUuids, Searchable, Sortable;
 
     protected $fillable = [
         'name',

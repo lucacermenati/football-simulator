@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
-use Illuminate\Http\Request;
 use App\Models\Competition;
-use App\Models\Team;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CompetitionTeamController extends Controller
 {
-    public function index(Competition $competition)
+    public function index(Request $request, Competition $competition)
     {
         $teams = $competition->teams()->paginate(12);
 
-        $availableTeams = Team::query()
+        $availableTeams = $request->user()->teams()
             ->whereNotIn('id', $competition->teams()->pluck('teams.id'))
             ->get();
 

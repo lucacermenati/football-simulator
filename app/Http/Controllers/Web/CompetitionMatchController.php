@@ -31,6 +31,8 @@ class CompetitionMatchController extends Controller
 
     public function show(Competition $competition, FootballMatch $match)
     {
+        Gate::authorize('owns', $competition);
+
         $match->load(['homeTeam', 'awayTeam', 'scorers']);
 
         return Inertia::render('Competitions/Match', [

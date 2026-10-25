@@ -44,6 +44,8 @@ class CompetitionController extends Controller
 
     public function show(Competition $competition)
     {
+        Gate::authorize('owns', $competition);
+
         return Inertia::render('Competitions/Show', [
             'competition' => $competition,
         ]);
@@ -73,6 +75,8 @@ class CompetitionController extends Controller
 
     public function destroy(Competition $competition)
     {
+        Gate::authorize('owns', $competition);
+
         $competition->delete();
 
         return redirect()->route('competitions.index')
@@ -81,6 +85,8 @@ class CompetitionController extends Controller
 
     public function standings(Competition $competition, CompetitionStandings $standings)
     {
+        Gate::authorize('owns', $competition);
+
         return Inertia::render('Competitions/Standings', [
             'competition' => $competition,
             'standings' => $standings->for($competition),
@@ -89,6 +95,8 @@ class CompetitionController extends Controller
 
     public function scorers(Competition $competition, CompetitionStatistics $statistics)
     {
+        Gate::authorize('owns', $competition);
+
         return Inertia::render('Competitions/Scorers', [
             'competition' => $competition,
             'scorers' => $statistics->for($competition)->load('team')->take(15),

@@ -7,15 +7,17 @@ use App\Models\FootballMatch;
 use App\Services\PoissonMatchSimulator;
 use App\Services\ScorerSimulator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class FootballMatchController extends Controller
 {
     public function simulate(
-        Request $request,
         FootballMatch $match,
         PoissonMatchSimulator $matchSimulator,
         ScorerSimulator $scorerSimulator
     ) {
+        Gate::authorize('owns', $match->competition);
+
         $matchSimulator->simulate($match);
         $scorerSimulator->assignScorers($match);
 

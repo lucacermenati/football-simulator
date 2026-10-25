@@ -11,6 +11,7 @@ use App\Models\Player;
 use App\Services\PlayerGenerator;
 use App\Sorters\PlayerSorter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -42,6 +43,8 @@ class PlayerController extends Controller
 
     public function show(Player $player)
     {
+        Gate::authorize('owns', $player);
+
         $player->load('team');
 
         return Inertia::render('Players/Show', [
@@ -76,6 +79,8 @@ class PlayerController extends Controller
             'number' => 'required|integer|min:1|max:99',
         ]);
 
+        Gate::authorize('owns', $player);
+
         $player->update($validated);
 
         return redirect()->back()->with('success', 'Player updated successfully!');
@@ -94,6 +99,8 @@ class PlayerController extends Controller
 
     public function destroy(Request $request, Player $player)
     {
+        Gate::authorize('owns', $player);
+
         $player->delete();
 
         return redirect()->back()->with('success', 'Player deleted successfully!');

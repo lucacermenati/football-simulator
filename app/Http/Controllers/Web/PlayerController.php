@@ -7,6 +7,7 @@ use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayersFilterRequest;
 use App\Http\Resources\PlayerResource;
+use App\Http\Resources\TeamResource;
 use App\Models\Player;
 use App\Services\PlayerGenerator;
 use App\Sorters\PlayerSorter;
@@ -26,7 +27,7 @@ class PlayerController extends Controller
             ->paginate(16)
             ->withQueryString();
 
-        $nationalities = Player::query()
+        $nationalities = $request->user()->players()
             ->pluck('nationality')
             ->unique()
             ->values();
@@ -37,7 +38,7 @@ class PlayerController extends Controller
             'players' => PlayerResource::collection($players),
             'filters' => $request->filters(),
             'nationalities' => $nationalities,
-            'teams' => $teams,
+            'teams' => TeamResource::collection($teams),
         ]);
     }
 
@@ -48,7 +49,7 @@ class PlayerController extends Controller
         $player->load('team');
 
         return Inertia::render('Players/Show', [
-            'player' => $player,
+            'player' => PlayerResource::make($player),
         ]);
     }
 

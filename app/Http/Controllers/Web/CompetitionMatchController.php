@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexCompetitionMatchRequest;
+use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\FootballMatchResource;
 use App\Models\Competition;
 use App\Models\FootballMatch;
@@ -22,7 +23,7 @@ class CompetitionMatchController extends Controller
         $matches = $matchDay->for($competition, $request->filled('day') ? $request->integer('day') : null);
 
         return Inertia::render('Competitions/Matches', [
-            'competition' => $competition,
+            'competition' => CompetitionResource::make($competition),
             'matches' => FootballMatchResource::collection($matches->getCollection()),
             'day' => $matches->isNotEmpty() ? $matches->currentPage() : null,
             'maxDay' => $matches->isNotEmpty() ? $matches->lastPage() : null,
@@ -36,8 +37,8 @@ class CompetitionMatchController extends Controller
         $match->load(['homeTeam', 'awayTeam', 'scorers']);
 
         return Inertia::render('Competitions/Match', [
-            'competition' => $competition,
-            'match' => $match,
+            'competition' => CompetitionResource::make($competition),
+            'match' => FootballMatchResource::make($match),
         ]);
     }
 

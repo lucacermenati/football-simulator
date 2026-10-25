@@ -38,13 +38,13 @@ export default function CompetitionMatch({ competition, match }) {
                     <div className="pt-4 mt-4 border-t border-lightGrey-600">
                         {match.played && (
                             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-4 gap-y-1 p-4">
-                                {match.scorers.map((player) => {
+                                {match.scorers.map(({ player, minute }) => {
                                     const isHomeScorer =
                                         player.team_id === match.home_team.id;
 
                                     return (
                                         <Fragment
-                                            key={`${player.id}-${player.pivot.minute}`}
+                                            key={`${player.id}-${minute}`}
                                         >
                                             <div className="flex items-center gap-2 justify-self-start">
                                                 {isHomeScorer && (
@@ -63,7 +63,7 @@ export default function CompetitionMatch({ competition, match }) {
                                             </div>
 
                                             <span className="font-semibold text-center whitespace-nowrap">
-                                                {player.pivot.minute}'
+                                                {minute}'
                                             </span>
 
                                             <div className="flex items-center gap-2 justify-self-end">

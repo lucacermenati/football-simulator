@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\PlayerStatisticResource;
+use App\Http\Resources\TeamStandingsResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
@@ -47,7 +49,7 @@ class CompetitionController extends Controller
         Gate::authorize('owns', $competition);
 
         return Inertia::render('Competitions/Show', [
-            'competition' => $competition,
+            'competition' => CompetitionResource::make($competition),
         ]);
     }
 
@@ -87,9 +89,11 @@ class CompetitionController extends Controller
     {
         Gate::authorize('owns', $competition);
 
+        $teams = $standings->for($competition);
+
         return Inertia::render('Competitions/Standings', [
-            'competition' => $competition,
-            'standings' => $standings->for($competition),
+            'competition' => CompetitionResource::make($competition),
+            'standings' => TeamStandingsResource::collection($teams),
         ]);
     }
 
@@ -97,9 +101,11 @@ class CompetitionController extends Controller
     {
         Gate::authorize('owns', $competition);
 
+        $scorers = $statistics->for($competition)->load('team')->take(15);
+
         return Inertia::render('Competitions/Scorers', [
-            'competition' => $competition,
-            'scorers' => $statistics->for($competition)->load('team')->take(15),
+            'competition' => CompetitionResource::make($competition),
+            'scorers' => PlayerStatisticResource::collection($scorers),
         ]);
     }
 }

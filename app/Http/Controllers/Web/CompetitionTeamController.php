@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class CompetitionTeamController extends Controller
             ->get();
 
         return Inertia::render('Competitions/Teams', [
-            'competition' => $competition,
+            'competition' => CompetitionResource::make($competition),
             'teams' => TeamResource::collection($teams),
             'availableTeams' => TeamResource::collection($availableTeams),
         ]);

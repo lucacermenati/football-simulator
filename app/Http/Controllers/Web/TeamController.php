@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
+use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
@@ -33,11 +34,13 @@ class TeamController extends Controller
         return Inertia::render('Teams/Index', [
             'teams' => TeamResource::collection($teams),
             'availableCompetitions' => Inertia::lazy(function () use ($request) {
-                return Competition::where('user_id', $request->user()->id)
+                $competitions = Competition::where('user_id', $request->user()->id)
                     ->whereDoesntHave('teams', function ($query) use ($request) {
                         $query->where('teams.id', $request->selected_team_id);
                     })
                     ->get();
+
+                return CompetitionResource::collection($competitions);
             }),
         ]);
     }
@@ -138,8 +141,8 @@ class TeamController extends Controller
 
         return Inertia::render('Teams/Lineup', [
             'team' => TeamResource::make($team),
-            'startingEleven' => $startingEleven,
-            'substitutes' => $substitutes,
+            'startingEleven' => $startingEleven->map(fn ($players) => PlayerResource::collection($players)),
+            'substitutes' => PlayerResource::collection($substitutes),
         ]);
     }
 

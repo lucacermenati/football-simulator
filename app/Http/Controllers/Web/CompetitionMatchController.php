@@ -43,11 +43,11 @@ class CompetitionMatchController extends Controller
 
     public function store(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
+        Gate::authorize('owns', $competition);
+
         $validated = $request->validate([
             'start_date' => 'required|date',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $calendarGenerator->generateMatches($competition, $validated['start_date']);
 

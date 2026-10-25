@@ -29,11 +29,11 @@ class CompetitionMatchController extends Controller
 
     public function store(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
+        Gate::authorize('owns', $competition);
+
         $validated = $request->validate([
             'start_date' => 'required|date',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $calendarGenerator->generateMatches($competition, $validated['start_date']);
 
@@ -51,12 +51,12 @@ class CompetitionMatchController extends Controller
 
     public function play(Request $request, Competition $competition, PoissonMatchSimulator $simulator, ScorerSimulator $scorerSimulator)
     {
+        Gate::authorize('owns', $competition);
+
         $validated = $request->validate([
             'match_id' => 'prohibits:day|exists:matches,id,competition_id,'.$competition->id,
             'day' => 'prohibits:match_id|exists:matches,day,competition_id,'.$competition->id,
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $footballMatches = $competition->matches()
             ->where('date', '<=', now())

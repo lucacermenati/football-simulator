@@ -70,6 +70,8 @@ class PlayerController extends Controller
 
     public function update(Request $request, Player $player)
     {
+        Gate::authorize('owns', $player);
+
         $validated = $request->validate([
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -78,8 +80,6 @@ class PlayerController extends Controller
             'position' => 'required|string|max:255',
             'number' => 'required|integer|min:1|max:99',
         ]);
-
-        Gate::authorize('owns', $player);
 
         $player->update($validated);
 

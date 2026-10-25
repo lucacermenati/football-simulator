@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 
 class TeamCompetitionController extends Controller
 {
-    public function index (Team $team, TeamPositions $positions)
+    public function index(Team $team, TeamPositions $positions)
     {
         Gate::authorize('owns', $team);
 
@@ -23,11 +23,11 @@ class TeamCompetitionController extends Controller
 
     public function available(Request $request, Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $request->validate([
             'search' => 'nullable|string',
         ]);
-
-        Gate::authorize('owns', $team);
 
         $availableCompetitions = Competition::where('user_id', $request->user()->id)
             ->search($request->input('search', null))

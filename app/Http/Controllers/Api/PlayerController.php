@@ -71,6 +71,8 @@ class PlayerController extends Controller
 
     public function update(Request $request, Player $player): JsonResponse
     {
+        Gate::authorize('owns', $player);
+
         $validated = $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
@@ -80,8 +82,6 @@ class PlayerController extends Controller
             'number' => 'sometimes|required|integer|min:1|max:99',
             'team_id' => 'sometimes|required|uuid|exists:teams,id',
         ]);
-
-        Gate::authorize('owns', $player);
 
         $player->update($validated);
 

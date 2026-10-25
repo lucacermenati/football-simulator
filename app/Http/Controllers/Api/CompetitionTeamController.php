@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
 use App\Models\Team;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,12 +22,12 @@ class CompetitionTeamController extends Controller
 
     public function store(Request $request, Competition $competition): JsonResponse
     {
+        Gate::authorize('owns', $competition);
+
         $request->validate([
             'teams' => 'array',
             'teams.*' => 'exists:teams,id',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $teams = Team::where('user_id', $request->user()->id)
             ->whereIn('id', $request->teams)
@@ -41,12 +40,12 @@ class CompetitionTeamController extends Controller
 
     public function destroy(Request $request, Competition $competition): JsonResponse
     {
+        Gate::authorize('owns', $competition);
+
         $request->validate([
             'teams' => 'array',
             'teams.*' => 'exists:teams,id',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $teams = Team::where('user_id', $request->user()->id)
             ->whereIn('id', $request->teams)
@@ -59,12 +58,12 @@ class CompetitionTeamController extends Controller
 
     public function available(Request $request, Competition $competition): JsonResponse
     {
+        Gate::authorize('owns', $competition);
+
         $request->validate([
             'search' => 'nullable|string',
             'except' => 'nullable|string',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $availableTeams = Team::where('user_id', $request->user()->id)
             ->search($request->search)

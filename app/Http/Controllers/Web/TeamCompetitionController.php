@@ -12,6 +12,8 @@ class TeamCompetitionController extends Controller
 {
     public function store(Request $request, Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $request->validate([
             'competition_id' => [
                 'required',
@@ -19,8 +21,6 @@ class TeamCompetitionController extends Controller
                     ->where('user_id', $request->user()->id),
             ],
         ]);
-
-        Gate::authorize('owns', $team);
 
         $team->competitions()->syncWithoutDetaching($request->competition_id);
 

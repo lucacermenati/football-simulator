@@ -88,11 +88,11 @@ class CompetitionController extends Controller
 
     public function statistics(Request $request, Competition $competition, CompetitionStatistics $statistics): JsonResponse
     {
+        Gate::authorize('owns', $competition);
+
         $request->validate([
             'limit' => 'nullable|integer|min:15|max:100',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $limit = $request->input('limit', 15);
 

@@ -30,12 +30,12 @@ class CompetitionTeamController extends Controller
 
     public function add(Request $request, Competition $competition)
     {
+        Gate::authorize('owns', $competition);
+
         $request->validate([
             'teams' => 'required|array',
             'teams.*' => 'exists:teams,id',
         ]);
-
-        Gate::authorize('owns', $competition);
 
         $teams = $request->user()->teams()
             ->whereIn('id', $request->teams)

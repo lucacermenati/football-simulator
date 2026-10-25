@@ -145,6 +145,8 @@ class TeamController extends Controller
 
     public function addPlayer(Request $request, Team $team)
     {
+        Gate::authorize('owns', $team);
+
         $validated = $request->validate([
             'player_id' => [
                 'required',
@@ -152,8 +154,6 @@ class TeamController extends Controller
                     ->where('user_id', $request->user()->id),
             ],
         ]);
-
-        Gate::authorize('owns', $team);
 
         Player::find($validated['player_id'])->update([
             'team_id' => $team->id,

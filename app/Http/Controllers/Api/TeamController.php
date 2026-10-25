@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Sorters\TeamSorter;
@@ -58,21 +59,11 @@ class TeamController extends Controller
             ->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function update(Request $request, Team $team): JsonResponse
+    public function update(UpdateTeamRequest $request, Team $team): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'history' => 'nullable|string',
-            'first_color' => 'nullable|string|max:7',
-            'second_color' => 'nullable|string|max:7',
-            'year_of_foundation' => 'nullable|integer|min:1800|max:'.date('Y'),
-            'stadium' => 'nullable|string|max:255',
-            'rating' => 'sometimes|integer|min:30|max:100',
-        ]);
-
         Gate::authorize('owns', $team);
 
-        $team->update($validated);
+        $team->update($request->validated());
 
         return TeamResource::make($team)->response();
     }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
+use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
 use App\Models\Competition;
 use App\Queries\CompetitionStandings;
 use App\Queries\CompetitionStatistics;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class CompetitionController extends Controller
@@ -48,20 +49,13 @@ class CompetitionController extends Controller
         ]);
     }
 
-    public function update(Request $request, Competition $competition)
+    public function update(UpdateCompetitionRequest $request, Competition $competition)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'remove_logo' => 'boolean',
-        ]);
+        Gate::authorize('owns', $competition);
 
-        $data = Arr::except($validated, ['logo', 'remove_logo']);
+        $competition->update($request->safe()->except(['logo', 'remove_logo']));
 
-        $competition->update($data);
-
-        if ($request->input('remove_logo', false)) {
+        if ($request->boolean('remove_logo')) {
             $competition->removeFile('logo');
         }
 

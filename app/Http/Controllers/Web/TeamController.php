@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Competition;
@@ -11,7 +12,6 @@ use App\Models\Player;
 use App\Models\Team;
 use App\Sorters\TeamSorter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -66,27 +66,13 @@ class TeamController extends Controller
         return redirect()->back()->with('message', 'Team created successfully!');
     }
 
-    public function update(Request $request, Team $team)
+    public function update(UpdateTeamRequest $request, Team $team)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'history' => 'nullable|string',
-            'stadium' => 'nullable|string',
-            'year_of_foundation' => 'nullable|integer|min:1800|max:'.date('Y'),
-            'rating' => 'required|integer|min:30|max:100',
-            'first_color' => 'required|string',
-            'second_color' => 'required|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'remove_logo' => 'boolean',
-        ]);
-
-        $data = Arr::except($validated, ['logo', 'remove_logo']);
-
         Gate::authorize('owns', $team);
 
-        $team->update($data);
+        $team->update($request->safe()->except(['logo', 'remove_logo']));
 
-        if ($request->input('remove_logo', false)) {
+        if ($request->boolean('remove_logo')) {
             $team->removeFile('logo');
         }
 

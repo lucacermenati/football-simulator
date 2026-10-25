@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
+use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\PlayerStatisticResource;
 use App\Http\Resources\TeamStandingsResource;
@@ -58,16 +59,11 @@ class CompetitionController extends Controller
         return CompetitionResource::make($competition)->response();
     }
 
-    public function update(Request $request, Competition $competition): JsonResponse
+    public function update(UpdateCompetitionRequest $request, Competition $competition): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
         Gate::authorize('owns', $competition);
 
-        $competition->update($validated);
+        $competition->update($request->validated());
 
         return CompetitionResource::make($competition)->response();
     }

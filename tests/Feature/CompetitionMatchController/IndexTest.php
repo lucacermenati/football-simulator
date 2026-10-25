@@ -112,6 +112,19 @@ class IndexTest extends TestCase
             ->assertJsonPath('data.0.id', $last->id);
     }
 
+    public function test_a_user_cannot_list_the_matches_of_a_competition_they_do_not_own(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $competition = Competition::factory()->for($otherUser)->create();
+        [$a, $b] = $this->attachTeams($otherUser, $competition, 2);
+        $this->match($competition, $a, $b, day: 1);
+
+        $response = $this->actingAs($user)->getJson("/api/competitions/{$competition->id}/matches");
+
+        $response->assertForbidden();
+    }
+
     /** @return array<int, Team> */
     private function attachTeams(User $user, Competition $competition, int $count): array
     {

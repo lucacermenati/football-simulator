@@ -3,45 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexCompetitionMatchRequest;
 use App\Http\Resources\FootballMatchResource;
 use App\Models\Competition;
 use App\Models\FootballMatch;
+use App\Queries\CompetitionMatchDay;
 use App\Services\CalendarGenerator;
 use App\Services\PoissonMatchSimulator;
 use App\Services\ScorerSimulator;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class CompetitionMatchController extends Controller
 {
-    public function index(Request $request, Competition $competition): JsonResponse
+    public function index(IndexCompetitionMatchRequest $request, Competition $competition, CompetitionMatchDay $matchDay): JsonResponse
     {
-        $request->validate([
-            'day' => 'nullable|integer|min:1',
-        ]);
+        Gate::authorize('owns', $competition);
 
-        $page = $request->input('day', null);
-        $perPage = $competition->teams()->count() / 2;
-        $lastPage = $competition->matches()->max('day');
-
-        // Fallback to first unplayed day if no day is specified
-        if (!$page) {
-            $page = $competition->matches()
-                ->where('played', false)
-                ->min('day');
-        }
-
-        // Fallback to last match day if the day is greater than the max day
-        if ($page > $lastPage) {
-            $page = $lastPage;
-        }
-
-        $matches = $competition->matches()
-            ->with(['homeTeam', 'awayTeam', 'scorers'])
-            ->orderBy('day')
-            ->paginate($perPage, ['*'], 'page', $page);
+        $matches = $matchDay->for($competition, $request->filled('day') ? $request->integer('day') : null);
 
         return FootballMatchResource::collection($matches)->response();
     }
@@ -71,8 +52,8 @@ class CompetitionMatchController extends Controller
     public function play(Request $request, Competition $competition, PoissonMatchSimulator $simulator, ScorerSimulator $scorerSimulator)
     {
         $validated = $request->validate([
-            'match_id' => 'prohibits:day|exists:matches,id,competition_id,' . $competition->id,
-            'day' => 'prohibits:match_id|exists:matches,day,competition_id,' . $competition->id,
+            'match_id' => 'prohibits:day|exists:matches,id,competition_id,'.$competition->id,
+            'day' => 'prohibits:match_id|exists:matches,day,competition_id,'.$competition->id,
         ]);
 
         Gate::authorize('owns', $competition);

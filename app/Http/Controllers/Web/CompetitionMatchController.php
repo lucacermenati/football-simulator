@@ -3,46 +3,29 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\IndexCompetitionMatchRequest;
+use App\Http\Resources\FootballMatchResource;
 use App\Models\Competition;
 use App\Models\FootballMatch;
+use App\Queries\CompetitionMatchDay;
 use App\Services\CalendarGenerator;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class CompetitionMatchController extends Controller
 {
-    public function index(Request $request, Competition $competition)
+    public function index(IndexCompetitionMatchRequest $request, Competition $competition, CompetitionMatchDay $matchDay)
     {
-        $day = $request->input('day', null);
-        $maxDay = $competition->matches()->max('day');
+        Gate::authorize('owns', $competition);
 
-        // Fallback to first unplayed match if no day is specified
-        if (!$day) {
-            $day = $competition->matches()
-                ->where('played', false)
-                ->min('day');
-        }
-
-        // Fallback to last day if the day is greater than the max day
-        if ($day > $maxDay) {
-            return redirect()->route('competitions.matches.index', [
-                'competition' => $competition->id,
-                'day' => $maxDay
-            ]);
-        }
-
-        $matches = $competition->matches()
-            ->with(['homeTeam', 'awayTeam'])
-            ->where('day', $day)
-            ->get();
+        $matches = $matchDay->for($competition, $request->filled('day') ? $request->integer('day') : null);
 
         return Inertia::render('Competitions/Matches', [
             'competition' => $competition,
-            'matches' => $matches,
-            'day' => $day,
-            'maxDay' => $maxDay
+            'matches' => FootballMatchResource::collection($matches->getCollection()),
+            'day' => $matches->isNotEmpty() ? $matches->currentPage() : null,
+            'maxDay' => $matches->isNotEmpty() ? $matches->lastPage() : null,
         ]);
     }
 

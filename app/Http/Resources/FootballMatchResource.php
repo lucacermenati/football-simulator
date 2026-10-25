@@ -11,6 +11,7 @@ class FootballMatchResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'competition_id' => $this->competition_id,
             'date' => $this->date,
             'day' => $this->day,
             'goal_home' => $this->goal_home,
@@ -21,11 +22,11 @@ class FootballMatchResource extends JsonResource
             'competition' => new CompetitionResource($this->whenLoaded('competition')),
             'home_team' => new TeamResource($this->whenLoaded('homeTeam')),
             'away_team' => new TeamResource($this->whenLoaded('awayTeam')),
-            'scorers' => $this->when($this->relationLoaded('scorers'), function() {
-                return $this->scorers->map(function($player) {
+            'scorers' => $this->when($this->relationLoaded('scorers'), function () {
+                return $this->scorers->map(function ($player) {
                     return [
                         'player' => new PlayerResource($player),
-                        'minute' => $player->pivot->minute
+                        'minute' => $player->pivot->minute,
                     ];
                 });
             }),

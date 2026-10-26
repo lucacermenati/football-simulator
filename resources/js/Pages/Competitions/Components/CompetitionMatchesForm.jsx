@@ -3,7 +3,6 @@ import FileInput from "@/Components/FileInput";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import TextareaInput from "@/Components/TextareaInput";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";

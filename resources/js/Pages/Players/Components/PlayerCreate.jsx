@@ -1,4 +1,5 @@
 import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
@@ -48,11 +49,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                         }
                         placeholder="IT"
                     />
-                    {form.errors.nationality && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.nationality}
-                        </div>
-                    )}
+                    <InputError
+                        message={form.errors.nationality}
+                        className="mt-1"
+                    />
                 </div>
                 <div className="flex space-x-4">
                     <div>
@@ -65,11 +65,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                             }
                             placeholder="First Name"
                         />
-                        {form.errors.first_name && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.first_name}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.first_name}
+                            className="mt-1"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="last_name">Last name</InputLabel>
@@ -81,11 +80,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                             }
                             placeholder="Last Name"
                         />
-                        {form.errors.last_name && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.last_name}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.last_name}
+                            className="mt-1"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="birth_date">Birth Date</InputLabel>
@@ -98,11 +96,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                             }
                             placeholder="Birth Date"
                         />
-                        {form.errors.birth_date && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.birth_date}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.birth_date}
+                            className="mt-1"
+                        />
                     </div>
                 </div>
                 <div className="flex space-x-4">
@@ -122,11 +119,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                                 </option>
                             ))}
                         </select>
-                        {form.errors.position && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.position}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.position}
+                            className="mt-1"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="number">Number</InputLabel>
@@ -141,11 +137,10 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                             }
                             placeholder="Number"
                         />
-                        {form.errors.number && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.number}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.number}
+                            className="mt-1"
+                        />
                     </div>
                 </div>
                 <div className="flex gap-2 justify-end mt-8">

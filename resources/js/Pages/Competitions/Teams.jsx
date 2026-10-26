@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import InputError from "@/Components/InputError";
 import CompetitionLayout from "./Components/CompetitionLayout";
 import { Head, useForm } from "@inertiajs/react";
 import TeamTable from "../Teams/Components/TeamTable";
@@ -34,6 +35,13 @@ export default function CompetitionTeamsShow({
 
         bulkAddForm.setData("teams", updatedTeams);
     };
+
+    // "teams.*" failures come back keyed per index (teams.0, teams.1, ...)
+    const teamsError =
+        bulkAddForm.errors.teams ??
+        Object.entries(bulkAddForm.errors).find(([key]) =>
+            key.startsWith("teams."),
+        )?.[1];
 
     const submitBulkAddForm = (e) => {
         e.preventDefault();
@@ -155,6 +163,7 @@ export default function CompetitionTeamsShow({
                             </Checkbox>
                         ))}
                     </div>
+                    <InputError message={teamsError} className="mt-1" />
                     <div className="flex gap-2 justify-end mt-8">
                         <SecondaryButton
                             onClick={() => setIsBulkAddModalOpen(false)}

@@ -1,4 +1,5 @@
 import FileInput from "@/Components/FileInput";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -60,11 +61,10 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                             }
                             placeholder="Team name"
                         />
-                        {form.errors.name && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.name}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.name}
+                            className="mt-1"
+                        />
                     </div>
                     <div>
                         <InputLabel>Colors</InputLabel>
@@ -86,16 +86,14 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                                 }
                             />
                         </div>
-                        {form.errors.name && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.first_color}
-                            </div>
-                        )}
-                        {form.errors.name && (
-                            <div className="mt-1 text-sm text-red-600">
-                                {form.errors.second_color}
-                            </div>
-                        )}
+                        <InputError
+                            message={form.errors.first_color}
+                            className="mt-1"
+                        />
+                        <InputError
+                            message={form.errors.second_color}
+                            className="mt-1"
+                        />
                     </div>
                 </div>
                 <div>
@@ -110,11 +108,10 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         placeholder="Team history"
                         rows={5}
                     />
-                    {form.errors.history && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.history}
-                        </div>
-                    )}
+                    <InputError
+                        message={form.errors.history}
+                        className="mt-1"
+                    />
                 </div>
                 <div>
                     <InputLabel htmlFor="stadium">Stadium</InputLabel>
@@ -126,11 +123,10 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         }
                         placeholder="Stadium name"
                     />
-                    {form.errors.name && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.stadium}
-                        </div>
-                    )}
+                    <InputError
+                        message={form.errors.stadium}
+                        className="mt-1"
+                    />
                 </div>
                 <div>
                     <InputLabel htmlFor="year_of_foundation">
@@ -145,11 +141,10 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         type="number"
                         placeholder="Year of foundation"
                     />
-                    {form.errors.name && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.year_of_foundation}
-                        </div>
-                    )}
+                    <InputError
+                        message={form.errors.year_of_foundation}
+                        className="mt-1"
+                    />
                 </div>
                 <div>
                     <InputLabel htmlFor="rating">Rating</InputLabel>
@@ -162,11 +157,7 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                         min="30"
                         max="100"
                     />
-                    {form.errors.name && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.rating}
-                        </div>
-                    )}
+                    <InputError message={form.errors.rating} className="mt-1" />
                 </div>
                 <div>
                     <InputLabel htmlFor="logo">Logo</InputLabel>
@@ -181,6 +172,7 @@ export default function TeamEdit({ team, onSuccess, onCancel }) {
                             form.setData("remove_logo", remove);
                         }}
                     />
+                    <InputError message={form.errors.logo} className="mt-1" />
                 </div>
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton

@@ -1,4 +1,5 @@
 import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { useForm } from "@inertiajs/react";
@@ -44,6 +45,10 @@ export default function TeamAdd({
                         </option>
                     ))}
                 </select>
+                <InputError
+                    message={form.errors.competition_id}
+                    className="mt-1"
+                />
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton
                         type="button"

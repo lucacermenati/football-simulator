@@ -43,7 +43,7 @@ class CompetitionMatchController extends Controller
         ]);
     }
 
-    public function store(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
+    public function generate(Request $request, Competition $competition, CalendarGenerator $calendarGenerator)
     {
         Gate::authorize('owns', $competition);
 

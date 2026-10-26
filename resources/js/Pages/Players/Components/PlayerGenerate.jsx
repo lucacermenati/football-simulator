@@ -1,4 +1,5 @@
 import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
@@ -39,11 +40,7 @@ export default function PlayerGenerate({ onSuccess, onCancel }) {
                     max="100"
                     placeholder="Size"
                 />
-                {form.errors.size && (
-                    <div className="mt-1 text-sm text-red-600">
-                        {form.errors.size}
-                    </div>
-                )}
+                <InputError message={form.errors.size} className="mt-1" />
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton
                         type="button"

@@ -1,7 +1,8 @@
 import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
@@ -9,6 +10,7 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
         player?.team_id ?? teams[0]?.id,
     );
     const [processing, setProcessing] = useState(false);
+    const { errors } = usePage().props;
 
     if (!player) return <div></div>;
 
@@ -33,6 +35,7 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
                         </option>
                     ))}
                 </select>
+                <InputError message={errors.player_id} className="mt-1" />
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton
                         type="button"

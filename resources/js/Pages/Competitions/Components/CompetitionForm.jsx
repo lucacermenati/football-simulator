@@ -1,4 +1,5 @@
 import FileInput from "@/Components/FileInput";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -64,11 +65,7 @@ export default function CompetitionForm({
                         onChange={(e) => form.setData("name", e.target.value)}
                         placeholder="Competition name"
                     />
-                    {form.errors.name && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.name}
-                        </div>
-                    )}
+                    <InputError message={form.errors.name} className="mt-1" />
                 </div>
 
                 <div>
@@ -83,11 +80,10 @@ export default function CompetitionForm({
                         placeholder="Competition history"
                         rows={5}
                     />
-                    {form.errors.description && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.description}
-                        </div>
-                    )}
+                    <InputError
+                        message={form.errors.description}
+                        className="mt-1"
+                    />
                 </div>
 
                 <div>
@@ -105,11 +101,7 @@ export default function CompetitionForm({
                         }}
                     />
 
-                    {form.errors.logo && (
-                        <div className="mt-1 text-sm text-red-600">
-                            {form.errors.logo}
-                        </div>
-                    )}
+                    <InputError message={form.errors.logo} className="mt-1" />
                 </div>
 
                 <div className="flex gap-2 justify-end mt-8">

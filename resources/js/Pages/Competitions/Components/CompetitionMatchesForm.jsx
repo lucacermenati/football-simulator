@@ -1,4 +1,5 @@
 import DateInput from "@/Components/DateInput";
+import InputError from "@/Components/InputError";
 import FileInput from "@/Components/FileInput";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -54,6 +55,10 @@ export default function CompetitionMatchesForm({
                         onChange={(e) =>
                             form.setData("start_date", e.target.value)
                         }
+                    />
+                    <InputError
+                        message={form.errors.start_date}
+                        className="mt-1"
                     />
                 </div>
                 <div className="flex gap-2 justify-end mt-8">

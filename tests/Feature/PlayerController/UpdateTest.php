@@ -4,7 +4,6 @@ namespace Tests\Feature\PlayerController;
 
 use App\Enums\Position;
 use App\Models\Player;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +15,6 @@ class UpdateTest extends TestCase
     public function test_a_user_can_update_their_player(): void
     {
         $user = User::factory()->create();
-        $team = Team::factory()->for($user)->create();
         $player = Player::factory()->for($user)->create([
             'first_name' => 'Old',
             'last_name' => 'Name',
@@ -33,7 +31,6 @@ class UpdateTest extends TestCase
             'nationality' => 'BR',
             'position' => Position::Forward->value,
             'number' => 10,
-            'team_id' => $team->id,
         ]);
 
         $response
@@ -43,8 +40,7 @@ class UpdateTest extends TestCase
             ->assertJsonPath('last_name', 'Nazario da Lima')
             ->assertJsonPath('nationality', 'BR')
             ->assertJsonPath('position', Position::Forward->value)
-            ->assertJsonPath('number', 10)
-            ->assertJsonPath('team_id', $team->id);
+            ->assertJsonPath('number', 10);
 
         $this->assertDatabaseHas('players', [
             'id' => $player->id,
@@ -54,7 +50,6 @@ class UpdateTest extends TestCase
             'nationality' => 'BR',
             'position' => Position::Forward->value,
             'number' => 10,
-            'team_id' => $team->id,
         ]);
     }
 

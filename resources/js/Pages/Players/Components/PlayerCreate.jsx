@@ -98,9 +98,9 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                             }
                             placeholder="Birth Date"
                         />
-                        {form.errors.last_name && (
+                        {form.errors.birth_date && (
                             <div className="mt-1 text-sm text-red-600">
-                                {form.errors.last_name}
+                                {form.errors.birth_date}
                             </div>
                         )}
                     </div>
@@ -109,6 +109,7 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                     <div>
                         <InputLabel htmlFor="position">Position</InputLabel>
                         <select
+                            value={form.data.position}
                             className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
                             onChange={(e) =>
                                 form.setData("position", e.target.value)
@@ -121,6 +122,11 @@ export default function PlayerCreate({ onSuccess, onCancel }) {
                                 </option>
                             ))}
                         </select>
+                        {form.errors.position && (
+                            <div className="mt-1 text-sm text-red-600">
+                                {form.errors.position}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <InputLabel htmlFor="number">Number</InputLabel>

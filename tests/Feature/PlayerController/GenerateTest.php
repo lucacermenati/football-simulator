@@ -40,7 +40,7 @@ class GenerateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('/api/players/generate', ['n' => 5]);
+        $response = $this->actingAs($user)->postJson('/api/players/generate', ['size' => 5]);
 
         $response
             ->assertCreated()

@@ -97,9 +97,9 @@ export default function PlayerEdit({ player, onSuccess, onCancel }) {
                             }
                             placeholder="Birth Date"
                         />
-                        {form.errors.last_name && (
+                        {form.errors.birth_date && (
                             <div className="mt-1 text-sm text-red-600">
-                                {form.errors.last_name}
+                                {form.errors.birth_date}
                             </div>
                         )}
                     </div>
@@ -121,6 +121,11 @@ export default function PlayerEdit({ player, onSuccess, onCancel }) {
                                 </option>
                             ))}
                         </select>
+                        {form.errors.position && (
+                            <div className="mt-1 text-sm text-red-600">
+                                {form.errors.position}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <InputLabel htmlFor="number">Number</InputLabel>

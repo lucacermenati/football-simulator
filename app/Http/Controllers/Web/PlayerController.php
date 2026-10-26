@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Enums\Country;
 use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GeneratePlayersRequest;
 use App\Http\Requests\PlayersFilterRequest;
+use App\Http\Requests\StorePlayerRequest;
+use App\Http\Requests\UpdatePlayerRequest;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Player;
@@ -13,7 +15,6 @@ use App\Services\PlayerGenerator;
 use App\Sorters\PlayerSorter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class PlayerController extends Controller
@@ -53,47 +54,25 @@ class PlayerController extends Controller
         ]);
     }
 
-    public function store(Request $request, PlayerGenerator $generator)
+    public function store(StorePlayerRequest $request, PlayerGenerator $generator)
     {
-        $validated = $request->validate([
-            'first_name' => 'nullable|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'nationality' => ['nullable', Rule::enum(Country::class)],
-            'position' => 'nullable|string|max:255',
-            'number' => 'nullable|integer|min:1|max:99',
-        ]);
-
-        $request->user()->players()->create($generator->attributes($validated));
+        $request->user()->players()->create($generator->attributes($request->validated()));
 
         return redirect()->back()->with('success', 'Player created successfully!');
     }
 
-    public function update(Request $request, Player $player)
+    public function update(UpdatePlayerRequest $request, Player $player)
     {
         Gate::authorize('owns', $player);
 
-        $validated = $request->validate([
-            'first_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'nationality' => ['required', Rule::enum(Country::class)],
-            'position' => 'required|string|max:255',
-            'number' => 'required|integer|min:1|max:99',
-        ]);
-
-        $player->update($validated);
+        $player->update($request->validated());
 
         return redirect()->back()->with('success', 'Player updated successfully!');
     }
 
-    public function generate(Request $request, PlayerGenerator $generator)
+    public function generate(GeneratePlayersRequest $request, PlayerGenerator $generator)
     {
-        $validated = $request->validate([
-            'size' => 'required|integer|min:1|max:500',
-        ]);
-
-        $request->user()->players()->createMany($generator->many($validated['size']));
+        $request->user()->players()->createMany($generator->many($request->integer('size', 1)));
 
         return redirect()->back()->with('success', 'Players generated successfully!');
     }

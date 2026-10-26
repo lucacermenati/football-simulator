@@ -35,8 +35,15 @@ export default function PlayerGenerate({ onSuccess, onCancel }) {
                     value={form.data.size}
                     onChange={(e) => form.setData("size", e.target.value)}
                     type="number"
+                    min="1"
+                    max="100"
                     placeholder="Size"
                 />
+                {form.errors.size && (
+                    <div className="mt-1 text-sm text-red-600">
+                        {form.errors.size}
+                    </div>
+                )}
                 <div className="flex gap-2 justify-end mt-8">
                     <SecondaryButton
                         type="button"

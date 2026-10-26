@@ -1,17 +1,10 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function PlayerDelete({ player, onSuccess, onCancel }) {
-    const deletePlayer = () => {
-        router.delete(route("players.destroy", player.id), {
-            preserveScroll: true,
-            onSuccess: () => onCancel(),
-            onError: (error) => {
-                console.log({ error });
-            },
-        });
-    };
+    const [processing, setProcessing] = useState(false);
 
     return (
         <div className="p-6">
@@ -26,7 +19,21 @@ export default function PlayerDelete({ player, onSuccess, onCancel }) {
                 <SecondaryButton onClick={() => onCancel()}>
                     Cancel
                 </SecondaryButton>
-                <PrimaryButton onClick={deletePlayer}>Delete</PrimaryButton>
+                <Link
+                    as={PrimaryButton}
+                    method="delete"
+                    href={route("players.destroy", player.id)}
+                    preserveScroll
+                    disabled={processing}
+                    onStart={() => setProcessing(true)}
+                    onFinish={() => setProcessing(false)}
+                    onSuccess={() => onCancel()}
+                    onError={(error) => {
+                        console.log({ error });
+                    }}
+                >
+                    Delete
+                </Link>
             </div>
         </div>
     );

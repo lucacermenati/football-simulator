@@ -1,8 +1,11 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { Link } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function CompetitionDelete({ competition, onCancel }) {
+    const [processing, setProcessing] = useState(false);
+
     return (
         <div className="p-6">
             <h3 className="text-lg font-medium text-primaryRed-600">
@@ -17,10 +20,14 @@ export default function CompetitionDelete({ competition, onCancel }) {
                     Cancel
                 </SecondaryButton>
                 <Link
+                    as={PrimaryButton}
                     method="delete"
                     href={route("competitions.destroy", competition.id)}
+                    disabled={processing}
+                    onStart={() => setProcessing(true)}
+                    onFinish={() => setProcessing(false)}
                 >
-                    <PrimaryButton>Delete</PrimaryButton>
+                    Delete
                 </Link>
             </div>
         </div>

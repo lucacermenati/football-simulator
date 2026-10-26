@@ -1,13 +1,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CompetitionLayout from "./Components/CompetitionLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import TeamLogo from "../Teams/Components/TeamLogo";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function CompetitionMatch({ competition, match }) {
     const dateOfToday = new Date();
     const matchDate = new Date(match.date);
+    const [processing, setProcessing] = useState(false);
 
     return (
         <AuthenticatedLayout>
@@ -88,16 +89,18 @@ export default function CompetitionMatch({ competition, match }) {
                         )}
                         {!match.played && (
                             <div className="flex justify-center">
-                                <PrimaryButton
-                                    disabled={dateOfToday < matchDate}
-                                    onClick={() =>
-                                        router.post(
-                                            route("matches.simulate", match.id),
-                                        )
+                                <Link
+                                    as={PrimaryButton}
+                                    method="post"
+                                    href={route("matches.simulate", match.id)}
+                                    disabled={
+                                        dateOfToday < matchDate || processing
                                     }
+                                    onStart={() => setProcessing(true)}
+                                    onFinish={() => setProcessing(false)}
                                 >
                                     PLAY
-                                </PrimaryButton>
+                                </Link>
                             </div>
                         )}
                     </div>

@@ -1,21 +1,16 @@
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
-    if (!player) return <div></div>;
-
     const [selectedTeamId, setSelectedTeamId] = useState(
-        player.team_id ?? teams[0]?.id,
+        player?.team_id ?? teams[0]?.id,
     );
+    const [processing, setProcessing] = useState(false);
 
-    const submit = () => {
-        router.post(route("teams.players.add", selectedTeamId), {
-            player_id: player.id,
-        });
-    };
+    if (!player) return <div></div>;
 
     return (
         <div className="p-6">
@@ -25,7 +20,7 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
             <p>
                 Assign {player.first_name} {player.last_name} to a team
             </p>
-            <form className="flex flex-col mt-4 space-y-4" onSubmit={submit}>
+            <form className="flex flex-col mt-4 space-y-4">
                 <InputLabel>Select team</InputLabel>
                 <select
                     className="rounded-md border-gray-300 shadow-sm focus:border-lightGrey-600 focus:ring-lightGrey-800"
@@ -48,7 +43,17 @@ export default function PlayerAdd({ player, teams, onSuccess, onCancel }) {
                         Cancel
                     </SecondaryButton>
 
-                    <PrimaryButton onClick={submit}>Add</PrimaryButton>
+                    <Link
+                        as={PrimaryButton}
+                        method="post"
+                        href={route("teams.players.add", selectedTeamId)}
+                        data={{ player_id: player.id }}
+                        disabled={processing}
+                        onStart={() => setProcessing(true)}
+                        onFinish={() => setProcessing(false)}
+                    >
+                        Add
+                    </Link>
                 </div>
             </form>
         </div>

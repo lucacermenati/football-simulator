@@ -1,22 +1,12 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function TeamRemove({ competition, team, onSuccess, onCancel }) {
-    if (!team) return <div></div>;
+    const [processing, setProcessing] = useState(false);
 
-    const removeTeam = (competitionId, teamId) => {
-        router.delete(
-            route("competitions.teams.destroy", {
-                competition: competitionId,
-                team: teamId,
-            }),
-            {
-                preserveScroll: true,
-                onSuccess,
-            },
-        );
-    };
+    if (!team) return <div></div>;
 
     return (
         <div className="p-6">
@@ -32,11 +22,21 @@ export default function TeamRemove({ competition, team, onSuccess, onCancel }) {
                     Cancel
                 </SecondaryButton>
 
-                <PrimaryButton
-                    onClick={() => removeTeam(competition.id, team.id)}
+                <Link
+                    as={PrimaryButton}
+                    method="delete"
+                    href={route("competitions.teams.destroy", {
+                        competition: competition.id,
+                        team: team.id,
+                    })}
+                    preserveScroll
+                    disabled={processing}
+                    onStart={() => setProcessing(true)}
+                    onFinish={() => setProcessing(false)}
+                    onSuccess={onSuccess}
                 >
                     Remove
-                </PrimaryButton>
+                </Link>
             </div>
         </div>
     );

@@ -1,11 +1,12 @@
-export default function PrimaryButton({
-    className = "",
-    disabled,
-    children,
-    ...props
-}) {
+import { forwardRef } from "react";
+
+const PrimaryButton = forwardRef(function PrimaryButton(
+    { className = "", disabled, href, children, ...props },
+    ref,
+) {
     return (
         <button
+            ref={ref}
             {...props}
             className={
                 `inline-flex justify-center items-center rounded-md border border-transparent bg-primaryRed-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primaryRed-700 focus:bg-primaryRed-700 focus:outline-none focus:ring-2 focus:ring-primaryRed-600 focus:ring-offset-2 active:bg-primaryRed-800 ${
@@ -17,4 +18,6 @@ export default function PrimaryButton({
             {children}
         </button>
     );
-}
+});
+
+export default PrimaryButton;

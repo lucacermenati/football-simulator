@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Http\Controllers\Controller;
 use App\Models\FootballMatch;
 use App\Services\PoissonMatchSimulator;
 use App\Services\ScorerSimulator;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class FootballMatchController extends Controller
@@ -21,6 +21,6 @@ class FootballMatchController extends Controller
         $matchSimulator->simulate($match);
         $scorerSimulator->assignScorers($match);
 
-        return redirect()->back()->with('success', 'Match simulated successfully');
+        return redirect()->back()->with(FlashType::Success->value, 'Match simulated successfully');
     }
 }

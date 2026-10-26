@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\FlashType;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -34,6 +35,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'flash' => collect(FlashType::cases())
+                ->mapWithKeys(fn (FlashType $type) => [$type->value => fn () => $request->session()->get($type->value)])
+                ->all(),
         ];
     }
 }

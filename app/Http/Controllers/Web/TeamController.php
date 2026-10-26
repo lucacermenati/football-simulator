@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
@@ -66,7 +67,7 @@ class TeamController extends Controller
             );
         }
 
-        return redirect()->back()->with('message', 'Team created successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Team created successfully!');
     }
 
     public function update(UpdateTeamRequest $request, Team $team)
@@ -88,7 +89,7 @@ class TeamController extends Controller
         }
 
         return redirect()->back()
-            ->with('message', $team->name.' updated successfully!');
+            ->with(FlashType::Success->value, $team->name.' updated successfully!');
     }
 
     public function destroy(Team $team)
@@ -162,6 +163,6 @@ class TeamController extends Controller
             'team_id' => $team->id,
         ]);
 
-        return redirect()->back()->with('message', 'Player added successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Player added successfully!');
     }
 }

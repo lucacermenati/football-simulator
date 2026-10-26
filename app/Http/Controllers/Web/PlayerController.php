@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Filters\PlayerFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GeneratePlayersRequest;
@@ -58,7 +59,7 @@ class PlayerController extends Controller
     {
         $request->user()->players()->create($generator->attributes($request->validated()));
 
-        return redirect()->back()->with('success', 'Player created successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Player created successfully!');
     }
 
     public function update(UpdatePlayerRequest $request, Player $player)
@@ -67,14 +68,14 @@ class PlayerController extends Controller
 
         $player->update($request->validated());
 
-        return redirect()->back()->with('success', 'Player updated successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Player updated successfully!');
     }
 
     public function generate(GeneratePlayersRequest $request, PlayerGenerator $generator)
     {
         $request->user()->players()->createMany($generator->many($request->integer('size', 1)));
 
-        return redirect()->back()->with('success', 'Players generated successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Players generated successfully!');
     }
 
     public function destroy(Request $request, Player $player)
@@ -83,6 +84,6 @@ class PlayerController extends Controller
 
         $player->delete();
 
-        return redirect()->back()->with('success', 'Player deleted successfully!');
+        return redirect()->back()->with(FlashType::Success->value, 'Player deleted successfully!');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexCompetitionMatchRequest;
 use App\Http\Resources\CompetitionResource;
@@ -52,6 +53,6 @@ class CompetitionMatchController extends Controller
 
         $calendarGenerator->generateMatches($competition, $validated['start_date']);
 
-        return redirect()->back()->with('success', 'Matches generated successfully');
+        return redirect()->back()->with(FlashType::Success->value, 'Matches generated successfully');
     }
 }

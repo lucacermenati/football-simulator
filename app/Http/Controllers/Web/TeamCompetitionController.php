@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -24,6 +25,6 @@ class TeamCompetitionController extends Controller
 
         $team->competitions()->syncWithoutDetaching($request->competition_id);
 
-        return redirect()->back()->with('success', 'Team added to competition successfully');
+        return redirect()->back()->with(FlashType::Success->value, 'Team added to competition successfully');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\FlashType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
@@ -41,7 +42,7 @@ class CompetitionController extends Controller
         }
 
         return redirect()->back()
-            ->with('message', 'Competition created successfully!');
+            ->with(FlashType::Success->value, 'Competition created successfully!');
     }
 
     public function show(Competition $competition)
@@ -72,7 +73,7 @@ class CompetitionController extends Controller
         }
 
         return redirect()->back()
-            ->with('message', 'Competition updated successfully!');
+            ->with(FlashType::Success->value, 'Competition updated successfully!');
     }
 
     public function destroy(Competition $competition)
@@ -82,7 +83,7 @@ class CompetitionController extends Controller
         $competition->delete();
 
         return redirect()->route('competitions.index')
-            ->with('message', 'Competition deleted successfully!');
+            ->with(FlashType::Success->value, 'Competition deleted successfully!');
     }
 
     public function standings(Competition $competition, CompetitionStandings $standings)

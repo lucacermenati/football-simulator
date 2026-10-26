@@ -1,9 +1,11 @@
 <?php
 
+use App\Enums\FlashType;
 use App\Exceptions\ApiException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,7 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (ApiException $e, $request) {
-            return $e->toResponse($request);
+        $exceptions->render(function (ApiException $e, Request $request) {
+            if ($request->routeIs('api.*')) {
+                return $e->toResponse($request);
+            }
+
+            return back()->with(FlashType::Error->value, $e->getMessage());
         });
     })->create();

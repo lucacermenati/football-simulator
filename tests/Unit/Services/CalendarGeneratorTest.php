@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services;
 
+use App\Exceptions\InvalidTeamCountException;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Models\User;
 use App\Services\CalendarGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use InvalidArgumentException;
 use Tests\TestCase;
 
 class CalendarGeneratorTest extends TestCase
@@ -43,7 +43,7 @@ class CalendarGeneratorTest extends TestCase
         $teams = Team::factory()->for($user)->count(3)->create();
         $competition->teams()->attach($teams->pluck('id'));
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidTeamCountException::class);
 
         CalendarGenerator::generateMatches($competition, '2026-09-05');
     }

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidTeamCountException;
 use App\Models\Competition;
 use App\Models\FootballMatch;
 use Carbon\Carbon;
-use InvalidArgumentException;
 use Str;
 
 class CalendarGenerator
@@ -18,7 +18,7 @@ class CalendarGenerator
         $n = $teams->count();
 
         if ($n < 2 || $n % 2 !== 0) {
-            throw new InvalidArgumentException("Circle method requires an even number of teams (got {$n}).");
+            throw new InvalidTeamCountException($n);
         }
 
         $rounds = $n - 1;

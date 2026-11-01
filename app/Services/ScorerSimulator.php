@@ -97,7 +97,6 @@ class ScorerSimulator
         return $players->map(
             fn (Player $player) => [
                 'player' => $player,
-
                 'weight' => $this->scorerWeight($player)
                     * $appearanceMultiplier,
             ]
@@ -120,42 +119,11 @@ class ScorerSimulator
 
     protected function scoringMultiplier(Player $player): float
     {
-        $minRating = config(
-            'scorer.scoring.min_rating',
-            50
-        );
+        $exponent = config('scorer.scoring_exponent', 3);
 
-        $maxRating = config(
-            'scorer.scoring.max_rating',
-            100
-        );
+        $rating = max(0, min(100, $player->rating));
 
-        $minMultiplier = config(
-            'scorer.scoring.min_multiplier',
-            0.75
-        );
-
-        $maxMultiplier = config(
-            'scorer.scoring.max_multiplier',
-            1.50
-        );
-
-        $rating = max(
-            $minRating,
-            min($maxRating, $player->scoring)
-        );
-
-        $normalized = (
-            $rating - $minRating
-        ) / (
-            $maxRating - $minRating
-        );
-
-        return $minMultiplier
-            + (
-                $normalized
-                * ($maxMultiplier - $minMultiplier)
-            );
+        return ($rating / 100) ** $exponent;
     }
 
     protected function weightedRandom(

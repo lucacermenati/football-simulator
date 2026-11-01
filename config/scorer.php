@@ -12,22 +12,9 @@ return [
 
     'starter_multiplier' => env('SCORER_STARTER_MULTIPLIER', 1.0),
 
-    'substitute_multiplier' => env('SCORER_SUBSTITUTE_MULTIPLIER', 0.30),
+    'substitute_multiplier' => env('SCORER_SUBSTITUTE_MULTIPLIER', 0.40),
 
-    'scoring' => [
-        'min_rating' => env('SCORER_MIN_RATING', 50),
-        'max_rating' => env('SCORER_MAX_RATING', 100),
-
-        'min_multiplier' => env(
-            'SCORER_MIN_SCORING_MULTIPLIER',
-            0.75
-        ),
-
-        'max_multiplier' => env(
-            'SCORER_MAX_SCORING_MULTIPLIER',
-            10.00
-        ),
-    ],
+    'scoring_exponent' => env('SCORER_SCORING_EXPONENT', 3),
 
     'minute_periods' => [
         ['min' => 1, 'max' => 45, 'weight' => 0.45],

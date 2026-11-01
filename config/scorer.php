@@ -25,7 +25,7 @@ return [
 
         'max_multiplier' => env(
             'SCORER_MAX_SCORING_MULTIPLIER',
-            1.50
+            3.00
         ),
     ],
 
